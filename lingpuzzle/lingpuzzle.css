@@ -1,0 +1,15 @@
+a.head {
+    font-style: italic;
+    padding-right: 1em;
+}
+
+div.tbl {
+    overflow: auto;
+}
+div.tbl table {
+    width: 100%;
+}
+div.tbl table td {
+    padding: 0 5px;
+    white-space: nowrap;
+}

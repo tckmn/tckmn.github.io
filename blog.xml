@@ -1,0 +1,20 @@
+<rss version="2.0">
+    <channel>
+        <title>Blog - Andy Tockman</title>
+        <link>https://tck.mn/blog/</link>
+        <description>Andy Tockman's blog</description>
+        <language>en</language>
+<item>
+    <title>Names and renaming</title>
+    <link>https://tck.mn/blog/names-and-renaming/</link>
+    <description>
+There are only two hard things in Computer Science:
+cache invalidation and naming things.
+—Phil Karlton
+</description>
+    <pubDate>Tue, 23 Jan 2018 00:00:00 -0600</pubDate>
+    <guid>https://tck.mn/blog/names-and-renaming/</guid>
+</item>
+
+    </channel>
+</rss>

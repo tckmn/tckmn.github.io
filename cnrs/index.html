@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <title>cnrs</title>
+        <style>
+        body {
+            background-color: #000;
+            color: #ddd;
+            font: 12px monospace;
+            text-align: center;
+            padding: 2em 0;
+        }
+        p#head {
+            font-size: 16px;
+            font-weight: bold;
+            padding-bottom: 1em;
+        }
+        p#head i { font-size: 11px; font-weight: normal; }
+        p#foot {
+            font-size: 13px;
+            padding-top: 1em;
+        }
+        p#foot a { color: #55f; }
+        p span {
+            display: inline-block;
+            border: 1px solid #555;
+            border-left-width: 0;
+            padding: 0.2em 0;
+            cursor: pointer;
+        }
+        p.p3 span { width: 8em; }
+        p.p4 span { width: 6em; }
+        p span.l { border-left-width: 1px; border-radius: 5px 0 0 5px; }
+        p span.r { border-radius: 0 5px 5px 0; }
+        p span.a { background-color: #222; cursor: default; }
+        </style>
+        <script>
+            window.addEventListener('load', function() {
+                var vals = ['3', '10', 'mtty'], a = document.getElementById('a');
+                for (var i = 1; i <= 3; ++i) {
+                    var p = document.getElementById('p'+i);
+                    for (var j = 1; j < p.childNodes.length; ++j) {
+                        var s = p.childNodes[j];
+                        (function(i, j, p, s) { s.addEventListener('click', function(e) {
+                            for (var k = 1; k < p.childNodes.length; ++k) {
+                                p.childNodes[k].className = p.childNodes[k].className.replace('a', '');
+                            }
+                            s.className += ' a';
+                            vals[i-1] = s.firstChild.nodeValue;
+                            if (vals[1].length == 1) vals[1] = '0' + vals[1];
+                            var newstr = 'cnrs-html-'+vals[0]+'a-'+vals[1]+'-'+vals[2]+'-v1.html';
+                            a.removeChild(a.firstChild);
+                            a.appendChild(document.createTextNode(newstr));
+                            a.href = newstr;
+                        }); })(i, j, p, s);
+                    }
+                }
+            });
+        </script>
+    </head>
+    <body>
+        <p id=head>customize<br><i>(default values are recommended)</i></p>
+        <p id=p1 class=p4>&nbsp;&nbsp;&nbsp;&nbsp;columns: <span class=l>1</span><span>2</span><span class=a>3</span><span class=r>4</span></p>
+        <p id=p2 class=p4>&nbsp;&nbsp;font size: <span class=l>9</span><span class=a>10</span><span>11</span><span class=r>12</span></p>
+        <p id=p3 class=p3>colorscheme: <span class=l>mswin</span><span class=a>mtty</span><span class=r>vesa</span></p>
+        <p id=foot><a id=a href='cnrs-html-3a-10-mtty-v1.html'>cnrs-html-3a-10-mtty-v1.html</a></p>
+    </body>
+</html>

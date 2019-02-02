@@ -1,0 +1,94 @@
+main > div {
+    clear: both;
+    padding: 30px 0;
+}
+
+main aside {
+    width: 160px;
+    float: left;
+}
+
+main section {
+    overflow: hidden;
+    min-width: 400px;
+}
+@media (max-width: 400px) { main section { width: 100%; min-width: 0; } }
+
+main span.name {
+    display: block;
+    font-weight: bold;
+}
+
+main span.c    { color: #ab4642; font-style: italic; }
+main span.cpp  { color: #ab4642; font-style: italic; }
+main span.java { color: #dc9656; font-style: italic; }
+main span.js   { color: #f7ca88; font-style: italic; }
+main span.py   { color: #a1b56c; font-style: italic; }
+main span.rb   { color: #86c1b9; font-style: italic; }
+main span.rs   { color: #7cafc2; font-style: italic; }
+main span.sh   { color: #ba8baf; font-style: italic; }
+main span.vim  { color: #a16946; font-style: italic; }
+
+main span.c1, main span.c2, main span.c3, main span.c4 {
+    display: inline-block;
+    width: 32px;
+    height: 16px;
+    line-height: 16px;
+    vertical-align: middle;
+    border: 1px solid #383838;
+    border-radius: 5px;
+    padding: 1px 2px;
+}
+main b {
+    display: inline-block;
+    width: 6px;
+    height: 16px;
+    margin: 0 1px;
+    border-radius: 100px;
+}
+main span.c1 > b { background-color: #ab4642; }
+main span.c2 > b { background-color: #dc9656; }
+main span.c3 > b { background-color: #f7ca88; }
+main span.c4 > b { background-color: #a1b56c; }
+
+main a.icon {
+    float: right;
+    width: 128px;
+    height: 128px;
+    display: block;
+    margin: 5px 0 0 10px;
+    border: 1px solid #383838;
+}
+
+div.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.7);
+    z-index: 1;
+}
+
+div.close {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    border-radius: 30px;
+    line-height: 30px;
+    text-align: center;
+    background-color: #811;
+    color: #eee;
+    border: 2px solid #eee;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 3;
+}
+
+img.big {
+    position: fixed;
+    z-index: 2;
+}

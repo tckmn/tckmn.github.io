@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <meta charset='utf-8'>
+        <meta name='viewport' content='width=device-width, initial-scale=1'>
+        <title>Introduction - Atomic chess guide - Andy Tockman</title>
+        <link rel='stylesheet' type='text/css' href='/global.css'>
+        <link rel='stylesheet' type='text/css' href='intro.css'>
+        <script src='/js/chess.js'></script>
+
+        <link rel='apple-touch-icon' sizes='180x180' href='/apple-touch-icon.png'>
+        <link rel='icon' type='image/png' sizes='32x32' href='/favicon-32x32.png'>
+        <link rel='icon' type='image/png' sizes='16x16' href='/favicon-16x16.png'>
+        <link rel='manifest' href='/site.webmanifest'>
+        <link rel='mask-icon' href='/safari-pinned-tab.svg' color='#5bbad5'>
+        <meta name='msapplication-TileColor' content='#da532c'>
+        <meta name='theme-color' content='#ffffff'>
+
+    </head>
+    <body>
+
+        <header>
+            <div><a href='/'>home</a></div><!--
+            --><div><a href='/about'>about</a></div><!--
+            --><div><a href='/'><img src='/img/dp.png' width=48 height=48></a></div><!--
+            --><div><a href='/blog'>blog</a></div><!--
+            --><div><a href='/contact'>contact</a></div>
+        </header>
+
+        <div id='subheader'>
+            <span>
+                <span class='shl'>code</span>
+                <a href='/portfolio' class='sh1'>portfolio</a>
+            </span><!--
+            --><span>
+                <span class='shl'>language</span>
+                <a href='/conlang' class='sh1'>conlangs</a>
+                <a href='/lingpuzzle'>puzzles</a>
+            </span><!--
+            --><span>
+                <span class='shl'>music</span>
+                <a href='/mcompose' class='sh1'>composition</a>
+                <a href='/manalyze'>analysis</a>
+            </span>
+        </div>
+        <div id='subheader-post'></div>
+
+        <main>
+        
+
+<p class='ni'><a href='..'>« back to index</a></p>
+
+<h1>Introduction</h1>
+
+<p>
+The rules of atomic chess are the same as those of standard chess
+with the addition that every time a capture takes place,
+</p>
+
+<ul>
+    <li>the captured piece explodes (is removed).</li>
+    <li>the capturing piece explodes.</li>
+    <li>all pieces adjacent (including diagonally) to the square of the capture, except pawns, explode.</li>
+</ul>
+
+<p>
+Here is a simple example:
+</p>
+<div class=chess data-pos='2kr3r/ppnp3p/6p1/4p1B1/1b1P4/5P2/PPP3PP/R3K2R'><table><tbody><tr><td class=l><img src='/img/no.png'></td><td class=d><img src='/img/no.png'></td><td class=l><img src='/img/kd.svg'></td><td class=d><img src='/img/rd.svg'></td><td class=l><img src='/img/no.png'></td><td class=d><img src='/img/no.png'></td><td class=l><img src='/img/no.png'></td><td class=d><img src='/img/rd.svg'></td></tr><tr><td class=d><img src='/img/pd.svg'></td><td class=l><img src='/img/pd.svg'></td><td class=d><img src='/img/nd.svg'></td><td class=l><img src='/img/pd.svg'></td><td class=d><img src='/img/no.png'></td><td class=l><img src='/img/no.png'></td><td class=d><img src='/img/no.png'></td><td class=l><img src='/img/pd.svg'></td></tr><tr><td class=l><img src='/img/no.png'></td><td class=d><img src='/img/no.png'></td><td class=l><img src='/img/no.png'></td><td class=d><img src='/img/no.png'></td><td class=l><img src='/img/no.png'></td><td class=d><img src='/img/no.png'></td><td class=l><img src='/img/pd.svg'></td><td class=d><img src='/img/no.png'></td></tr><tr><td class=d><img src='/img/no.png'></td><td class=l><img src='/img/no.png'></td><td class=d><img src='/img/no.png'></td><td class=l><img src='/img/no.png'></td><td class=d><img src='/img/pd.svg'></td><td class=l><img src='/img/no.png'></td><td class=d><img src='/img/bl.svg'></td><td class=l><img src='/img/no.png'></td></tr><tr><td class=l><img src='/img/no.png'></td><td class=d><img src='/img/bd.svg'></td><td class=l><img src='/img/no.png'></td><td class=d><img src='/img/pl.svg'></td><td class=l><img src='/img/no.png'></td><td class=d><img src='/img/no.png'></td><td class=l><img src='/img/no.png'></td><td class=d><img src='/img/no.png'></td></tr><tr><td class=d><img src='/img/no.png'></td><td class=l><img src='/img/no.png'></td><td class=d><img src='/img/no.png'></td><td class=l><img src='/img/no.png'></td><td class=d><img src='/img/no.png'></td><td class=l><img src='/img/pl.svg'></td><td class=d><img src='/img/no.png'></td><td class=l><img src='/img/no.png'></td></tr><tr><td class=l><img src='/img/pl.svg'></td><td class=d><img src='/img/pl.svg'></td><td class=l><img src='/img/pl.svg'></td><td class=d><img src='/img/no.png'></td><td class=l><img src='/img/no.png'></td><td class=d><img src='/img/no.png'></td><td class=l><img src='/img/pl.svg'></td><td class=d><img src='/img/pl.svg'></td></tr><tr><td class=d><img src='/img/rl.svg'></td><td class=l><img src='/img/no.png'></td><td class=d><img src='/img/no.png'></td><td class=l><img src='/img/no.png'></td><td class=d><img src='/img/kl.svg'></td><td class=l><img src='/img/no.png'></td><td class=d><img src='/img/no.png'></td><td class=l><img src='/img/rl.svg'></td></tr></tbody></table><div class='mcont'><div class='ctrl'><span>«</span><span><span>flip</span></span><span>»</span></div><div class='moves'><span class=n>1.</span>&nbsp;<span class=m>Bxd8#</span></div></div></div><div style='clear:both'></div>
+
+<p>
+Note that when white captures the rook on d8,
+the white bishop and black knight and king explode (thus winning the game for white),
+but the black pawn remains intact.
+</p>
+
+<p>
+Also note that black's bishop on b4 had put the white king in check;
+however,
+one subtlety introduced by the atomic rules
+is that you may explode the opponent's king to win
+even when your own king is in check.
+</p>
+
+<p>
+Here is another example that demonstrates some of the unique aspects of atomic:
+</p>
+<div class=chess data-pos='8/8/2Q5/8/8/8/1kp5/1QK5'><table><tbody><tr><td class=l><img src='/img/no.png'></td><td class=d><img src='/img/no.png'></td><td class=l><img src='/img/no.png'></td><td class=d><img src='/img/no.png'></td><td class=l><img src='/img/no.png'></td><td class=d><img src='/img/no.png'></td><td class=l><img src='/img/no.png'></td><td class=d><img src='/img/no.png'></td></tr><tr><td class=d><img src='/img/no.png'></td><td class=l><img src='/img/no.png'></td><td class=d><img src='/img/no.png'></td><td class=l><img src='/img/no.png'></td><td class=d><img src='/img/no.png'></td><td class=l><img src='/img/no.png'></td><td class=d><img src='/img/no.png'></td><td class=l><img src='/img/no.png'></td></tr><tr><td class=l><img src='/img/no.png'></td><td class=d><img src='/img/no.png'></td><td class=l><img src='/img/ql.svg'></td><td class=d><img src='/img/no.png'></td><td class=l><img src='/img/no.png'></td><td class=d><img src='/img/no.png'></td><td class=l><img src='/img/no.png'></td><td class=d><img src='/img/no.png'></td></tr><tr><td class=d><img src='/img/no.png'></td><td class=l><img src='/img/no.png'></td><td class=d><img src='/img/no.png'></td><td class=l><img src='/img/no.png'></td><td class=d><img src='/img/no.png'></td><td class=l><img src='/img/no.png'></td><td class=d><img src='/img/no.png'></td><td class=l><img src='/img/no.png'></td></tr><tr><td class=l><img src='/img/no.png'></td><td class=d><img src='/img/no.png'></td><td class=l><img src='/img/no.png'></td><td class=d><img src='/img/no.png'></td><td class=l><img src='/img/no.png'></td><td class=d><img src='/img/no.png'></td><td class=l><img src='/img/no.png'></td><td class=d><img src='/img/no.png'></td></tr><tr><td class=d><img src='/img/no.png'></td><td class=l><img src='/img/no.png'></td><td class=d><img src='/img/no.png'></td><td class=l><img src='/img/no.png'></td><td class=d><img src='/img/no.png'></td><td class=l><img src='/img/no.png'></td><td class=d><img src='/img/no.png'></td><td class=l><img src='/img/no.png'></td></tr><tr><td class=l><img src='/img/no.png'></td><td class=d><img src='/img/kd.svg'></td><td class=l><img src='/img/pd.svg'></td><td class=d><img src='/img/no.png'></td><td class=l><img src='/img/no.png'></td><td class=d><img src='/img/no.png'></td><td class=l><img src='/img/no.png'></td><td class=d><img src='/img/no.png'></td></tr><tr><td class=d><img src='/img/no.png'></td><td class=l><img src='/img/ql.svg'></td><td class=d><img src='/img/kl.svg'></td><td class=l><img src='/img/no.png'></td><td class=d><img src='/img/no.png'></td><td class=l><img src='/img/no.png'></td><td class=d><img src='/img/no.png'></td><td class=l><img src='/img/no.png'></td></tr></tbody></table><div class='mcont'><div class='ctrl'><span>«</span><span><span>flip</span></span><span>»</span></div><div class='moves'><div class=b><span class=n>1.</span>&nbsp;<span class=m>Qc4</span> <span class=m>Ka3</span> <div class=b><span class=n>2.</span>&nbsp;<span class=m>Qcb3</span> <span class=c>This allows black to win by exploding white's king (despite black's own king being in check).&nbsp;</span> <span class=m>cxb1#</span></div><div class=b> <span class=n>2.</span>&nbsp;<span class=m>Qbb3</span> <span class=c>Ordinarily this would be checkmate, but black's king can escape.&nbsp;</span> <span class=m>Kb2</span> <span class=c>The king is safe because taking it would also explode white's king.&nbsp;</span></div><div class=b> <span class=n>2.</span>&nbsp;<span class=m>Qb2#</span> <span class=c>This move is mate because black's king has no legal moves.&nbsp;</span></div></div><div class=b> <span class=n>1.</span>&nbsp;<span class=m>Qc3</span> <span class=c>This is an immediate stalemate, as it leaves black without any legal moves.&nbsp;</span></div></div></div></div><div style='clear:both'></div>
+
+<p>
+(To use the board analysis tool,
+either click on the buttons at the top
+or click any move to jump to that position.)
+</p>
+
+<p>
+Note that 1...Ka3 is black's only move after 1.Qc4.
+Any other king move would be moving into check
+(the king is not initially in check
+because taking the king would result in white's king exploding as well).
+The pawn cannot take the queen because that would also explode both kings,
+and the king can never capture any other piece
+because doing so would explode itself.
+</p>
+
+<p class='ni'><a href='..'>« back to index</a></p>
+
+        </main>
+
+    </body>
+</html>

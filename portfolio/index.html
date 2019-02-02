@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <meta charset='utf-8'>
+        <meta name='viewport' content='width=device-width, initial-scale=1'>
+        <title>Portfolio - Andy Tockman</title>
+        <link rel='stylesheet' type='text/css' href='/global.css'>
+        <link rel='stylesheet' type='text/css' href='portfolio.css'>
+        <script src='/js/portfolio.js'></script>
+
+        <link rel='apple-touch-icon' sizes='180x180' href='/apple-touch-icon.png'>
+        <link rel='icon' type='image/png' sizes='32x32' href='/favicon-32x32.png'>
+        <link rel='icon' type='image/png' sizes='16x16' href='/favicon-16x16.png'>
+        <link rel='manifest' href='/site.webmanifest'>
+        <link rel='mask-icon' href='/safari-pinned-tab.svg' color='#5bbad5'>
+        <meta name='msapplication-TileColor' content='#da532c'>
+        <meta name='theme-color' content='#ffffff'>
+
+    </head>
+    <body>
+
+        <header>
+            <div><a href='/'>home</a></div><!--
+            --><div><a href='/about'>about</a></div><!--
+            --><div><a href='/'><img src='/img/dp.png' width=48 height=48></a></div><!--
+            --><div><a href='/blog'>blog</a></div><!--
+            --><div><a href='/contact'>contact</a></div>
+        </header>
+
+        <div id='subheader'>
+            <span>
+                <span class='shl'>code</span>
+                <a href='/portfolio' class='active sh1'>portfolio</a>
+            </span><!--
+            --><span>
+                <span class='shl'>language</span>
+                <a href='/conlang' class='sh1'>conlangs</a>
+                <a href='/lingpuzzle'>puzzles</a>
+            </span><!--
+            --><span>
+                <span class='shl'>music</span>
+                <a href='/mcompose' class='sh1'>composition</a>
+                <a href='/manalyze'>analysis</a>
+            </span>
+        </div>
+        <div id='subheader-post'></div>
+
+        <main>
+        
+
+<p>
+Each project in my portfolio is labeled
+by programming language
+and how close to completed it is
+(I have a lot of unfinished side projects).
+</p>
+
+<!--
+    general guideline:
+    1 = bare minimum to show someone / proof of concept
+    2 = missing core features
+    3 = usable product
+    4 = polished, fully serves purpose with few bugs
+-->
+
+<p style='margin:0'>
+You can click on the icons to view larger images.
+</p>
+
+<div>
+    <aside>
+        <span class='name'><a href='https://github.com/KeyboardFire/cfractal'>cfractal</a></span>
+        <span class='c4'><b>&nbsp;</b><b>&nbsp;</b><b>&nbsp;</b><b>&nbsp;</b></span>
+        <span class='c'>c</span>
+    </aside>
+    <section>
+        <a class='icon' href='cfractal.png'><img src='cfractal-icon.png' width=128 height=128></a>
+        <a href='http://flam3.com/flame.pdf'>fractal flame</a> generator
+        I wrote for <a href='https://codeday.org/'>CodeDay</a> Houston
+        in winter of 2015
+        with <a href='https://github.com/0e4ef622/'>a friend</a>;
+        won one of the four awards given out at the end of the event
+    </section>
+</div>
+
+<div>
+    <aside>
+        <span class='name'>infuse</span>
+        <span class='c4'><b>&nbsp;</b><b>&nbsp;</b><b>&nbsp;</b><b>&nbsp;</b></span>
+        <span class='py'>python</span>
+        <span class='js'>js</span>
+    </aside>
+    <section>
+        <a class='icon' href='infuse.png'><img src='infuse-icon.png' width=128 height=128></a>
+        online dashboard for <a href='https://www.infuseenergy.com/'>Infuse Energy</a>
+        consolidating all internal company tools
+    </section>
+</div>
+
+<div>
+    <aside>
+        <span class='name'><a href='https://github.com/KeyboardFire/xscast'>xscast</a></span>
+        <span class='c3'><b>&nbsp;</b><b>&nbsp;</b><b>&nbsp;</b></span>
+        <span class='sh'>shell</span>
+    </aside>
+    <section>
+        <a class='icon' href='xscast.png'><img src='xscast-icon.png' width=128 height=128></a>
+        records GIF screencasts of a window
+        with keystrokes overlaid
+        (successor of <a href='https://github.com/KeyboardFire/mkcast'>mkcast</a>
+        with 3,000+ stars on GitHub)
+    </section>
+</div>
+
+<div>
+    <aside>
+        <span class='name'><a href='https://github.com/KeyboardFire/phondue'>phondue</a></span>
+        <span class='c4'><b>&nbsp;</b><b>&nbsp;</b><b>&nbsp;</b><b>&nbsp;</b></span>
+        <span class='c'>c</span>
+        <span class='js'>js</span>
+    </aside>
+    <section>
+        <a class='icon' href='phondue.png'><img src='phondue-icon.png' width=128 height=128></a>
+        <a href='https://en.wikipedia.org/wiki/International_Phonetic_Alphabet'>International Phonetic Alphabet</a>
+        entry tool;
+        has a GTK implementation
+        as well as a <a href='/phondue-web'>web client you can try in your browser</a>
+        (<a href='https://github.com/KeyboardFire/phondue-web'>repo</a>)
+    </section>
+</div>
+
+<div>
+    <aside>
+        <span class='name'><a href='https://github.com/KeyboardFire/vim-minisnip'>vim-minisnip</a></span>
+        <span class='c3'><b>&nbsp;</b><b>&nbsp;</b><b>&nbsp;</b></span>
+        <span class='vim'>vim</span>
+    </aside>
+    <section>
+        lightweight vim plugin
+        that adds support for inserting snippets / templates
+        into files
+    </section>
+</div>
+
+<div>
+    <aside>
+        <span class='name'><a href='https://github.com/glavra/glavra'>glavra</a></span>
+        <span class='c2'><b>&nbsp;</b><b>&nbsp;</b></span>
+        <span class='rs'>rust</span>
+        <span class='js'>js</span>
+    </aside>
+    <section>
+        feature-rich chat server
+        with multiple clients,
+        fine-grained permissions,
+        pinned and starred messages,
+        etc.
+    </section>
+</div>
+
+<div>
+    <aside>
+        <span class='name'><a href='https://github.com/KeyboardFire/chan'>chan</a></span>
+        <span class='c2'><b>&nbsp;</b><b>&nbsp;</b></span>
+        <span class='c'>c</span>
+    </aside>
+    <section>
+        <a class='icon' href='chan.png'><img src='chan-icon.png' width=128 height=128></a>
+        terminal-based <a href='https://news.ycombinator.com/news'>Hacker News</a> client
+        with full keyboard control
+    </section>
+</div>
+
+<div>
+    <aside>
+        <span class='name'><a href='https://github.com/KeyboardFire/stpsyr'>stpsyr</a></span>
+        <span class='c3'><b>&nbsp;</b><b>&nbsp;</b><b>&nbsp;</b></span>
+        <span class='rs'>rust</span>
+    </aside>
+    <section>
+        adjudicator for
+        the <a href='https://en.wikipedia.org/wiki/Diplomacy_(game)'>Diplomacy</a> board game,
+        capable of generating SVG maps and supporting several variants
+    </section>
+</div>
+
+<div>
+    <aside>
+        <span class='name'><a href='https://github.com/KeyboardFire/atop'>atop</a></span>
+        <span class='c3'><b>&nbsp;</b><b>&nbsp;</b><b>&nbsp;</b></span>
+        <span class='c'>c</span>
+    </aside>
+    <section>
+        <a class='icon' href='atop.png'><img src='atop-icon.png' width=128 height=128></a>
+        database for storing commentary on chess openings
+        with variant support
+        (currently only <a href='https://en.wikipedia.org/wiki/Atomic_chess'>atomic</a>)
+    </section>
+</div>
+
+<div>
+    <aside>
+        <span class='name'><a href='https://github.com/KeyboardFire/stackexchange-chatception'>chatception</a></span>
+        <span class='c3'><b>&nbsp;</b><b>&nbsp;</b><b>&nbsp;</b></span>
+        <span class='js'>js</span>
+    </aside>
+    <section>
+        <a class='icon' href='chatception.png'><img src='chatception-icon.png' width=128 height=128></a>
+        userscript that embeds all Stack Exchange chatrooms into one page
+        through popup widgets
+    </section>
+</div>
+
+<div>
+    <aside>
+        <span class='name'><a href='https://github.com/KeyboardFire/tm'>tm</a></span>
+        <span class='c4'><b>&nbsp;</b><b>&nbsp;</b><b>&nbsp;</b><b>&nbsp;</b></span>
+        <span class='c'>c</span>
+    </aside>
+    <section>
+        very simple terminal stopwatch and countdown timer
+    </section>
+</div>
+
+<div>
+    <aside>
+        <span class='name'><a href='https://github.com/KeyboardFire/ppi3'>ppi3</a></span>
+        <span class='c4'><b>&nbsp;</b><b>&nbsp;</b><b>&nbsp;</b><b>&nbsp;</b></span>
+        <span class='rb'>ruby</span>
+    </aside>
+    <section>
+        <a href='https://i3wm.org/'>i3</a> config file preprocessor
+        to reduce repetition
+    </section>
+</div>
+
+<div>
+    <aside>
+        <span class='name'><a href='https://github.com/KeyboardFire/kbd-cheat'>kbd-cheat</a></span>
+        <span class='c4'><b>&nbsp;</b><b>&nbsp;</b><b>&nbsp;</b><b>&nbsp;</b></span>
+        <span class='js'>js</span>
+    </aside>
+    <section>
+        tool for generating visual reference sheets
+        for keyboard shortcuts
+    </section>
+</div>
+
+<div>
+    <aside>
+        <span class='name'><a href='https://github.com/KeyboardFire/sdtt'>sdtt</a></span>
+        <span class='c2'><b>&nbsp;</b><b>&nbsp;</b></span>
+        <span class='js'>js</span>
+    </aside>
+    <section>
+        simple typing test
+        that measures <a href='https://en.wikipedia.org/wiki/Words_per_minute'>words per minute</a>
+    </section>
+</div>
+
+<div>
+    <aside>
+        <span class='name'><a href='https://github.com/KeyboardFire/fzpass'>fzpass</a></span>
+        <span class='c2'><b>&nbsp;</b><b>&nbsp;</b></span>
+        <span class='c'>c</span>
+    </aside>
+    <section>
+        <a class='icon' href='fzpass.png'><img src='fzpass-icon.png' width=128 height=128></a>
+        fuzzy finder for <a href='https://www.passwordstore.org/'>the <code>pass</code> password manager</a>
+    </section>
+</div>
+
+<div>
+    <aside>
+        <span class='name'><a href='https://github.com/KeyboardFire/vim-xsami'>vim-xsami</a></span>
+        <span class='c4'><b>&nbsp;</b><b>&nbsp;</b><b>&nbsp;</b><b>&nbsp;</b></span>
+        <span class='vim'>vim</span>
+    </aside>
+    <section>
+        automatic <a href='https://en.wikipedia.org/wiki/X-SAMPA'>X-SAMPA</a>
+        to <a href='https://en.wikipedia.org/wiki/International_Phonetic_Alphabet'>IPA</a>
+        translation in vim
+    </section>
+</div>
+
+<div>
+    <aside>
+        <span class='name'><a href='https://github.com/KeyboardFire/wedian'>wedian</a></span>
+        <span class='c4'><b>&nbsp;</b><b>&nbsp;</b><b>&nbsp;</b><b>&nbsp;</b></span>
+        <span class='sh'>shell</span>
+    </aside>
+    <section>
+        extremely simple (5-line) shell script
+        to transform <a href='https://webdiplomacy.net/'>webDiplomacy</a> games
+        into animated GIFs
+    </section>
+</div>
+
+<div>
+    <aside>
+        <span class='name'><a href='https://github.com/KeyboardFire/hotdog.vim'>hotdog.vim</a></span>
+        <span class='c4'><b>&nbsp;</b><b>&nbsp;</b><b>&nbsp;</b><b>&nbsp;</b></span>
+        <span class='vim'>vim</span>
+    </aside>
+    <section>
+        <a class='icon' href='hotdog.png'><img src='hotdog-icon.png' width=128 height=128></a>
+        vim port of the glorious
+        <a href='https://blog.codinghorror.com/a-tribute-to-the-windows-31-hot-dog-stand-color-scheme/'>hot dog stand</a>
+        colorscheme from Windows 3.1
+    </section>
+</div>
+
+<div>
+    <aside>
+        <span class='name'><a href='https://github.com/KeyboardFire/kipfa'>kipfa</a></span>
+        <span class='c4'><b>&nbsp;</b><b>&nbsp;</b><b>&nbsp;</b><b>&nbsp;</b></span>
+        <span class='py'>python</span>
+    </aside>
+    <section>
+        <a href='https://telegram.org/'>Telegram</a> bot
+        with a highly extensive set of commands
+    </section>
+</div>
+
+<div>
+    <aside>
+        <span class='name'><a href='https://github.com/KeyboardFire/dp'>dp</a></span>
+        <span class='c4'><b>&nbsp;</b><b>&nbsp;</b><b>&nbsp;</b><b>&nbsp;</b></span>
+        <span class='c'>c</span>
+    </aside>
+    <section>
+        <a class='icon' href='dp.png'><img src='dp-icon.png' width=128 height=128></a>
+        the program that generated my display picture
+        (and the various themed versions)
+    </section>
+</div>
+
+<div>
+    <aside>
+        <span class='name'><a href='https://github.com/KeyboardFire/sevichat'>sevichat</a></span>
+        <span class='c4'><b>&nbsp;</b><b>&nbsp;</b><b>&nbsp;</b><b>&nbsp;</b></span>
+        <span class='js'>js</span>
+    </aside>
+    <section>
+        userscript that adds vim-like keyboard shortcuts
+        to Stack Exchange chat
+    </section>
+</div>
+
+<div>
+    <aside>
+        <span class='name'><a href='https://github.com/KeyboardFire/msa'>msa</a></span>
+        <span class='c4'><b>&nbsp;</b><b>&nbsp;</b><b>&nbsp;</b><b>&nbsp;</b></span>
+        <span class='java'>java</span>
+        <span class='js'>js</span>
+    </aside>
+    <section>
+        app, userscript, and userstyle
+        that provided a better user experience
+        to my high school website
+        (<a href='/myschoolapp-improvements'>webpage</a>)
+    </section>
+</div>
+
+<div>
+    <aside>
+        <span class='name'><a href='https://github.com/KeyboardFire/snowman-lang'>snowman</a></span>
+        <span class='c4'><b>&nbsp;</b><b>&nbsp;</b><b>&nbsp;</b><b>&nbsp;</b></span>
+        <span class='cpp'>c++</span>
+    </aside>
+    <section>
+        <a href='https://esolangs.org/wiki/Main_Page'>esoteric programming language</a>
+        with a focus on obfuscation,
+        containing 8 usable variables
+    </section>
+</div>
+
+<div>
+    <aside>
+        <span class='name'><a href='https://github.com/KeyboardFire/macaroni-lang'>macaroni</a></span>
+        <span class='c4'><b>&nbsp;</b><b>&nbsp;</b><b>&nbsp;</b><b>&nbsp;</b></span>
+        <span class='rs'>rust</span>
+    </aside>
+    <section>
+        somewhat minimalist esoteric programming language
+        with 25 instructions
+    </section>
+</div>
+
+<div>
+    <aside>
+        <span class='name'><a href='https://github.com/KeyboardFire/babble'>babble</a></span>
+        <span class='c2'><b>&nbsp;</b><b>&nbsp;</b></span>
+        <span class='rs'>rust</span>
+    </aside>
+    <section>
+        esoteric programming language
+        where the source code is entirely capital letters
+    </section>
+</div>
+
+<div>
+    <aside>
+        <span class='name'><a href='https://github.com/KeyboardFire/face'>face</a></span>
+        <span class='c4'><b>&nbsp;</b><b>&nbsp;</b><b>&nbsp;</b><b>&nbsp;</b></span>
+        <span class='c'>c</span>
+    </aside>
+    <section>
+        unreadable esoteric programming language
+        that makes you allocate your own memory
+    </section>
+</div>
+
+<div>
+    <aside>
+        <span class='name'><a href='https://github.com/KeyboardFire/mtprs'>mtprs</a></span>
+        <span class='c1'><b>&nbsp;</b></span>
+        <span class='rs'>rust</span>
+    </aside>
+    <section>
+        Rust client
+        to the <a href='https://telegram.org/'>Telegram</a> API
+    </section>
+</div>
+
+<div>
+    <aside>
+        <span class='name'><a href='https://github.com/KeyboardFire/keys'>keys</a></span>
+        <span class='c4'><b>&nbsp;</b><b>&nbsp;</b><b>&nbsp;</b><b>&nbsp;</b></span>
+        <span class='sh'>shell</span>
+    </aside>
+    <section>
+        script that generates a <a href='/keysigs'>webpage</a>
+        containing a summary of all possible modes and key signatures
+        (via Lilypond)
+    </section>
+</div>
+
+<div>
+    <aside>
+        <span class='name'><a href='https://github.com/KeyboardFire/cnrs'>cnrs</a></span>
+        <span class='c4'><b>&nbsp;</b><b>&nbsp;</b><b>&nbsp;</b><b>&nbsp;</b></span>
+        <span class='rb'>ruby</span>
+    </aside>
+    <section>
+        comprehensive <a href='https://nethack.org/'>nethack</a> reference sheet,
+        in a very compact form
+        (<a href='/cnrs'>click here to view</a>)
+    </section>
+</div>
+
+<div>
+    <aside>
+        <span class='name'><a href='https://github.com/KeyboardFire/privim'>privim</a></span>
+        <span class='c4'><b>&nbsp;</b><b>&nbsp;</b><b>&nbsp;</b><b>&nbsp;</b></span>
+        <span class='c'>c</span>
+        <span class='sh'>shell</span>
+    </aside>
+    <section>
+        paranoid fork of neovim geared towards editing private files
+        by disabling swap, encrypting files, etc.
+    </section>
+</div>
+
+<div>
+    <aside>
+        <span class='name'><a href='https://github.com/KeyboardFire/fpn'>fpn</a></span>
+        <span class='c1'><b>&nbsp;</b></span>
+        <span class='c'>c</span>
+    </aside>
+    <section>
+        interactive unit-aware <a href='https://en.wikipedia.org/wiki/Reverse_Polish_notation'>RPN</a> calculator
+    </section>
+</div>
+
+<div>
+    <aside>
+        <span class='name'><a href='https://github.com/KeyboardFire/hxqz'>hxqz</a></span>
+        <span class='c4'><b>&nbsp;</b><b>&nbsp;</b><b>&nbsp;</b><b>&nbsp;</b></span>
+        <span class='c'>c</span>
+    </aside>
+    <section>
+        a quiz to help improve mental hex/binary arithmetic
+        and base conversion skills
+    </section>
+</div>
+
+<div>
+    <aside>
+        <span class='name'><a href='https://github.com/KeyboardFire/vim-doubles'>vim-doubles</a></span>
+        <span class='c3'><b>&nbsp;</b><b>&nbsp;</b><b>&nbsp;</b></span>
+        <span class='vim'>vim</span>
+    </aside>
+    <section>
+        vim plugin that adds generic text objects
+        that match any delimiter
+    </section>
+</div>
+
+        </main>
+
+    </body>
+</html>
