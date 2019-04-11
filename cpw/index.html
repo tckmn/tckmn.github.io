@@ -7,7 +7,7 @@
         <title>cpw</title>
         <style>
             html,body { background-color: #000; color: #d8d8d8; font: 11pt sans-serif; margin: 0; }
-            div.thing { padding: 0.5em 0; overflow: hidden; }
+            div.thing { padding: 0.5em 0; overflow: hidden; z-index: 1; }
             div.thing:nth-child(2n)   { background-color: #181818; }
             div.thing:nth-child(2n+1) { background-color: #282828; }
             div.thing.active:nth-child(2n)   { background-color: #182818; }
@@ -22,9 +22,14 @@
             div.thing.sep { font-size: 16pt; font-weight: bold; text-align: center; background-color: #000; padding: 1em 0; }
             a, a:visited { color: #86c1b9 }
             a.l { color: #d8d8d8; text-decoration: none; }
-            div#times { position: fixed; background-color: #d8d8d8; color: #181818; padding: 0.5em; border-radius: 100em; cursor: pointer; right: 5px; bottom: 5px; }
+            div#widget { position: fixed; right: 5px; bottom: 5px; text-align: right; z-index: 2; background-color: rgba(255,255,255,0.2); padding: 0.5em; }
+            div#times { background-color: #d8d8d8; color: #181818; padding: 0.5em; border-radius: 100em; cursor: pointer; display: inline-block; }
+            div.wbtn { position: absolute; background-color: #d8d8d8; color: #181818; width: 1.5em; height: 1.5em; border-radius: 1.5em; line-height: 1.5em; text-align: center; font-weight: bold; cursor: pointer; }
+            div#hide { left: -0.2em; top: -0.2em; }
+            div#show { display: none; right: 0.5em; bottom: 0.5em; }
         </style>
         <script>
+            var search = '', words = 0;
             function z(x) { return x < 10 ? '0'+x : x; }
             function fmt(d) {
                 d = d/(1000*60)|0;
@@ -39,17 +44,28 @@
                     var dstart = thing.getAttribute('data-start'),
                         dend = thing.getAttribute('data-end'),
                         reltime = thing.children[2];
-                    console.log(reltime);
                     if (dend && dend < now) {
                         thing.className = 'thing';
                         thing.style.opacity = 0.25;
                         reltime.textContent = 'finished';
                     } else if (dstart && dstart < now) {
-                        thing.className += ' active';
+                        if (thing.className == 'thing') thing.className += ' active';
                         reltime.textContent = fmt(dend-now) + ' remaining';
                     } else if (dstart) {
                         reltime.textContent = 'starts in ' + fmt(dstart-now) + ', ends in ' + fmt(dend-now);
                     }
+                });
+            }
+            function doSearch() {
+                var things = [].slice.call(document.getElementsByClassName('thing'));
+                things.forEach(function(thing) {
+                    var good = thing.className.indexOf('sep') === -1 ? 0 : 1;
+                    [].slice.call(thing.children).forEach(function(child) {
+                        if (!child.className || child.className[0] !== 't') {
+                            if (RegExp(words ? '\\b'+search+'\\b' : search, 'i').test(child.textContent)) good=1;
+                        }
+                    });
+                    thing.style.display = good ? 'block' : 'none';
                 });
             }
             setInterval(f, 1000 * 30);
@@ -59,11 +75,34 @@
                     e.preventDefault();
                     document.body.className = document.body.className == 'rel' ? 'abs' : 'rel';
                 });
+                (filt=document.getElementById('filter')).addEventListener('keyup', function(e) {
+                    search = filt.value;
+                    doSearch();
+                });
+                (boun=document.getElementById('bound')).addEventListener('change', function(e) {
+                    words = boun.checked;
+                    doSearch();
+                });
+                document.getElementById('hide').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    document.getElementById('widget').style.display = 'none';
+                    document.getElementById('show').style.display = 'block';
+                });
+                document.getElementById('show').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    document.getElementById('widget').style.display = 'block';
+                    document.getElementById('show').style.display = 'none';
+                });
             });
         </script>
     </head>
     <body class=abs>
-        <div id=times>toggle times</div>
+        <div id=widget>
+            <div id=hide class=wbtn>−</div>
+            <div id=times>toggle times</div>
+            <div>regex: <input id=filter><input type=checkbox id=bound><label for=bound>full words</label></div>
+        </div>
+        <div id=show class=wbtn>+</div>
         <div id=things><div class='thing sep'>04-11</div><div class=thing data-start=1554987600000 data-end=1555016400000><a class=l href='https://cpw2019.mit.edu//meetings/998269'><b>SFS Open House</b></a><span class='t abs'>09:00 – 17:00</span><span class='t rel'></span><p>Stop by and meet the team! Talk directly with the Student Accounts and Financial Aid teAMs to learn more about your bill, getting a job on campus (or off), loans or financial aid. Financial Aid staff will also be available for one-on-one discussions about your application or award.</p>
 <span class=loc>11-120 (Student Financial Services)</span><span class='lab'>Open House</span><span class='lab'>Parent/Family</span><span class='lab'>Student Financial Services</span><span class='lab'>Student Life (Dining, Security, etc.)</span></div><div class=thing data-start=1554987600000 data-end=1555020000000><a class=l href='https://cpw2019.mit.edu//meetings/998271'><b>The Galleries at MIT.nano</b></a><span class='t abs'>09:00 – 18:00</span><span class='t rel'></span><p>The public galleries at MIT.nano share creative work at the intersection of art, science, and technology. Visit mitnano.mit.edu/arts to see a listing of current exhibitions.</p>
 <span class=loc>12 (MIT.nano): 1st and 2nd Floor (south-side hallways)</span><span class='lab'>Open House</span><span class='lab'>Research</span><span class='lab'>Parent/Family</span><span class='lab'>MIT.nano</span><span class='lab'>Arts & Culture</span></div><div class=thing data-start=1554987600000 data-end=1555045140000><a class=l href='https://cpw2019.mit.edu//meetings/998275'><b>Grill and Chill in the Courtyard!</b></a><span class='t abs'>09:00 – 00:59</span><span class='t rel'></span><p>Come hang out in the East Campus courtyard, grab a burger, and get your hair dyed by a friendly upperclassman!</p>
