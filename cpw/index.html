@@ -12,6 +12,8 @@
             div.thing:nth-child(2n+1) { background-color: #282828; }
             div.thing.active:nth-child(2n)   { background-color: #182818; }
             div.thing.active:nth-child(2n+1) { background-color: #283828; }
+            div.thing.fin { opacity: 0.25; }
+            div#things.hfin div.thing.fin { display: none; }
             p { margin: 5px 0; clear: both; }
             span.t { float: right; color: #f88888; }
             body.rel span.t.abs { display: none; }
@@ -23,10 +25,10 @@
             a, a:visited { color: #86c1b9 }
             a.l { color: #d8d8d8; text-decoration: none; }
             div#widget { position: fixed; right: 5px; bottom: 5px; text-align: right; z-index: 2; background-color: rgba(255,255,255,0.2); padding: 0.5em; }
-            div#times { background-color: #d8d8d8; color: #181818; padding: 0.5em; border-radius: 100em; cursor: pointer; display: inline-block; }
-            div.wbtn { position: absolute; background-color: #d8d8d8; color: #181818; width: 1.5em; height: 1.5em; border-radius: 1.5em; line-height: 1.5em; text-align: center; font-weight: bold; cursor: pointer; }
-            div#hide { left: -0.2em; top: -0.2em; }
-            div#show { display: none; right: 0.5em; bottom: 0.5em; }
+            div#times, div#finished { background-color: #d8d8d8; color: #181818; padding: 0.5em; border-radius: 100em; cursor: pointer; display: inline-block; }
+            div.wbtn { background-color: #d8d8d8; color: #181818; width: 1.5em; height: 1.5em; border-radius: 1.5em; line-height: 1.5em; text-align: center; font-weight: bold; cursor: pointer; }
+            div#hide { position: absolute; left: -0.2em; top: -0.2em; }
+            div#show { display: none; position: fixed; right: 0.5em; bottom: 0.5em; }
         </style>
         <script>
             var search = '', words = 0;
@@ -45,8 +47,7 @@
                         dend = thing.getAttribute('data-end'),
                         reltime = thing.children[2];
                     if (dend && dend < now) {
-                        thing.className = 'thing';
-                        thing.style.opacity = 0.25;
+                        thing.className = 'thing fin';
                         reltime.textContent = 'finished';
                     } else if (dstart && dstart < now) {
                         if (thing.className == 'thing') thing.className += ' active';
@@ -75,6 +76,10 @@
                     e.preventDefault();
                     document.body.className = document.body.className == 'rel' ? 'abs' : 'rel';
                 });
+                document.getElementById('finished').addEventListener('click', function(e) {
+                    var things = document.getElementById('things');
+                    things.className = things.className == 'sfin' ? 'hfin' : 'sfin';
+                });
                 (filt=document.getElementById('filter')).addEventListener('keyup', function(e) {
                     search = filt.value;
                     doSearch();
@@ -100,10 +105,11 @@
         <div id=widget>
             <div id=hide class=wbtn>−</div>
             <div id=times>toggle times</div>
+            <div id=finished>toggle finished</div>
             <div>regex: <input id=filter><input type=checkbox id=bound><label for=bound>full words</label></div>
         </div>
         <div id=show class=wbtn>+</div>
-        <div id=things><div class='thing sep'>04-11</div><div class=thing data-start=1554987600000 data-end=1555016400000><a class=l href='https://cpw2019.mit.edu//meetings/998269'><b>SFS Open House</b></a><span class='t abs'>09:00 – 17:00</span><span class='t rel'></span><p>Stop by and meet the team! Talk directly with the Student Accounts and Financial Aid teAMs to learn more about your bill, getting a job on campus (or off), loans or financial aid. Financial Aid staff will also be available for one-on-one discussions about your application or award.</p>
+        <div id=things class=sfin><div class='thing sep'>04-11</div><div class=thing data-start=1554987600000 data-end=1555016400000><a class=l href='https://cpw2019.mit.edu//meetings/998269'><b>SFS Open House</b></a><span class='t abs'>09:00 – 17:00</span><span class='t rel'></span><p>Stop by and meet the team! Talk directly with the Student Accounts and Financial Aid teAMs to learn more about your bill, getting a job on campus (or off), loans or financial aid. Financial Aid staff will also be available for one-on-one discussions about your application or award.</p>
 <span class=loc>11-120 (Student Financial Services)</span><span class='lab'>Open House</span><span class='lab'>Parent/Family</span><span class='lab'>Student Financial Services</span><span class='lab'>Student Life (Dining, Security, etc.)</span></div><div class=thing data-start=1554987600000 data-end=1555020000000><a class=l href='https://cpw2019.mit.edu//meetings/998271'><b>The Galleries at MIT.nano</b></a><span class='t abs'>09:00 – 18:00</span><span class='t rel'></span><p>The public galleries at MIT.nano share creative work at the intersection of art, science, and technology. Visit mitnano.mit.edu/arts to see a listing of current exhibitions.</p>
 <span class=loc>12 (MIT.nano): 1st and 2nd Floor (south-side hallways)</span><span class='lab'>Open House</span><span class='lab'>Research</span><span class='lab'>Parent/Family</span><span class='lab'>MIT.nano</span><span class='lab'>Arts & Culture</span></div><div class=thing data-start=1554987600000 data-end=1555045140000><a class=l href='https://cpw2019.mit.edu//meetings/998275'><b>Grill and Chill in the Courtyard!</b></a><span class='t abs'>09:00 – 00:59</span><span class='t rel'></span><p>Come hang out in the East Campus courtyard, grab a burger, and get your hair dyed by a friendly upperclassman!</p>
 <span class=loc>64 (East Campus): Courtyard by the Grills</span><span class='lab'>Campus Life</span><span class='lab'>LGBTG+</span><span class='lab'>Residence Hall</span><span class='lab'>Parent/Family Friendly</span><span class='lab'>Food</span><span class='lab'>East Campus</span><span class='lab'>Residential Community (Dorm, FSILG...)</span></div><div class=thing data-start=1554987600000 data-end=1555014600000><a class=l href='https://cpw2019.mit.edu//meetings/998266'><b>CPW Parent Luggage Check</b></a><span class='t abs'>09:00 – 16:30</span><span class='t rel'></span><p>Parents will be able to check-in and store their luggages temporarily.</p>
