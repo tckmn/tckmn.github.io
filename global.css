@@ -120,8 +120,9 @@ main {
     padding: 0 10px;
 }
 
-p { text-indent: 1em; margin: 1em 0; }
-li > p, p.ni { text-indent: 0; }
+p { margin: 1em 0; }
+.pind p { text-indent: 1em; }
+.pind li > p, .pind p.ni { text-indent: 0; }
 
 h1 { font-size: 26px; line-height: 1.4; margin: 0; }
 h2 { font-size: 23px; line-height: 1.4; margin: 0; }
