@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <title>rot</title>
+        <script>
+            function rot(x, k, b) {
+                return String.fromCharCode((x.charCodeAt(0) - b + k) % 26 + b);
+            }
+            function f(k) { return (k<10?'0':'')+k; }
+            window.addEventListener('load', function() {
+                var i = document.getElementById('i'), o = document.getElementById('o');
+                i.addEventListener('input', function() {
+                    if (o.firstChild) o.removeChild(o.firstChild);
+                    var s = '';
+                    for (var k = 0; k < 26; ++k) {
+                        s += '[+'+f(k)+' -'+f(Math.abs(-26+k))+'] ' + i.value.split('').map(function(x) {
+                            return /[a-z]/.test(x) ? rot(x, k, 97) : /[A-Z]/.test(x) ? rot(x, k, 65) : x;
+                        }).join('') + '\n';
+                    }
+                    o.appendChild(document.createTextNode(s));
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <input id='i' style='width:99%'>
+        <pre id='o'></pre>
+    </body>
+</html>
