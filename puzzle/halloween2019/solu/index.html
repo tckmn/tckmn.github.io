@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <meta charset='utf-8'>
+        <meta name='viewport' content='width=device-width, initial-scale=1'>
+        <title>Puzzles - Andy Tockman</title>
+        <link rel='stylesheet' type='text/css' href='/global.css'>
+        <link rel='stylesheet' type='text/css' href='/puzzle/puzzle.css'>
+        
+
+        <link rel='apple-touch-icon' sizes='180x180' href='/apple-touch-icon.png'>
+        <link rel='icon' type='image/png' sizes='32x32' href='/favicon-32x32.png'>
+        <link rel='icon' type='image/png' sizes='16x16' href='/favicon-16x16.png'>
+        <link rel='manifest' href='/site.webmanifest'>
+        <link rel='mask-icon' href='/safari-pinned-tab.svg' color='#5bbad5'>
+        <meta name='msapplication-TileColor' content='#da532c'>
+        <meta name='theme-color' content='#ffffff'>
+
+    </head>
+    <body>
+
+        <header>
+            <div><a href='/'>home</a></div><!--
+            --><div><a href='/about'>about</a></div><!--
+            --><div><a href='/'><img src='/img/dp.png' width=48 height=48></a></div><!--
+            --><div><a href='/blog'>blog</a></div><!--
+            --><div><a href='/contact'>contact</a></div>
+        </header>
+
+        <div id='subheader'>
+            <span>
+                <span class='shl'>code</span>
+                <a href='/portfolio' class='sh1'>portfolio</a>
+            </span><!--
+            --><span>
+                <span class='shl'>language</span>
+                <a href='/conlang' class='sh1'>conlangs</a>
+                <a href='/lingpuzzle'>puzzles</a>
+            </span><!--
+            --><span>
+                <span class='shl'>music</span>
+                <a href='/mcompose' class='sh1'>composition</a>
+                <a href='/manalyze'>analysis</a>
+            </span><!--
+            --><span>
+                <span class='shl'>fun</span>
+                <a href='/videogame' class='sh1'>video&nbsp;games</a>
+                <a href='/boardgame'>board&nbsp;games</a>
+                <a href='/puzzle'>puzzles</a>
+            </span>
+        </div>
+        <div id='subheader-post'></div>
+
+        <main>
+        <h1>Halloween 2019 puzzle hunt - Solutions</h1>
+
+<p><a href='..'>« back</a></p>
+
+<h2>A Cryptic Quintuplet</h2>
+
+<p>The 5 cryptics solve to <a href='https://en.wikipedia.org/wiki/Solf%C3%A8ge'>solfege</a> syllables:</p>
+
+<ol class='small'>
+    <li><em>make</em> = D(-ylanhendricks)O(-n)</li>
+    <li><em>that way</em> = (-j)SO(-n)</li>
+    <li><em>which way is harvard medical school</em> = S_E</li>
+    <li><em>current that is extremely small</em> = FA(-ctorio)</li>
+    <li><em>course 2</em> = ME (mechanical engineering)</li>
+</ol>
+
+<p>Arranging the notes in the order given below the clues gives the melody of Megalovania, a song from the game Undertale.</p>
+
+<p>Inserting the characters UNDERTALE into the blanks gives the phrase "UNDER TABLES." Hidden beneath the two tables in the room where the hunt took place were slips of paper which, put together, showed this melody:</p>
+
+<p><img src='/img/omhaf.png'></p>
+
+<p>This is the tune of <em>Old MacDonald Had a Farm</em>, and the noteheads with the crosses correspond to the lyrics <span class='sol'>EIO</span>.</p>
+
+<h2>The ET Parity Test</h2>
+
+<p>The columns are, from left to right:</p>
+
+<ol class='small'>
+    <li>parity of length of initials</li>
+    <li>are the initials a subsequence of the name?</li>
+    <li>0 for undergraduate, 1 for graduate</li>
+    <li>0 for pledge, 1 for active</li>
+    <li>does the name have at least 11 letters?</li>
+    <li>is the first name longer than the last name?</li>
+    <li>are the initials sorted?</li>
+    <li>is the first letter of the name J or later?</li>
+</ol>
+
+<p>XORing each row (i.e. taking the parity of the sum) yields three strings of 8 bits, which when interpreted as ASCII yield <span class='sol'>AHW</span>.</p>
+
+<p>The flavortext verifies this answer: AHW is <em>what</em> with its last letter removed and reversed, and it is a substring of <em>AAH willfully</em>.</p>
+
+<h2>Untangle My Spaghetti!</h2>
+
+<p>Arranging the items in order on each belt and interleaving them yields the following list:</p>
+
+<ul class='small'>
+    <li>Tank</li>
+    <li>Atomic bomb</li>
+    <li>Inserter</li>
+    <li>Lamp</li>
+    <li>Landfill</li>
+    <li>Efficiency module 3</li>
+    <li>Sulfur</li>
+    <li>Shotgun shells</li>
+    <li>Battery</li>
+    <li>Electric engine unit</li>
+    <li>Advanced circuit</li>
+    <li>Requester chest</li>
+</ul>
+
+<p>This spells out the phrase <em>tailless bear</em>, cluing <span class='sol'>BEA</span> (verified by the flavortext).</p>
+
+<p>(Incidentally, my favorite part of this spaghetti is when the right branch appears to sideload onto the left branch, but a sneaky inserter takes items off the left branch immediately beforehand -- the belt continuing the dead branch past the inserter was scratched out and declared to be "fake news" by one of the solvers.)</p>
+
+<h2>Battery</h2>
+
+<p>Each weapon pairs with exactly one bat and vice versa (supposedly uniquely, but I finished this puzzle literally hours before the hunt so was in quite the rush). Shading in the strike range of the weapons pointed in the appropriate direction (as exemplified in the top right) yields a QR code, which scans to the text <em>king from kirby</em>. This references King Dedede, so the answer is <span class='sol'>DDD</span>.</p>
+
+<h2>Minionry</h2>
+
+<p>In the Tichu puzzle, as suggested by flavor, a variant of the game is in place where a card N can play over the card N+3 (in addition to the cards it normally plays over). With this rule, in every row, each player has a unique winning move if they have lead. Taking the index of the card for both players and exponentiating gives the number in red, and the missing number is 125.</p>
+
+<p>In the chess puzzle, as hinted, each board has mate in one by white, under the variant rules that each player is allowed to move any number of their pieces on their turn. One must note that white has one of each piece on each board in order to know which pieces to purchase (a queen and knight on the $9 and $3 board respectively).</p>
+
+<p>
+On the first board,
+the knight is the only piece that can give check.
+Qxc7 is the only move that blocks the king from escaping to d8,
+and Bh6 is the only move that blocks f8.
+Kxg3 is required to prevent the queen from blocking the bishop.
+The rook will take the queen to pin white's e-pawn,
+preventing it from taking the knight.
+We must now choose where the knight goes.
+If it goes to f6,
+white can escape with e6/Ke7,
+so the unique mate
+is Nd6 and pawn to f6.
+</p>
+
+<p>
+On the second board,
+the unplaced queen is the only piece that can threaten h6 or h8,
+so it must attack both.
+Dropping on f6 or f8 doesn't work --
+then the bishop must give check,
+so the white king has to take the rook,
+meaning the black knight is safe
+and can move to g7 to make a dark square safe.
+So we have to drop on either h5 or g7,
+then attack g7 with a different piece.
+This is accomplished by moving Bxg4 and Rg2,
+with the rook attacking g7 through the bishop.
+We then move KxN, e4, and Ne7
+to prevent the knight, bottom rook, and top rook respectively
+from interfering and allowing Kg8.
+Finally,
+the queen can be dropped on either g7 or h5 for mate --
+both resolve to the same letter for extraction
+(although the latter solution was discovered later,
+hence the rather unwieldy placement of the S in "PUSZLES").
+</p>
+
+<p>
+On the third board,
+clearly the dropped knight must give check.
+
+</p>
+
+        </main>
+
+    </body>
+</html>

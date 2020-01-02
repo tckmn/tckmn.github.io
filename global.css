@@ -127,11 +127,24 @@ p { margin: 1em 0; }
 h1 { font-size: 26px; line-height: 1.4; margin: 0; }
 h2 { font-size: 23px; line-height: 1.4; margin: 0; }
 h3 { font-size: 20px; line-height: 1.4; margin: 0; }
+.hline { text-align: center; overflow: hidden; }
+.hline:before { right: 0.5em; margin-left:  -50%; }
+.hline:after  { left:  0.5em; margin-right: -50%; }
+.hline:before, .hline:after {
+    background-color: #585858;
+    display: inline-block;
+    content: '';
+    height: 1px;
+    width: 50%;
+    position: relative;
+    vertical-align: middle;
+}
 
 blockquote { border-left: 5px solid #444; padding-left: 1em; margin-left: 0; }
 hr { border: none; border-bottom: 1px solid #444; }
 ul, ol { padding: 0; padding-left: 1em; margin: 1em 0; }
 li { padding: 0; margin: 1em 0; }
+ul.small li, ol.small li { margin: 0; }
 
 a { color: #7cafc2; }
 a:visited { color: #ba8baf; }
