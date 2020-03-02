@@ -77,6 +77,7 @@ Denominator@Residue[f@z/z/z^n,{z,0}]
 Numerator@Moment[ExponentialDistribution@x,n]
 ToString@n&lt;&gt;FromCharacterCode@33//ToExpression
 GroupOrder@GraphAutomorphismGroup@CompleteGraph@n
+Tr@Flatten@Nest[ConstantArray[#,Length@#+1]&amp;,1,n]
 Abs@Numerator@FunctionExpand@Binomial[n,k]/.k-&gt;1/2
 (RSolve[a@x==x*a[x-1]&amp;&amp;a@0==1,a@x,x]/.x-&gt;n)[[1,1,2]]
 First@ToExpression@StringReplace[ToString@Range@n,","-&gt;"*"]
