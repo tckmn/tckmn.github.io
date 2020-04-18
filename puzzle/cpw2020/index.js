@@ -1,5 +1,3 @@
-localStorage.clear();
-
 $(document).ready(function() {
     var invopen = false, ansopen = false, caninv = true, invanim = 300, invflash;
 
@@ -35,11 +33,11 @@ $(document).ready(function() {
 
     var corrects = {
         'd641965aa1b6710bbaf920f89a523a821d8352b062d5f8c4530d562b834af84a': [350, 350,  -80,  700, 700, -60],
-        'f68998c9a36e890e4997c40f8e0a9a38ca9bce1ee4174176c9a66dc2b822ed61': [10,  -500, -150, 700, 700, -60],
+        'f68998c9a36e890e4997c40f8e0a9a38ca9bce1ee4174176c9a66dc2b822ed61': [400,  -500, -150, 700, 700, -60],
         '60fa036b0406499b21a3a2d9f91e0e6d766aeb4ca43df38da9858e0fa81e330b': [10,  350,  -500, 600, 700, -60],
         '081b877e29a3f60575ae84c54c5165be34f9c714f12ae74930ddb0956b696049': [10,  350,  -80,  180, 700, -60],
-        '34b3137e9334acfa2281b66dbee778bd195fe0a187b916c104203681a45000f4': [10,  500,  -60,  700, 700, -60],
-        'b5f29fdc6bd180e1c4e613f18446ba8e868326542731b28464e12c5d601b0c13': [10,  350,  -80,  400, 700, -60],
+        '34b3137e9334acfa2281b66dbee778bd195fe0a187b916c104203681a45000f4': [-30,  500,  -60,  700, 700, -60],
+        'b5f29fdc6bd180e1c4e613f18446ba8e868326542731b28464e12c5d601b0c13': [550,  350,  -80,  400, 700, -60],
         '0a75d888554ec1680203255ed809d43c7af4dae3550cb46a2d9ac68b86703ee2': 'x',
         '9b9e643904273d3e7c81b074ce72150545191c666eaad3eed23ef98a99c665eb': 'x',
         '5bd23a80008aa890bb0d2f1e9e0fe0d35f75f3a951cbdc4971111c111085a8e2': 'x',
