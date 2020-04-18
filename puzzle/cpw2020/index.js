@@ -141,7 +141,8 @@ $(document).ready(function() {
             "I really hope we can discover my father's message... he said he had this great idea for how to remind everyone to be healthy, and he was so excited about it.",
             "Do I have a piece of the message? Oh, yeah, I totally forgot! <a class=s href=# data-s=pan>Here you go.</a>",
             "My father used some pretty crazy techniques to hide his work while it was still in progress... it's almost like he was some kind of sourcerer.",
-            "Do you like my dog? His name is Pepper!"
+            "Do you like my dog? His name is Pepper!",
+            "My father's full name is Alexander, but we call him Aca for short."
         ],
         'dog': [
             'woof',
@@ -150,7 +151,8 @@ $(document).ready(function() {
             'woof woof woof woof woof woof woof woof woof',
             'woof woof woof woof woof woof woof woof woof woof woof woof',
             "Fine -- you got me. I'm actually a human hiding in a dog's body! They say dogs can't get coronavirus... I'm perfectly safe here.",
-            "A message? Oh, yeah, Dr. Demic did give me <a class=s href=# data-s=dog>this thing</a>... I don't know how useful it'll be, but here you go!"
+            "A message? Oh, yeah, Dr. Demic did give me <a class=s href=# data-s=dog>this thing</a>... I don't know how useful it'll be, but here you go!",
+            "Always was a strange one, that Aca... I've tried looking at these, but I have no idea what they mean."
         ],
         'hid': [
             "You found me!",
@@ -162,7 +164,7 @@ $(document).ready(function() {
             "Oh, hello!",
             "I'm hiding in this painting to avoid getting sick. You're the first person who's found me!",
             "If you reach through the frame, I can give you this <a class=s href=# data-s=pnt>strange set of objects</a> that the doctor told me to keep safe.",
-            "Do you have any idea what they are?"
+            "Do you have any idea what they are? Aca didn't tell me a thing."
         ]
     }, spactive, spidx;
 
