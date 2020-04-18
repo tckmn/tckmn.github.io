@@ -1,0 +1,159 @@
+html, body, main {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+main {
+    width: 3000vw;
+    height: 100%;
+    background: url(img/bh.png) 0 0/contain no-repeat, url(img/bg.png) 0 0/contain repeat-x;
+}
+
+img.ch, img.cl { position: absolute; cursor: pointer; }
+
+img#pan {
+    left: 5vw;
+    bottom: 0;
+    height: 75vh;
+}
+
+img#dog {
+    right: 15vw;
+    bottom: 10vh;
+    height: 20vh;
+}
+
+img#hid {
+    position: static;
+    float: right;
+    height: 40vh;
+    margin-top: 40vh;
+}
+
+img#pnt {
+    left: 115vw;
+    top: 5vw;
+    width: 10vw;
+}
+
+img.cl {
+    left: 5vw;
+    top: 5vw;
+    width: 10vw;
+    display: none;
+    transition: transform 300ms;
+    z-index: 2;
+}
+img#clock { z-index: 1; }
+
+div#invcont {
+    top: 5vh;
+    writing-mode: tb-rl;
+    font-size: 20pt;
+    background-color: #79e;
+    box-shadow: 0 0 20px #369 inset;
+    transition: background 500ms;
+}
+
+div#anscont {
+    bottom: 5vh;
+    background-color: #7e9;
+    box-shadow: 0 0 20px #396 inset;
+}
+
+div#invcont, div#anscont {
+    position: fixed;
+    right: 0;
+    border-radius: 10pt 0 0 10pt;
+    padding: 10pt;
+    cursor: pointer;
+    z-index: 20;
+}
+
+div#invcont > img, div#anscont > img {
+    width: 30pt;
+}
+
+div#sandbox {
+    position: fixed;
+    width: 95vw;
+    height: 90vh;
+    left: 100vw;
+    top: 5vh;
+    /* background-color: #cde; */
+    background-color: #fff;
+    z-index: 20;
+    overflow: hidden;
+}
+
+div#sandbox > div#sbcont {
+    position: absolute;
+}
+
+div#sandbox > div#sbcont > div {
+    position: absolute;
+    background-color: #fff;
+    padding: 10pt;
+    border: 1px dotted black;
+    cursor: pointer;
+}
+
+div#ansin {
+    position: fixed;
+    left: 100vw;
+    bottom: 5vh;
+    width: 20vw;
+    height: 50pt;
+    line-height: 50pt;
+    text-align: center;
+    background-color: #585;
+    z-index: 20;
+}
+
+div#ansin input#answer {
+    font-size: 18pt;
+    width: 90%;
+    background-color: #8a8;
+    border: 1px dotted black;
+    transition: background 500ms;
+}
+
+div#speech {
+    position: absolute;
+    width: 30em;
+    height: 10em;
+    background-color: white;
+    border: 3px solid black;
+    border-radius: 20px;
+    padding: 1em;
+    z-index: 10;
+    box-shadow: 5px 5px 5px black;
+    font-size: 17pt;
+    display: none;
+}
+
+div#speech > div#sptext {
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+    padding-right: 1em;
+    box-sizing: border-box;
+}
+
+div#cover {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    background-color: black;
+    z-index: 15;
+    display: none;
+    opacity: 0;
+}
+
+span.correct {
+    font-weight: bold;
+    font-size: 24pt;
+    color: #282;
+}
