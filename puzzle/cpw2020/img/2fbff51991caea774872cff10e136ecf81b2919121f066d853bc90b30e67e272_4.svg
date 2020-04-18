@@ -25,15 +25,15 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.175"
-     inkscape:cx="-370.96989"
-     inkscape:cy="-614.24223"
+     inkscape:zoom="1.4"
+     inkscape:cx="62.391545"
+     inkscape:cy="169.38783"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1920"
+     inkscape:window-width="960"
      inkscape:window-height="1043"
-     inkscape:window-x="1600"
+     inkscape:window-x="2560"
      inkscape:window-y="18"
      inkscape:window-maximized="0"
      inkscape:snap-global="false"
@@ -67,8 +67,7 @@
        y="-296.09103"
        rx="0.27241606" />
     <g
-       aria-label="If you are not at the edge of the neighborhood (i.e. if you are at a 4-way intersection rather than a 2-way or 3-way intersection), go to step 5.
-You must be quite familiar with the neighborhood by now -- you've driven past every block except two! (&quot;Driven past&quot; means that you drove on a road forming one of the edges of that square; for example, when you drove three blocks forward in the beginning, you drove past the three blocks that were to your right.) Plot a course for the nearest block you haven't driven past -- take the shortest path that drives past that block while only turning once (including turns from your current orientation)."
+       aria-label="If you are not at the edge of the neighborhood (i.e. if you are at a 4-way intersection rather than a 2-way or 3-way intersection), go to step 5. You must be quite familiar with the neighborhood by now -- you've driven past every block except two! (&quot;Driven past&quot; means that you drove on a road forming one of the edges of that square; for example, when you drove three blocks forward in the beginning, you drove past the three blocks that were to your right.) Plot a course for the nearest block you haven't driven past -- take the shortest path that drives past that block while only turning once (including turns from your current orientation)."
        style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
        id="flowRoot2035">
       <path
@@ -2202,7 +2201,7 @@ You must be quite familiar with the neighborhood by now -- you've driven past ev
          x="79.329178"
          y="-286.72485"
          style="text-align:end;text-anchor:end;stroke-width:0.26458332"
-         id="tspan2130">9.</tspan><tspan
+         id="tspan2130">10.</tspan><tspan
          sodipodi:role="line"
          x="79.329178"
          y="-273.4957"
@@ -2212,6 +2211,6 @@ You must be quite familiar with the neighborhood by now -- you've driven past ev
          x="79.329178"
          y="-260.26651"
          style="text-align:end;text-anchor:end;stroke-width:0.26458332"
-         id="tspan2524">10.</tspan></text>
+         id="tspan2524">11.</tspan></text>
   </g>
 </svg>

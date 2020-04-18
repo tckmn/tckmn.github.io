@@ -137,7 +137,7 @@ $(document).ready(function() {
             "The message may be a bit hard to decipher... you know how doctors' handwriting is. But I'm sure you can do it!",
             "Do you wanna hear a joke? Actually, hmm, we're supposed to be quarantined, so I can only tell inside jokes.",
             "I'll tell you a joke now, but you'll have to wait two weeks to see if you got it.",
-            "Hey, are you on Instagram? You should follow me! I haven't posted much yet, but I promise I'll become super popular. My username is @demic.pan!",
+            "Hey, are you on Twitter? You should follow me! I haven't posted much yet, but I promise I'll become super popular. My username is @demicpan1!",
             "I really hope we can discover my father's message... he said he had this great idea for how to remind everyone to be healthy, and he was so excited about it.",
             "Do I have a piece of the message? Oh, yeah, I totally forgot! <a class=s href=# data-s=pan>Here you go.</a>",
             "My father used some pretty crazy techniques to hide his work while it was still in progress... it's almost like he was some kind of sourcerer.",
