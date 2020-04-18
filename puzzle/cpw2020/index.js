@@ -184,10 +184,10 @@ $(document).ready(function() {
     spfn('pan');
     $('#speech').show();
 
-    var cls=[[4,2], [1,5], [6,2], [3,3], [8,3], [0,0]], clidx = 0;
+    var cls=[[5,6], [4,1], [1,5], [5,7], [3,1], [0,0]], clidx = 0;
     $('.cl').show().click(function() {
-        $('#clok1').css('transform', 'rotate('+cls[clidx  ][0]*30+'deg)');
-        $('#clok2').css('transform', 'rotate('+cls[clidx++][1]*30+'deg)');
+        $('#clok1').css('transform', 'rotate('+cls[clidx  ][0]*45+'deg)');
+        $('#clok2').css('transform', 'rotate('+cls[clidx++][1]*45+'deg)');
         clidx==cls.length && (clidx=0);
     });
 });

@@ -23,7 +23,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -47,8 +47,8 @@
      fit-margin-right="0"
      fit-margin-bottom="0"
      inkscape:zoom="0.25763532"
-     inkscape:cx="1614.8456"
-     inkscape:cy="1001.8815"
+     inkscape:cx="893.89976"
+     inkscape:cy="815.73097"
      inkscape:window-x="1600"
      inkscape:window-y="18"
      inkscape:window-maximized="0"
@@ -389,34 +389,106 @@
      xml:space="preserve"
      style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
      x="1533.1747"
-     y="935.29724"
+     y="781.59943"
      id="text1111"><tspan
        sodipodi:role="line"
        id="tspan1109"
        x="1533.1747"
-       y="935.29724">Thanks for doing our hunt! </tspan><tspan
+       y="781.59943">Thanks for doing our hunt! </tspan><tspan
        sodipodi:role="line"
        x="1533.1747"
-       y="985.29724"
+       y="831.59943"
        id="tspan1117" /><tspan
        sodipodi:role="line"
        x="1533.1747"
-       y="1035.2972"
+       y="881.59943"
        id="tspan1119">This hunt was written by members of ET – if</tspan><tspan
        sodipodi:role="line"
        x="1533.1747"
-       y="1085.2972"
+       y="931.59943"
        id="tspan1123">you enjoyed it and want to learn more about</tspan><tspan
        sodipodi:role="line"
        x="1533.1747"
-       y="1135.2972"
+       y="981.59943"
        id="tspan1121">us, you can visit our website at et.mit.edu.</tspan><tspan
        sodipodi:role="line"
        x="1533.1747"
-       y="1185.2972"
+       y="1031.5995"
        id="tspan1113" /><tspan
        sodipodi:role="line"
        x="1533.1747"
-       y="1235.2972"
+       y="1081.5995"
        id="tspan1115">Hope you've had a great CP★!</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+     x="1690.7024"
+     y="1293.2592"
+     id="text1111-3"><tspan
+       sodipodi:role="line"
+       x="1690.7024"
+       y="1293.2592"
+       id="tspan1115-2"
+       style="font-style:italic;font-size:32px">website:</tspan><tspan
+       sodipodi:role="line"
+       x="1690.7024"
+       y="1343.2592"
+       id="tspan948"
+       style="font-style:italic;font-size:32px">Andy Tockman</tspan><tspan
+       sodipodi:role="line"
+       x="1690.7024"
+       y="1393.2592"
+       id="tspan950"
+       style="font-style:italic;font-size:32px" /><tspan
+       sodipodi:role="line"
+       x="1690.7024"
+       y="1443.2592"
+       id="tspan952"
+       style="font-style:italic;font-size:32px">puzzles:</tspan><tspan
+       sodipodi:role="line"
+       x="1690.7024"
+       y="1493.2592"
+       id="tspan954"
+       style="font-style:italic;font-size:32px">Andy Tockman</tspan><tspan
+       sodipodi:role="line"
+       x="1690.7024"
+       y="1543.2592"
+       id="tspan956"
+       style="font-style:italic;font-size:32px">Linus Hamilton</tspan><tspan
+       sodipodi:role="line"
+       x="1690.7024"
+       y="1593.2592"
+       id="tspan964"
+       style="font-style:italic;font-size:32px">Ixa Gani</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:1.25;font-family:'Noto Color Emoji';-inkscape-font-specification:'Noto Color Emoji';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+     x="2069.4312"
+     y="1293.2592"
+     id="text974"><tspan
+       sodipodi:role="line"
+       id="tspan972"
+       x="2069.4312"
+       y="1293.2592"
+       style="font-style:italic;font-size:32px">testsolvers:</tspan><tspan
+       sodipodi:role="line"
+       x="2069.4312"
+       y="1343.2592"
+       id="tspan976"
+       style="font-style:italic;font-size:32px">Andrey Khesin</tspan><tspan
+       sodipodi:role="line"
+       x="2069.4312"
+       y="1393.2592"
+       id="tspan978"
+       style="font-style:italic;font-size:32px">Justin Kopinsky</tspan><tspan
+       sodipodi:role="line"
+       x="2069.4312"
+       y="1443.2592"
+       id="tspan980"
+       style="font-style:italic;font-size:32px">Jason Ye</tspan><tspan
+       sodipodi:role="line"
+       x="2069.4312"
+       y="1493.2592"
+       id="tspan982"
+       style="font-style:italic;font-size:32px">Wayne Zhao</tspan></text>
 </svg>
