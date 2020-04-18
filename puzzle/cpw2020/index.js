@@ -1,23 +1,27 @@
 $(document).ready(function() {
-    var invopen = false, ansopen = false, caninv = true, invanim = 300, invflash;
+    var invopen = false, ansopen = false, caninv = true, invanim = 300, invflash, ifunc, afunc;
 
-    $('#invcont').click(function() {
-        if (!caninv || ansopen) return;
+    $('#invcont').click(ifunc = function(e) {
+        if (!caninv) return;
+        var skip = false;
+        if (ansopen) afunc('hi'), skip=true;
         caninv = false;
-        if (invflash) clearInterval(invflash), $(this).css('background-color','');
+        if (invflash) clearInterval(invflash), invflash = undefined, $(this).css('background-color','');
         invopen = !invopen;
         $('#invcont').animate({right:invopen?'95vw':0},invanim);
-        $('#sandbox').animate({left:invopen?'5vw':'100vw'},invanim);
-        $('#cover').css('display','block').animate({opacity:invopen?0.5:0},invanim,function(){if(!invopen)$(this).css('display','none');caninv=true});
+        $('#sandbox').animate({left:invopen?'5vw':'100vw'},invanim, function(){caninv=true});
+        if (!(skip||e==='hi')) $('#cover').css('display','block').animate({opacity:invopen?0.5:0},invanim,function(){if(!invopen)$(this).css('display','none')});
     });
 
-    $('#anscont').click(function() {
-        if (!caninv || invopen) return;
+    $('#anscont').click(afunc = function(e) {
+        if (!caninv) return;
+        var skip = false;
+        if (invopen) ifunc('hi'), skip=true;
         caninv = false;
         ansopen = !ansopen;
         $('#anscont').animate({right:ansopen?'20vw':0},invanim);
-        $('#ansin').animate({left:ansopen?'80vw':'100vw'},invanim);
-        $('#cover').css('display','block').animate({opacity:ansopen?0.5:0},invanim,function(){if(!ansopen)$(this).css('display','none');caninv=true});
+        $('#ansin').animate({left:ansopen?'80vw':'100vw'},invanim, function(){caninv=true});
+        if (!(skip||e==='hi')) $('#cover').css('display','block').animate({opacity:ansopen?0.5:0},invanim,function(){if(!ansopen)$(this).css('display','none')});
         if (ansopen) $('#answer').focus();
     });
 
@@ -47,13 +51,20 @@ $(document).ready(function() {
         '6da1a727fe71db7b64d7e643a99402d482b35bd884e8727d995a94b7abe38b78': 'x',
         'f7c19131b4194d457694215a8a7f6a5bd3b63bcfbf0ac19b410d843fd0472280': 'x',
         '9fd0219f46a9553ee5dfaf070d124ff8d1dfdd78ea6cef4ec03180eb08181b69': 'x'
-    }, ain = $('#answer'), aanim = 500;
+    }, ain = $('#answer'), aanim = 500, almost = {
+        '542d306b26cd97b040c476228cc860efe74ac65eea8ac891c7a156f1a9be2263': 'x',
+        'ac8629e35851c21b6e10fc9434156b4af28728b03a6dba19d3ec52cde5e66a74': 'x',
+        '429ab95973ee2f2f2ae4fa83052184d92ea9c1c16ceb7f73981f354406615911': 'x',
+        '87eab065bc644705dc3ada322a995bdd70048c8d35b93b5d9f336d06e4ec172f': 'x',
+        '5ef6ac1e05fc11a3f3aeb4e244d8585f68d893408eed13d9e947d4901003bd87': 'x'
+    };
     $('#ansin form').submit(function(e) {
         e.preventDefault();
-        if (submit(ain.val().replace(/[^A-Za-z]/g, '').toUpperCase())) {
+        var s;
+        if ((s = submit(ain.val().replace(/[^A-Za-z]/g, '').toUpperCase())) === 'yes') {
             $('#anscont').click();
         } else {
-            ain.css('background-color', '#a88');
+            ain.css('background-color', s);
             setTimeout(function() { ain.css('background-color', ''); }, aanim);
         }
         ain.val('');
@@ -61,13 +72,13 @@ $(document).ready(function() {
 
     var submit = function(ans) {
         var hsh = sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash('wowsalty'+ans)), ws, s, r;
-        if (r = ((ws = corrects[hsh]) && (s = localStorage.getItem('sols')||'').indexOf('/'+ans)===-1)) {
+        if (hsh === 'eb02043c5751074c045cb804e2875b076aab8084582362e34a38a30d7f5a142c') window.location = sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash('wowsaltier'+ans))+'.html';
+        if ((ws = corrects[hsh]) && (s = localStorage.getItem('sols')||'').indexOf('/'+ans)===-1) {
             addinv(ans, ws);
             localStorage.setItem('sols', s+'/'+ans);
-        }
-        if (hsh === 'eb02043c5751074c045cb804e2875b076aab8084582362e34a38a30d7f5a142c') {
-            window.location = sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash('wowsaltier'+ans))+'.html';
-        }
+            return 'yes';
+        } else if (almost[hsh]) return '#cc8';
+        else return '#c88';
         return r;
     };
 
@@ -82,7 +93,7 @@ $(document).ready(function() {
             addimg(o);
         }
         localStorage.setItem('objs', JSON.stringify(old));
-        invflash = setInterval((function() { var on = 0, f = function() {
+        if (!invflash) invflash = setInterval((function() { var on = 0, f = function() {
             $('#invcont').css('background-color',(on=!on)?'#fff':'#79e');
         }; f(); return f})(), 500);
     };
@@ -131,16 +142,16 @@ $(document).ready(function() {
         pnt: {left:'100vw',top:'25vh',right:'',bottom:''}
     }, sphtml = {
         'pan': [
-            "Hello! My name is Pan. My father, Dr. Demic, had a very important message about <strong>how we can convey healthy habits to everyone</strong>! In fact, it was so important that he split it into several parts and gave them to various friends for safekeeping<a class=s href=# data-s=pn2>.</a> Unfortunately, now that social distancing is in place, all of his friends are scattered apart, all over the place. If you can find them, you might be able to reconstruct Dr. Demic's critical message! Will you help me figure out what he was trying to tell us?",
+            "Hello! My name is Pan. My father, Dr. Demic, had a very important message about <strong>how we can convey healthy habits to everyone</strong>! In fact, it was so important that he split it into several parts and gave them to <strong>6 different friends</strong> for safekeeping<a class=s href=# data-s=pn2>.</a> Unfortunately, now that social distancing is in place, all of his friends are scattered apart, all over the place. If you can find them, you might be able to reconstruct Dr. Demic's critical message! Will you help me figure out what he was trying to tell us?",
             "To the right, you can find your inventory, which you can click and drag to move around in (and drag and drop items to rearrange them), and a place to submit answers.",
             "...wait, inventory? Answers? What does that mean? What am I saying?",
             "The message may be a bit hard to decipher... you know how doctors' handwriting is. But I'm sure you can do it!",
             "Do you wanna hear a joke? Actually, hmm, we're supposed to be quarantined, so I can only tell inside jokes.",
             "I'll tell you a joke now, but you'll have to wait two weeks to see if you got it.",
-            "Hey, are you on Twitter? You should follow me! I haven't posted much yet, but I promise I'll become super popular. My username is @demicpan1!",
+            "Hey, are you on Twitter? You should follow me! I haven't posted much yet, but I promise I'll become super popular. My username is <strong>@demicpan1</strong>!",
             "I really hope we can discover my father's message... he said he had this great idea for how to remind everyone to be healthy, and he was so excited about it.",
             "Do I have a piece of the message? Oh, yeah, I totally forgot! <a class=s href=# data-s=pan>Here you go.</a>",
-            "My father used some pretty crazy techniques to hide his work while it was still in progress... it's almost like he was some kind of sourcerer.",
+            "My father used some pretty crazy techniques to hide his work while it was still in progress... it's almost like he was <strong>some kind of sourcerer</strong>.",
             "Do you like my dog? His name is Pepper!",
             "My father's full name is Alexander, but we call him Aca for short."
         ],
@@ -158,13 +169,14 @@ $(document).ready(function() {
             "You found me!",
             "What am I doing, you ask? I'm socially distancing... do you think this is 6 feet away from Pan?",
             "Ah, you must be <a class=s href=# data-s=hid>looking for this!</a>",
-            "You know, there's another reason I'm this far away from Pan... it's like she has this way of hiding things between her words..."
+            "You know, there's another reason I'm this far away from Pan... it's like she has this way of <strong>hiding things between her words</strong>..."
         ],
         'pnt': [
             "Oh, hello!",
             "I'm hiding in this painting to avoid getting sick. You're the first person who's found me!",
             "If you reach through the frame, I can give you this <a class=s href=# data-s=pnt>strange set of objects</a> that the doctor told me to keep safe.",
-            "Do you have any idea what they are? Aca didn't tell me a thing."
+            "Do you have any idea what they are? Aca didn't tell me a thing.",
+            "I'm thinking if we want to find out, it might help to <strong>go straight to the source</strong>."
         ]
     }, spactive, spidx;
 
