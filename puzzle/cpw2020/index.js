@@ -207,7 +207,7 @@ $(document).ready(function() {
             "My father used some pretty crazy techniques to hide his work while it was still in progress... it's almost like he was <strong>some kind of sourcerer</strong>.",
             "Do you like my dog? His name is Pepper!",
             "My father's full name is Alexander, but we call him Aca for short.",
-            "Do you think you have all the pieces of the message? If you do, maybe <a href=meta.html>this will help</a>..."
+            "Do you think you have all the pieces of the message? If you do, maybe <a href=meta.html target=_blank>this will help</a>..."
         ],
         'dog': [
             'woof',
