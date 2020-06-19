@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <meta charset='utf-8'>
+        <title>anagram</title>
+        <style>*{font:12pt monospace}</style>
+        <script>
+            window.addEventListener('load', function() {
+                var i1 = document.getElementById('i1'), i2 = document.getElementById('i2'), t = document.getElementById('t'),
+                    f = function() {
+                        var v1 = i1.value, v2 = i2.value;
+                        for (var i = 0; i < v2.length; ++i) v1 = v1.replace(v2[i],'');
+                        t.value = v1;
+                    };
+                i1.addEventListener('input', f);
+                i2.addEventListener('input', f);
+                document.getElementById('b').addEventListener('click', function() {
+                    var v = t.value.split('');
+                    for (var i = v.length-1; i; --i) {
+                        var j = Math.floor(Math.random()*(i+1)),
+                            c = v[i];
+                        v[i] = v[j];
+                        v[j] = c;
+                    }
+                    t.value = v.join('');
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <input id='i1'><br>
+        <input id='t' readonly><button id='b'>shuffle</button><br>
+        <input id='i2'>
+    </body>
+</html>
