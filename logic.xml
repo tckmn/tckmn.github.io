@@ -36,7 +36,7 @@ These puzzles are floorpi-themed.</description>
 </item>
 
 <item>
-    <title>Puzzles #4 (heyawake, heyawake)</title>
+    <title>Puzzles #4 (heyawake x2)</title>
     <link>https://tck.mn/puzzle/logic/4</link>
     <description>https://puzz.link/p?heyawake/19/15/201480mhg2i40a8s192816704r503gk0m2g2oa0a18085010k046g0003hu0104000400fbvgvo005fu1800o0000000800600000003s0003c-1c140411g81ah8233
 https://puzz.link/p?heyawake/32/24/000002000202002h014018g0i00k00100a000i05000b02g006g00003800001k000o0q60000d0000058000c2k004g1a002902405ki1202g9050180g2g0k00188a0008440004200000000000003vto01v00s0007vog00u01o0000013vo0009000000vvs000g0000040001000400808100002s000200000sg40000s17o07os00009ou7g001o000001s00v0000vo600001u0000vg000002a643-610190g51011103131345g34356
@@ -74,6 +74,18 @@ Not too easy, not too hard.</description>
 Was trying to make a shakashaka to demonstrate some basic deductions, but ended up with a mediocre puzzle instead, which was just decent enough to not throw away.</description>
     <pubDate>Thu, 21 May 2020 17:31:00 -0600</pubDate>
     <guid>https://tck.mn/puzzle/logic/7</guid>
+</item>
+
+<item>
+    <title>Puzzles #8 (tateyoko x3)</title>
+    <link>https://tck.mn/puzzle/logic/8</link>
+    <description>https://puzz.link/p?tateyoko/10/10/4i43i31n1nr1n11qi2p2n2n1q1i41i2p2i3p1n2i434i44n1pi31ri23i41q1n2n2pi2q11n1pn1n2i35i43
+https://puzz.link/p?tateyoko/10/10/xn112i2pn2n8i62npnq1p1qnpi88i2pn21pn1npnpi3pi3p2i32i22n1npnqnpnqnpi62i31xn11n1npn1
+https://puzz.link/p?tateyoko/10/10/2n2n1i43n1n1i21n2n2npn2i2qi32nqi2pn3n1n2n22i831n3n3n2nqi2sn3i3ri22npn1n2n2i23n3n3i43n2n2
+
+A triplet with varying forms of symmetry! It's hard to make a Tatebo-Yokobo with nontrivial logic, so these difficulty ratings are relative to the type. It's especially hard with symmetry and theme constraints, but I did my best with these.Thanks a ton to @lovemathboy for testing these (and notifying me two were broken)!</description>
+    <pubDate>Fri, 19 Jun 2020 23:58:00 -0600</pubDate>
+    <guid>https://tck.mn/puzzle/logic/8</guid>
 </item>
 
     </channel>
