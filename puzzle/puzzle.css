@@ -1,3 +1,14 @@
+section#lingpuzzle { margin-left: 1em; }
+section#lingpuzzle a.head { font-style: italic; padding-right: 1em; }
+section#lingpuzzle div.tbl { overflow: auto; }
+section#lingpuzzle div.tbl table { width: 100%; }
+section#lingpuzzle div.tbl table td { padding: 0 5px; white-space: nowrap; }
+
+main.cryptic img { max-width: 100%; }
+main.cryptic ol { margin-left: 1em; }
+main.cryptic li { margin: 0; }
+main.cryptic p { text-indent: 0; }
+
 span.y { color: #f7ca88; }
 span.r { color: #ab4642; }
 span.sol { font-family: monospace; font-weight: bold; background-color: #282828; padding: 0 5px; color: #a1b56c; }

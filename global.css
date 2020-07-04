@@ -1,8 +1,13 @@
+@font-face { font-family: main; src: url('/font/OpenSans-Regular.ttf'); }
+@font-face { font-family: main; src: url('/font/OpenSans-Bold.ttf'); font-weight: bold; }
+@font-face { font-family: main; src: url('/font/OpenSans-Italic.ttf'); font-style: italic; }
+@font-face { font-family: main; src: url('/font/OpenSans-BoldItalic.ttf'); font-weight: bold; font-style: italic; }
+
 html,body {
     color: #d8d8d8;
     background-color: #181818;
     font-size: 18px;
-    font-family: 'DejaVu Sans', 'Arial', sans-serif;
+    font-family: main, sans-serif;
     line-height: 1.6;
     margin: 0;
     padding: 0;
@@ -41,9 +46,6 @@ div#subheader-post {
 }
 div#subheader > span { padding: 0 20px; }
 div#subheader > span > * { padding: 3px 10px; }
-div#subheader > span > span.shl { padding-right: 20px; }
-div#subheader > span > a.sh1 { margin-left: 10px; }
-div#subheader > span > span.shl { border-right: 1px solid #555; }
 
 header a, header a:visited, div#subheader a, div#subheader a:visited {
     text-decoration: none;
@@ -58,6 +60,18 @@ header a:hover, div#subheader a:hover {
 }
 header a.active, header a.active:hover, div#subheader a.active, div#subheader a.active:hover {
     color: #dc9656;
+}
+
+.subsec { color: #a1b56c; }
+
+h2.subsec:not(:first-child) {
+    margin-top: 2em;
+    padding-top: 2em;
+    border-top: 1px dotted #585858;
+}
+
+h3.subsec, h4.subsec, h5.subsec, h6.subsec {
+    margin-top: 3em;
 }
 
 /* blog stuff */

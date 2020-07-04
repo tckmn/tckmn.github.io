@@ -1,51 +1,25 @@
 section {
-    margin: 20px 0;
-    padding: 20px 10px;
-    border-top: 1px dotted #585858;
-}
-section > div.label {
-    width: 150px;
-    float: left;
-    font-size: 20px;
-    color: #999;
-}
-section > div.content {
-    width: 100%;
-    max-width: 630px;
-    float: right;
-}
-section ul {
-    padding: 0;
-    margin: 0;
-    margin-left: 1em;
-}
-section ul > li {
-    padding: 3px 0;
-    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
 }
 
-section#code > div.content > div {
-    width: 200px;
-    padding: 0 5px 15px;
-    float: left;
-    text-align: center;
-}
-
-section#code > div.content > div > em {
+section a {
     display: block;
+    width: 150px;
+    background-color: #282828;
+    padding: 20px;
+    margin: 20px;
+    text-align: center;
+    border-radius: 10px;
+    transition: background-color 0.1s;
+    outline: none;
 }
 
-@media (max-width: 680px) {
-    section#code > div.content > div {
-        width: 47%;
-    }
+section a:hover {
+    background-color: #383838;
 }
 
-@media (max-width: 470px) {
-    section#code > div.content > div {
-        width: 100%;
-        text-align: left;
-        padding: 8px 5px;
-    }
-    section#code > div.content > div > em { display: inline; }
-}
+section img { width: 100px; }
+section a, section a:visited { text-decoration: none; color: #d8d8d8; }
+section p { margin: 0; }
