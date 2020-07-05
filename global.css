@@ -38,14 +38,20 @@ div#subheader > span {
     border-top: 1px solid #202020;
     border-bottom: 1px solid #202020;
     margin-top: -1px;
+    padding: 3px 20px;
 }
 div#subheader-post {
     border-top: 1px solid #181818;
     margin-top: -1px;
     position: relative;
 }
-div#subheader > span { padding: 0 20px; }
-div#subheader > span > * { padding: 3px 10px; }
+div#subheader a img {
+    width: 1em;
+    vertical-align: middle;
+    margin: 0 0.2em;
+    transition: width 0.2s, margin 0.2s;
+}
+div#subheader a:hover img { width: 1.2em; margin: 0 0.1em; }
 
 header a, header a:visited, div#subheader a, div#subheader a:visited {
     text-decoration: none;
@@ -55,12 +61,9 @@ header a, header a:visited, div#subheader a, div#subheader a:visited {
          -o-transition: color 0.2s;
             transition: color 0.2s;
 }
-header a:hover, div#subheader a:hover {
-    color: #fff;
-}
-header a.active, header a.active:hover, div#subheader a.active, div#subheader a.active:hover {
-    color: #dc9656;
-}
+header a:hover, div#subheader a:hover { color: #fff; }
+header a.active, div#subheader a.active { color: #dc9656; }
+header a.active:hover, div#subheader a.active:hover { color: #fcc696; }
 
 .subsec { color: #a1b56c; }
 
