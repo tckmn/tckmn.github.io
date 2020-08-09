@@ -14,12 +14,13 @@ section a {
     border-radius: 10px;
     transition: background-color 0.1s;
     outline: none;
+    overflow: hidden;
 }
 
 section a:hover {
     background-color: #383838;
 }
 
-section img { width: 100px; }
+section img, section svg { width: 100px; }
 section a, section a:visited { text-decoration: none; color: #d8d8d8; }
 section p { margin: 0; }
