@@ -18,7 +18,7 @@ window.addEventListener('load', () => {
     anim(document.getElementById('home_music'), 600, elt => {
         var g = elt.getElementsByTagName('g')[0];
         return ts => {
-            var x = 1-Math.pow(1-ts,2), a = 4*Math.PI*x;
+            var x = 1-(1-ts)*(1-ts), a = 4*Math.PI*x;
             g.setAttribute('transform', `translate(2.19424235 0) scale(${Math.cos(a)} 1) skewY(${Math.sin(a)*25})`);
         };
     });
@@ -81,6 +81,7 @@ window.addEventListener('load', () => {
         var ds = 0.15, ss = 0.2, dl = 0.1, sl = 0.2;
         return animSeq([1/3, 1/3, 1/3], [
             t => {
+                t = 1-(1-t)*(1-t);
                 p1.setAttribute('transform', `translate(${t*ds} 0)  scale(${1-t*ss} 1)`);
                 p2.setAttribute('transform', `translate(${-t*ds} 0) scale(${1-t*ss} 1)`);
             },
@@ -96,6 +97,28 @@ window.addEventListener('load', () => {
             t => {
                 p1.setAttribute('transform', '');
                 p2.setAttribute('transform', '');
+            }
+        ]);
+    });
+
+    anim(document.getElementById('home_conlang'), 600, elt => {
+        var ps = elt.getElementsByTagName('path'), p0 = ps[0], p1 = ps[1], p2 = ps[2], p3 = ps[3];
+        // angles, amplitude
+        var a1 = Math.PI*0.75, a2 = Math.PI*0.55, a3 = Math.PI*0.3, amp = 0.3;
+        return animSeq([1/3, 1/3, 1/3], [
+            t => {
+                p1.setAttribute('transform', `translate(${Math.sin(t*Math.PI)*amp*Math.cos(a1)} ${-Math.sin(t*Math.PI)*amp*Math.sin(a1)})`);
+            },
+            t => {
+                p1.setAttribute('transform', '');
+                p2.setAttribute('transform', `translate(${Math.sin(t*Math.PI)*amp*Math.cos(a2)} ${-Math.sin(t*Math.PI)*amp*Math.sin(a2)})`);
+            },
+            t => {
+                p2.setAttribute('transform', '');
+                p3.setAttribute('transform', `translate(${Math.sin(t*Math.PI)*amp*Math.cos(a3)} ${-Math.sin(t*Math.PI)*amp*Math.sin(a3)})`);
+            },
+            t => {
+                p3.setAttribute('transform', '');
             }
         ]);
     });
