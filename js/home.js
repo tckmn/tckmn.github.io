@@ -56,21 +56,46 @@ window.addEventListener('load', () => {
         var zo = 0.25, tr = 0.77;
         return animSeq([1/3, 1/3, 1/3], [
             t => {
-                p1.setAttribute('transform', `translate(${-t}, 0) scale(${1-t*zo})`);
-                p2.setAttribute('transform', `translate(${t}, 0)  scale(${1-t*zo})`);
+                p1.setAttribute('transform', `translate(${-t} 0) scale(${1-t*zo})`);
+                p2.setAttribute('transform', `translate(${t} 0)  scale(${1-t*zo})`);
             },
             t => {
-                p1.setAttribute('transform', `translate(${tw(-1, -tr*(1-zo), t)}, 0) scale(${1-zo})`);
-                p2.setAttribute('transform', `translate(${tw(1,   tr*(1-zo), t)}, 0) scale(${1-zo})`);
+                p1.setAttribute('transform', `translate(${tw(-1, -tr*(1-zo), t)} 0) scale(${1-zo})`);
+                p2.setAttribute('transform', `translate(${tw(1,   tr*(1-zo), t)} 0) scale(${1-zo})`);
             },
             t => {
-                p1.setAttribute('transform', `translate(${tw(-tr*(1-zo), 0, t)}, 0)    scale(${1-zo+zo*t})`);
-                p2.setAttribute('transform', `translate(${tw( tr*(1-zo), tr*2, t)}, 0) scale(${1-zo+zo*t})`);
+                p1.setAttribute('transform', `translate(${tw(-tr*(1-zo), 0, t)} 0)    scale(${1-zo+zo*t})`);
+                p2.setAttribute('transform', `translate(${tw( tr*(1-zo), tr*2, t)} 0) scale(${1-zo+zo*t})`);
                 p2.setAttribute('opacity', 1-t);
             },
             t => {
                 p2.setAttribute('opacity', 1);
                 p2.setAttribute('transform', 'translate(10, 0)');
+            }
+        ]);
+    });
+
+    anim(document.getElementById('home_portfolio'), 600, elt => {
+        var ps = elt.getElementsByTagName('path'), p1 = ps[0], p2 = ps[1];
+        // distance/squish small/large
+        var ds = 0.15, ss = 0.2, dl = 0.1, sl = 0.2;
+        return animSeq([1/3, 1/3, 1/3], [
+            t => {
+                p1.setAttribute('transform', `translate(${t*ds} 0)  scale(${1-t*ss} 1)`);
+                p2.setAttribute('transform', `translate(${-t*ds} 0) scale(${1-t*ss} 1)`);
+            },
+            t => {
+                t = 1-(1-t)*(1-t);
+                p1.setAttribute('transform', `translate(${tw(ds, -dl, t)} 0) scale(${tw(1-ss, 1+sl, t)} 1)`);
+                p2.setAttribute('transform', `translate(${tw(-ds, dl, t)} 0) scale(${tw(1-ss, 1+sl, t)} 1)`);
+            },
+            t => {
+                p1.setAttribute('transform', `translate(${-dl+dl*t} 0) scale(${1+sl-sl*t} 1)`);
+                p2.setAttribute('transform', `translate(${dl-dl*t} 0)  scale(${1+sl-sl*t} 1)`);
+            },
+            t => {
+                p1.setAttribute('transform', '');
+                p2.setAttribute('transform', '');
             }
         ]);
     });
