@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <meta charset='utf-8'>
+        <meta name='viewport' content='width=device-width, initial-scale=1'>
+        <title>morse</title>
+        <script type='text/javascript' src='morse.js'></script>
+        <link rel='stylesheet' type='text/css' href='morse.css'></link>
+    </head>
+    <body>
+        <main>
+            <div id='topwrapper'>
+                <div id='controls'>
+                    <button class='mode'>letters</button>
+                    <button class='mode'>words</button>
+                    <button class='mode'>ktane<span class='xt'> words</span></button>
+                    <label for='level'>l<span class='xt'>e</span>v<span class='xt'>e</span>l:</label>
+                    <input id='level'>
+                    <span id='levelbtns'>
+                        <button>+</button>
+                        <button>−</button>
+                    </span>
+                </div>
+                <form id='ans'>
+                    <input><input type='submit' value='guess'>
+                </form>
+            </div>
+
+            <div id='scorewrapper'>
+                <div id='blinker'></div>
+                <div id='score'></div>
+            </div>
+
+            <div id='feedback'></div>
+        </main>
+    </body>
+</html>

@@ -1,0 +1,66 @@
+@font-face { font-family: main; src: url('/font/OpenSans-Regular.ttf'); }
+@font-face { font-family: main; src: url('/font/OpenSans-Bold.ttf'); font-weight: bold; }
+@font-face { font-family: main; src: url('/font/OpenSans-Italic.ttf'); font-style: italic; }
+@font-face { font-family: main; src: url('/font/OpenSans-BoldItalic.ttf'); font-weight: bold; font-style: italic; }
+
+body {
+    background-color: #181818;
+    text-align: center;
+}
+
+body, button, input { font: 14pt main, sans-serif; color: #d8d8d8; }
+@media (max-width: 550px) { .xt { display: none; } }
+@media (max-width: 450px) { body, button, input { font-size: 10pt; } }
+
+main {
+    display: inline-flex;
+    flex-direction: column;
+}
+
+
+div#topwrapper { display: flex; flex-direction: column; align-items: stretch; }
+
+div#controls { display: flex; align-items: center; }
+
+div#controls > label { margin-left: 3rem; }
+@media (max-width: 600px) { div#controls > label { margin-left: 1rem; } }
+input#level { width: 2rem; }
+
+span#levelbtns { display: inline-flex; flex-direction: column; }
+span#levelbtns > button { font-size: 9pt; padding: 0 10px; margin: 0 5px; }
+span#levelbtns > button:first-child {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+span#levelbtns > button:last-child {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-top-width: 0;
+}
+
+form#ans { display: flex; }
+form#ans > input:first-child { flex: 1; }
+
+
+div#scorewrapper { display: flex; align-items: center; justify-content: space-between; margin: 1rem 5px; }
+
+div#blinker { width: 4rem; height: 2rem; background-color: #282828; }
+div#blinker.on { background-color: #ab4642; }
+
+
+div#feedback { margin-left: 1rem; text-align: left; }
+div#feedback > p { margin: 0.5rem; }
+
+button, input {
+    background-color: #282828;
+    color: #d8d8d8;
+    border: 1px solid #585858;
+    padding: 5px 10px;
+    margin: 5px;
+    border-radius: 5px;
+    outline: none;
+}
+
+button:hover, input[type='submit']:hover { background-color: #383838; }
+button.active { background-color: #484848; }
+button, input[type='submit'] { cursor: pointer; }
