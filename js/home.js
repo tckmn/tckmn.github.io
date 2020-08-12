@@ -28,12 +28,6 @@ window.addEventListener('load', () => {
         // squish small/large, zoom out
         var ss = 0.7, sl = 1.8, zo = 0.5;
         return ts => {
-            if (ts == 1) {
-                g1.setAttribute('transform', '');
-                g1.setAttribute('opacity', 1);
-                g2.setAttribute('opacity', 0);
-                return;
-            }
             var phase = Math.floor(ts*3), t = (ts * 3) % 1;
             switch (phase) {
             case 0:
@@ -46,8 +40,14 @@ window.addEventListener('load', () => {
                 g2.setAttribute('opacity', t);
                 break;
             case 2:
-                g1.setAttribute('opacity', 0); // oops
+                g1.setAttribute('opacity', 0);
+                g2.setAttribute('opacity', 1); // oops
                 g2.setAttribute('transform', `rotate(${tw(20, 0, t)}) scale(${tw(zo, 1, t)} ${tw(ss*zo, 1, t)}) translate(${tw(1.5, 0, t)} ${tw(0.5, 0, t)})`);
+                break;
+            case 3:
+                g1.setAttribute('transform', '');
+                g1.setAttribute('opacity', 1);
+                g2.setAttribute('opacity', 0);
                 break;
             }
         };
@@ -73,6 +73,10 @@ function anim(elt, dur, fn) {
         };
         requestAnimationFrame(f);
     });
+}
+
+function animSeq(ts, durs, anims) {
+
 }
 
 function tw(a, b, t) { return a + (b-a)*t; }
