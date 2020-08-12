@@ -126,8 +126,7 @@ window.addEventListener('load', () => {
 });
 
 function anim(elt, dur, fn) {
-    var cb = fn(elt), going = false;
-    elt.addEventListener('mouseenter', () => {
+    var cb = fn(elt), going = false, evfunc = () => {
         if (going) return;
         going = true;
         var start, f = ts => {
@@ -136,7 +135,9 @@ function anim(elt, dur, fn) {
             else cb(1), going = false;
         };
         requestAnimationFrame(f);
-    });
+    };
+    elt.addEventListener('mouseenter', evfunc);
+    elt.addEventListener('touchstart', evfunc);
 }
 
 function animSeq(durs, anims) {
