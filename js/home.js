@@ -24,7 +24,9 @@ window.addEventListener('load', () => {
     });
 
     anim(document.getElementById('home_boardgame'), 600, elt => {
-        var gs = elt.getElementsByTagName('g'), g1 = gs[0], g2 = gs[1];
+        var g1 = elt.getElementsByTagName('g')[0], g2 = g1.cloneNode(true);
+        g2.setAttribute('opacity', 0);
+        g1.parentNode.appendChild(g2);
         // squish small/large, zoom out
         var ss = 0.7, sl = 1.8, zo = 0.5;
         return animSeq([1/3, 1/3, 1/3], [
@@ -51,7 +53,9 @@ window.addEventListener('load', () => {
     });
 
     anim(document.getElementById('home_puzzle'), 600, elt => {
-        var ps = elt.getElementsByTagName('path'), p1 = ps[0], p2 = ps[1];
+        var p1 = elt.getElementsByTagName('path')[0], p2 = p1.cloneNode();
+        p2.setAttribute('transform', 'translate(10, 0)');
+        p1.parentNode.appendChild(p2);
         // zoom out, translation
         var zo = 0.25, tr = 0.77;
         return animSeq([1/3, 1/3, 1/3], [
@@ -69,6 +73,7 @@ window.addEventListener('load', () => {
                 p2.setAttribute('opacity', 1-t);
             },
             t => {
+                p1.setAttribute('transform', '');
                 p2.setAttribute('opacity', 1);
                 p2.setAttribute('transform', 'translate(10, 0)');
             }
