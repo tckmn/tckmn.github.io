@@ -142,7 +142,7 @@ function anim(elt, dur, fn) {
         requestAnimationFrame(f);
     };
     elt.addEventListener('mouseenter', evfunc);
-    elt.addEventListener('touchstart', evfunc);
+    elt.addEventListener('touchstart', evfunc, {passive: true});
 }
 
 function animSeq(durs, anims) {

@@ -1,7 +1,7 @@
-@font-face { font-family: main; src: url('/font/OpenSans-Regular.ttf'); }
-@font-face { font-family: main; src: url('/font/OpenSans-Bold.ttf'); font-weight: bold; }
-@font-face { font-family: main; src: url('/font/OpenSans-Italic.ttf'); font-style: italic; }
-@font-face { font-family: main; src: url('/font/OpenSans-BoldItalic.ttf'); font-weight: bold; font-style: italic; }
+@font-face { font-family: main; font-display: swap; src: url('/font/OpenSans-Regular.ttf'); }
+@font-face { font-family: main; font-display: swap; src: url('/font/OpenSans-Bold.ttf'); font-weight: bold; }
+@font-face { font-family: main; font-display: swap; src: url('/font/OpenSans-Italic.ttf'); font-style: italic; }
+@font-face { font-family: main; font-display: swap; src: url('/font/OpenSans-BoldItalic.ttf'); font-weight: bold; font-style: italic; }
 
 html,body {
     color: #d8d8d8;
