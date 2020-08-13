@@ -21,6 +21,6 @@ section a:hover {
     background-color: #383838;
 }
 
-section img, section svg { width: 100px; }
+section svg { width: 200px; margin: -50px; }
 section a, section a:visited { text-decoration: none; color: #d8d8d8; }
 section p { margin: 0; }

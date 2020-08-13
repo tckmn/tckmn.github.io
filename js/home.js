@@ -19,7 +19,7 @@ window.addEventListener('load', () => {
         var g = elt.getElementsByTagName('g')[0];
         return ts => {
             var x = 1-(1-ts)*(1-ts), a = 4*Math.PI*x;
-            g.setAttribute('transform', `translate(2.19424235 0) scale(${Math.cos(a)} 1) skewY(${Math.sin(a)*25})`);
+            g.setAttribute('transform', `translate(0.0844448 0) scale(${Math.cos(a)} 1) skewY(${Math.sin(a)*30})`);
         };
     });
 
