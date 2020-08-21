@@ -14,11 +14,11 @@ span.r { color: #ab4642; }
 span.sol { font-family: monospace; font-weight: bold; background-color: #282828; padding: 0 5px; color: #a1b56c; }
 
 #logic { border-collapse: collapse; border: 1px solid #383838; }
-#logic td, #logic th { padding: 0 0.5em; text-align: left; }
-#logic td.ld a { color: #888888; font-size: 11pt; }
-#logic tr.ltrfst > * { padding-top: 0.5em; }
-#logic tr.ltrlst > * { padding-bottom: 0.5em; }
-#logic tr.ltralt { background-color: #282828;; }
+#logic td, #logic th { padding: 1rem 0.5rem; text-align: left; }
+#logic td p { margin: 0; }
+#logic td.ld p.blog { margin-bottom: 0.5rem; }
+#logic td.ld p.blog a { color: #989898; font-size: 16px; }
+#logic tr.ltralt { background-color: #282828; }
 
 div.lpuz { text-align: center; font-weight: bold; text-decoration: underline; }
 div.lpuz img { max-width: 70%; }
