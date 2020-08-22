@@ -5,6 +5,15 @@
         <description>Andy Tockman's blog</description>
         <language>en</language>
 <item>
+    <title>Factorial in Mathematica</title>
+    <link>https://tck.mn/blog/mathematica-factorial</link>
+    <description>Here is a list of (mostly) increasingly stupid ways
+of calculating the factorial of n in Mathematica.</description>
+    <pubDate>Fri, 21 Aug 2020 21:57:00 -0500</pubDate>
+    <guid>https://tck.mn/blog/mathematica-factorial</guid>
+</item>
+
+<item>
     <title>Names and renaming</title>
     <link>https://tck.mn/blog/names-and-renaming</link>
     <description>
@@ -12,7 +21,7 @@ There are only two hard things in Computer Science:
 cache invalidation and naming things.
 —Phil Karlton
 </description>
-    <pubDate>Tue, 23 Jan 2018 00:00:00 -0600</pubDate>
+    <pubDate>Fri, 01 Feb 2019 17:41:00 -0600</pubDate>
     <guid>https://tck.mn/blog/names-and-renaming</guid>
 </item>
 
