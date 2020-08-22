@@ -5,6 +5,15 @@
         <description>Andy Tockman's blog</description>
         <language>en</language>
 <item>
+    <title>Tier lists</title>
+    <link>https://tck.mn/blog/tier-lists</link>
+    <description>Here I will rank the items of various lists by my opinion of good they are,
+which is of course objectively correct in all cases.</description>
+    <pubDate>Sat, 22 Aug 2020 01:05:00 -0500</pubDate>
+    <guid>https://tck.mn/blog/tier-lists</guid>
+</item>
+
+<item>
     <title>Factorial in Mathematica</title>
     <link>https://tck.mn/blog/mathematica-factorial</link>
     <description>Here is a list of (mostly) increasingly stupid ways
