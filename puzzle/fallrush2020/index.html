@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <meta charset='utf-8'>
+        <meta name='viewport' content='width=device-width'>
+        <title>meta</title>
+        <link rel='stylesheet' type='text/css' href='all.css'>
+        <style>
+        h2 { font-size: 17pt; }
+        p { margin: 1rem 0; }
+        p span { color: #a1b56c; font-weight: bold; font-family: monospace; padding-left: 2rem; }
+        .pad { margin: 3rem 0; }
+        input { background-color: #181818; color: #d8d8d8; border: 1px solid #282828; border-radius: 5px; padding: 0.5rem; }
+        input[type='submit'] { padding: 0.5rem 2rem; cursor: pointer; }
+        </style>
+        <script type='text/javascript' src='sjcl.js'></script>
+        <script>
+        var puzs, ansed = {};
+        window.addEventListener('load', function() {
+            var form = document.getElementsByTagName('form')[0],
+                ipt = document.getElementsByTagName('input')[0];
+            puzs = document.getElementsByClassName('puz');
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                guess(ipt.value.toUpperCase().replace(/[^A-Z]/g, ''), 'y');
+                ipt.value = '';
+            });
+            (localStorage.getItem('good') || '').split(' ').forEach(guess);
+        });
+        function guess(ans, addtogood) {
+            if (!ans) return;
+            var hsh = sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash('wowsalty'+ans));
+            [
+                '57a43f620a42560cff82d1ec67dfcad29789ed145d3998e4542f98194277501b',
+                'ca3bd7253ba5f42c598dfadb666b16fd73f52bfbe3a68d0dfb249397b1ca76a0',
+                'a53974f976fd3a2d0f8c999b4c5aa4b956f49182f27c9f8a9fb86e64745c3fb5',
+                'ffe3f399eab68c44ebe0f9d0492d2c32f6452509fd07eea1e6ab6ac6b1e24183',
+                '1cc4312b5ee5a5b3bde9d2f0d203f47d4c6061d7eabef4cf0a41842eb5159bb5',
+                'c94a83107116a2522aa9b313fe13d586a920cbf684761afb1fb3753a373eecde'
+            ].forEach(function(correct, idx) {
+                if (hsh === correct && !ansed[idx]) {
+                    var span = document.createElement('span');
+                    span.textContent = ans;
+                    puzs[idx].appendChild(span);
+                    ansed[idx] = 1;
+                    addtogood === 'y' && localStorage.setItem('good', (localStorage.getItem('good') || '') + ' ' + ans);
+                    return;
+                }
+            });
+        }
+        </script>
+    </head>
+    <body>
+        <main>
+            <h1>ET Fall Rush 2020 Puzzle Hunt</h1>
+            <h2>The Graphics Pipeline</h2>
+            <p><em>What did the original graphics programmers use to stay awake?</em></p>
+            <form class='pad'>Call in an answer: <input> <input type='submit' value='guess'></form>
+            <p class='puz'><a href='ImageCorruption.html'>Image Corruption</a></p>
+            <p class='puz'><a href='Imprisoned.html'>Imprisoned</a></p>
+            <p class='puz'><a href='NoFontInstalled.html'>No Font Installed</a></p>
+            <p class='puz'><a href='Shaders.html'>Shaders</a></p>
+            <p class='puz'><a href='ZFighting.html'>Z-Fighting</a></p>
+            <p class='puz pad'><a href='VectorGraphics.html'>Vector Graphics</a></p>
+            <p><em>Message @tckmn#9792 on Discord for questions.</em></p>
+        </main>
+    </body>
+</html>
