@@ -4,3 +4,4 @@ h1 { font-size: 22pt; margin: 0; }
 p#sub { font-style: italic; margin: 0 0 3rem; }
 a { color: #7cafc2; }
 a:visited { color: #ba8baf; }
+img { max-width: 100%; }
