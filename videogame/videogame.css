@@ -1,2 +1,2 @@
-table#celeste { padding-left: 2em; }
-table#celeste tr td:first-child { padding-right: 2em; }
+table#celeste th { text-align: left; font-weight: bold; }
+table#celeste tr td:first-child { padding: 0 1em; }
