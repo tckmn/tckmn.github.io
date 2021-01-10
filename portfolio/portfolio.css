@@ -21,12 +21,20 @@ main span.name {
 
 main span.c    { color: #ab4642; font-style: italic; }
 main span.cpp  { color: #ab4642; font-style: italic; }
-main span.java { color: #dc9656; font-style: italic; }
-main span.js   { color: #f7ca88; font-style: italic; }
+
 main span.py   { color: #a1b56c; font-style: italic; }
-main span.rb   { color: #86c1b9; font-style: italic; }
+
+main span.js   { color: #f7ca88; font-style: italic; }
+
 main span.rs   { color: #7cafc2; font-style: italic; }
-main span.sh   { color: #ba8baf; font-style: italic; }
+
+main span.hs   { color: #ba8baf; font-style: italic; }
+
+main span.rb   { color: #86c1b9; font-style: italic; }
+
+main span.java { color: #dc9656; font-style: italic; }
+
+main span.sh   { color: #a16946; font-style: italic; }
 main span.vim  { color: #a16946; font-style: italic; }
 
 main span.c1, main span.c2, main span.c3, main span.c4 {
