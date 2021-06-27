@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <meta charset='utf-8'>
+        <meta name='viewport' content='width=device-width'>
+        <title>MathROOTS 2021 Puzzle Hunt</title>
+        <link rel='stylesheet' type='text/css' href='all.css'>
+        <style>
+        p { margin: 1rem 0; }
+        p span { color: #a1b56c; font-weight: bold; font-family: monospace; padding-left: 2rem; }
+        h1 { margin-bottom: 0; }
+        img { width: 100%; }
+        div#letter { padding: 0 50px; max-width: 800px; margin: 30px auto; text-align: justify; font-family: letter; }
+        </style>
+        <script type='text/javascript' src='sjcl.js'></script>
+        <script>
+        var puzs, ansed = {};
+        window.addEventListener('load', function() {
+            var form = document.getElementsByTagName('form')[0],
+                ipt = document.getElementsByTagName('input')[0];
+            puzs = document.getElementsByClassName('puz');
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                guess(ipt.value.toUpperCase().replace(/[^A-Z]/g, ''), 'y');
+                ipt.value = '';
+            });
+            (localStorage.getItem('good') || '').split(' ').forEach(guess);
+        });
+        function guess(ans, addtogood) {
+            if (!ans) return;
+            var hsh = sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash('wowsalty'+ans));
+            [
+                '72dd023939a2f6ee5f65ce619424b1c1df4f1f639bcfdf8ef276caaaac171351',
+                'f8ad123d27f5e2a7d1b4b24ca2914713926292e1d0748671e83d045f02f93689',
+                'bb4b0f52571c9ae1425dff97e7a91df6b36e54fb3528391e392ddaeb75feaf97',
+                'bf97e93b19a4f2ba37219f00b7bcb87e2fbd156fd3445cd267c82d185a7291d1'
+            ].forEach(function(correct, idx) {
+                if (hsh === correct && !ansed[idx]) {
+                    var span = document.createElement('span');
+                    span.textContent = ans;
+                    puzs[idx].appendChild(span);
+                    ansed[idx] = 1;
+                    addtogood === 'y' && localStorage.setItem('good', (localStorage.getItem('good') || '') + ' ' + ans);
+                    return;
+                }
+            });
+        }
+        </script>
+    </head>
+    <body>
+        <main>
+            <h1 class='cen'>Math<span class='col'>ROOTS</span> 2021 Puzzle Hunt</h1>
+            <h2 class='cen'>Mad Merlin's MathROOTS Mansion</h2>
+            <img src='castle.jpg'>
+            <p>When you wake up, you find yourself in a featureless room you've never seen before. Looking out the window, you see nothing but a vast, barren landscape stretching as far as the eye can see in all directions. As you continue to take in your surroundings, you notice a neatly folded letter on the desk beside you.</p>
+            <div id='letter'>
+                <p>Finally!</p>
+                <p>I, the Mystical Mad Magician Merlin, have captured you once and for all!</p>
+                <p>You've played one too many games of Avalon, just throwing around my name willy-nilly like it's nothing. You've pretended to be me, and not even successfully hidden yourself from the forces of evil, one too many times. This is my revenge!</p>
+                <p>Obviously you're trapped in my castle until you die, but just to torment you more, I've put together some puzzles that would tell you how to get out if you could solve them, which you can't. But I know you foolish humans love thinking you can do anything, so they'll certainly give you some false hope and make the rest of your life here even worse.</p>
+                <p>By the way, don't even bother trying to get away on your own - we're in the middle of nowhere, and if you wander around aimlessly you'll only freeze to death.</p>
+                <p>Good luck, not that it'll help!<br>Merlin</p>
+            </div>
+            <p>You put down the letter with slightly trembling hands, but also with a sense of determination to prove your captor wrong. You won't let this nutcase keep you in here forever! Nevertheless, it seems like you have no choice but to play his games. Knowing Merlin, you suspect there must be some common <em>root</em> tying everything together...</p>
+            <p><strong>What do you need to escape from this dreadful place?</strong></p>
+            <form class='pad'>Call in an answer: <span class='nb'><input> <input type='submit' value='guess'></span></form>
+            <p class='puz'><a href='MalfunctioningMachine.html'>Malfunctioning Machine</a></p>
+            <p class='puz'><a href='MortifyingMoments.html'>Mortifying Moments</a></p>
+            <p class='puz'><a href='MossyMangroves.html'>Mossy Mangroves</a></p>
+            <p class='puz pad'><a href='MysteriousMap.html'>Mysterious Map</a></p>
+            <p class='pad'><em>Use the "ask for help" button in Zoom or message @tckmn#9792 on Discord for hints, questions, etc.</em></p>
+            <p class='pad mini'>photo: modified from <a href='https://flic.kr/p/TJBEFs'>Stora Sundby slott</a> by <a href='https://www.flickr.com/photos/perolofforsberg/'>Per-Olof Forsberg</a></p>
+            <p class='mini'>header font: Gypsy Curse by <a href='https://www.chadsavage.com/'>Chad Savage</a></p>
+            <p class='mini'>main font: Lora by <a href='http://www.cyreal.org/'>Cyreal</a></p>
+            <p class='mini'>handwritten font: Gloria Hallelujah by <a href='http://www.kimberlygeswein.com/'>Kimberly Geswein</a></p>
+        </main>
+    </body>
+</html>

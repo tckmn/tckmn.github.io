@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <meta charset='utf-8'>
+        <meta name='viewport' content='width=device-width'>
+        <title>Mortifying Moments – MathROOTS 2021 Puzzle Hunt</title>
+        <link rel='stylesheet' type='text/css' href='all.css'>
+<style>
+div.iwrap { padding: 0px; background-color: white; }
+div.iwrap img { display: block; }
+table { border-collapse: collapse; }
+td { width: 20px; height: 20px; border: 1px solid #585858; }
+td.b { background-color: #282828; border-color: #282828; }
+td.w { background-color: #fff; }
+</style>
+<script>
+window.addEventListener('load', () => {
+    var key = localStorage.getItem('key');
+    if (!key) {
+        var alph = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        key = Array(16).fill().map(() => alph.charAt(Math.random()*alph.length|0)).join('');
+        localStorage.setItem('key', key);
+    }
+    document.getElementById('play').href = './play?' + key;
+});
+</script>
+    </head>
+    <body>
+        <main>
+            <h1 class='cen'>Mossy Mangroves</h1>
+
+            <p>You notice some scraps of paper in a drawer of the desk beside you, and upon closer examination discover something very curious. Apparently, Merlin is very peculiar about the trees surrounding his castle. For one thing, he seems to insist that they align to a strict rectangular grid, and for another, he keeps very close track of their <em>roots</em>...</p>
+
+            <p>Of course, he doesn't just draw them in directly. Instead, it seems like the numbers on the outsides of the grid indicate how many grid cells contain either a tree or a part of their roots. By some miracle he's convinced the trees to grow their roots perfectly aligned to his grid, and by an even greater miracle all of his trees have <span class='col'>exactly 3 roots</span> which span a distance of <span class='col'>2 grid cells each</span>. So this is enough information to determine the root placement entirely.</p>
+
+            <p>Helpfully, you find an example of an old draft of a scrapped tree layout, from before he expanded his yard. After some thought, you're able to draw in where the roots must go:</p>
+
+            <div class='horiz wrap'>
+            <div class='iwrap'><img src='puz.svg'></div>
+            <div class='iwrap'><img src='sol.svg'></div>
+            </div>
+
+            <p>You also find this confusing piece of scrap paper, which you set aside for now:</p>
+
+            <div class='horiz alc wrap'>
+            <table>
+                <tr>
+                    <td class=b></td><td class=b></td><td class=b></td><td class=b></td><td class=b></td><td class=b></td><td class=w></td><td class=b></td><td class=b></td>
+                </tr>
+                <tr>
+                    <td class=b></td><td class=w></td><td class=w></td><td class=w></td><td class=w></td><td class=w></td><td class=w></td><td class=w></td><td class=b></td>
+                </tr>
+                <tr>
+                    <td class=b></td><td class=b></td><td class=w></td><td class=b></td><td class=w></td><td class=b></td><td class=w></td><td class=b></td><td class=b></td>
+                </tr>
+                <tr>
+                    <td class=b></td><td class=w></td><td class=w></td><td class=w></td><td class=w></td><td class=w></td><td class=w></td><td class=w></td><td class=w></td>
+                </tr>
+                <tr>
+                    <td class=b></td><td class=b></td><td class=b></td><td class=b></td><td class=w></td><td class=b></td><td class=w></td><td class=b></td><td class=b></td>
+                </tr>
+                <tr>
+                    <td class=b></td><td class=b></td><td class=b></td><td class=b></td><td class=w></td><td class=b></td><td class=w></td><td class=b></td><td class=b></td>
+                </tr>
+                <tr>
+                    <td class=b></td><td class=b></td><td class=w></td><td class=b></td><td class=b></td><td class=b></td><td class=w></td><td class=b></td><td class=b></td>
+                </tr>
+                <tr>
+                    <td class=b></td><td class=w></td><td class=w></td><td class=w></td><td class=w></td><td class=w></td><td class=w></td><td class=w></td><td class=b></td>
+                </tr>
+                <tr>
+                    <td class=b></td><td class=b></td><td class=w></td><td class=b></td><td class=b></td><td class=b></td><td class=b></td><td class=b></td><td class=b></td>
+                </tr>
+            </table>
+            <div>
+                Past tense of eat<br>
+                Event with tents a Boy Scout might attend<br>
+                Things that cause notifications on Discord, or something that can be mixed<br>
+                Fettuccine, for example, or something copied on the internet<br>
+                Type of mask which is often blue and worn outside nowadays<br>
+                What a ref blows, or how you might produce a musical tune<br>
+                A question word, or a United Nations agency
+            </div>
+            </div>
+
+            <p>Anyway, you set to work on the real tree layout, all the while wondering... <strong>what is he growing in this strange forest of his?</strong></p>
+
+            <p><i>For your convenience, here is <a id='play' href="./play">an interactive link</a> which you can <em>copy and paste and send to your friends</em> to work on the puzzle below collaboratively in real time.</i></p>
+
+            <div class='horiz'>
+            <div class='iwrap'><img src='real.svg'></div>
+            </div>
+
+        </main>
+    </body>
+</html>

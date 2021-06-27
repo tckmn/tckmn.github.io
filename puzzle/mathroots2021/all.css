@@ -1,0 +1,35 @@
+@font-face { font-family: scary; font-display: swap; src: url('scary.ttf'); }
+@font-face { font-family: main; font-display: swap; src: url('Lora-Regular.ttf'); }
+@font-face { font-family: main; font-display: swap; src: url('Lora-Bold.ttf'); font-weight: bold; }
+@font-face { font-family: main; font-display: swap; src: url('Lora-Italic.ttf'); font-style: italic; }
+@font-face { font-family: letter; font-display: swap; src: url('GloriaHallelujah-Regular.ttf'); }
+
+body { background-color: #000; color: #d8d8d8; font: 13pt main; }
+main { max-width: 1000px; margin: 0 auto; padding: 1rem; }
+h1 { font-size: 50pt; }
+h2 { font-size: 32pt; }
+h1, h2 { font-family: scary; }
+p#sub { font-style: italic; margin: 0 0 3rem; }
+a { color: #7cafc2; }
+a:visited { color: #ba8baf; }
+h2, em, strong, span.col { color: #f7ca88; }
+
+.mini { font-size: 10pt; text-align: right; margin: 3px 0; }
+.pad { margin-top: 3rem; }
+.cen { text-align: center; }
+.nb { white-space: nowrap; }
+.horiz { display: flex; justify-content: space-evenly; }
+.alc { align-items: center; }
+.wrap { flex-wrap: wrap; }
+input { background-color: #181818; color: #d8d8d8; border: 1px solid #282828; border-radius: 5px; padding: 0.5rem; }
+input[type='submit'] { padding: 0.5rem 2rem; cursor: pointer; }
+
+@media (max-width: 800px) {
+    h1 { font-size: 36pt; }
+    h2 { font-size: 28pt; }
+}
+
+@media (max-width: 500px) {
+    h1 { font-size: 30pt; }
+    h2 { font-size: 22pt; }
+}
