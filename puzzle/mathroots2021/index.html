@@ -11,41 +11,12 @@
         h1 { margin-bottom: 0; }
         img { width: 100%; }
         div#letter { padding: 0 50px; max-width: 800px; margin: 30px auto; text-align: justify; font-family: letter; }
+        input { transition: background-color 200ms; }
+        input.wrong { background-color: #ab4642; }
+        div.conf { position: fixed; top: 0; left: 0; width: 13px; height: 13px; }
         </style>
         <script type='text/javascript' src='sjcl.js'></script>
-        <script>
-        var puzs, ansed = {};
-        window.addEventListener('load', function() {
-            var form = document.getElementsByTagName('form')[0],
-                ipt = document.getElementsByTagName('input')[0];
-            puzs = document.getElementsByClassName('puz');
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-                guess(ipt.value.toUpperCase().replace(/[^A-Z]/g, ''), 'y');
-                ipt.value = '';
-            });
-            (localStorage.getItem('good') || '').split(' ').forEach(guess);
-        });
-        function guess(ans, addtogood) {
-            if (!ans) return;
-            var hsh = sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash('wowsalty'+ans));
-            [
-                '72dd023939a2f6ee5f65ce619424b1c1df4f1f639bcfdf8ef276caaaac171351',
-                'f8ad123d27f5e2a7d1b4b24ca2914713926292e1d0748671e83d045f02f93689',
-                'bb4b0f52571c9ae1425dff97e7a91df6b36e54fb3528391e392ddaeb75feaf97',
-                'bf97e93b19a4f2ba37219f00b7bcb87e2fbd156fd3445cd267c82d185a7291d1'
-            ].forEach(function(correct, idx) {
-                if (hsh === correct && !ansed[idx]) {
-                    var span = document.createElement('span');
-                    span.textContent = ans;
-                    puzs[idx].appendChild(span);
-                    ansed[idx] = 1;
-                    addtogood === 'y' && localStorage.setItem('good', (localStorage.getItem('good') || '') + ' ' + ans);
-                    return;
-                }
-            });
-        }
-        </script>
+        <script type='text/javascript' src='index.js'></script>
     </head>
     <body>
         <main>
