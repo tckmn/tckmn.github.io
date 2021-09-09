@@ -1,12 +1,8 @@
 <!DOCTYPE html>
 <html lang='en'>
     <head>
-        <meta charset='utf-8'>
-        <meta name='viewport' content='width=device-width'>
-        <title>idle game</title>
-        <style> html, body { height: 100%; padding: 0; margin: 0; }body { background: black; color: #d8d8d8; font: 90pt sans-serif; display: flex; align-items: center; justify-content: center; } </style>
+        <meta charset='utf-8'><meta name='viewport' content='width=device-width'><title>idle game</title>
+        <style>html,body{height:100%;padding:0;margin:0;background:#000;color:#d8d8d8;font:90pt sans-serif;display:flex;align-items:center;justify-content:center;}</style>
     </head>
-    <body>
-        <script> n=(d=localStorage.getItem('d'))?(new Date()-d)/1000|0:(localStorage.setItem('d',+new Date()),0); setInterval(f=() => document.body.textContent = ++n, 1000); f() </script>
-    </body>
+    <body><script>d=localStorage.d||=+new Date();setInterval(f=()=>document.body.textContent=(new Date()-d)/t|0,t=1000);f()</script></body>
 </html>
