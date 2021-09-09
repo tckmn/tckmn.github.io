@@ -5,7 +5,8 @@
         <meta name='viewport' content='width=device-width'>
         <title>idle game</title>
         <style> html, body { height: 100%; padding: 0; margin: 0; }body { background: black; color: #d8d8d8; font: 90pt sans-serif; display: flex; align-items: center; justify-content: center; } </style>
-        <script> n=0; setInterval(() => document.body.textContent = ++n, 1000); </script>
     </head>
-    <body>0</body>
+    <body>
+        <script> n=(d=localStorage.getItem('d'))?(new Date()-d)/1000|0:(localStorage.setItem('d',+new Date()),0); setInterval(f=() => document.body.textContent = ++n, 1000); f() </script>
+    </body>
 </html>
