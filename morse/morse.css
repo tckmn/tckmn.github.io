@@ -48,8 +48,23 @@ div#blinker { width: 4rem; height: 2rem; background-color: #282828; }
 div#blinker.on { background-color: #ab4642; }
 
 
-div#feedback { margin-left: 1rem; text-align: left; }
-div#feedback > p { margin: 0.5rem; }
+div#bigwrapper { display: flex; margin: 0 1rem; }
+
+div#feedback { flex: 1; text-align: left; }
+div#feedback > p { margin: 0.5rem 0; }
+
+div#yescheat {
+    display: none;
+    text-align: right;
+    padding-left: 1rem;
+    font-family: monospace;
+}
+.cheat div#nocheat { display: none; }
+.cheat div#yescheat { display: block; }
+div.subcheat { cursor: pointer; padding-top: 0.5rem; }
+div.subcheat > p { margin: 0; }
+div#yescheat > p.gray { color: #585858; }
+
 
 button, input {
     background-color: #282828;

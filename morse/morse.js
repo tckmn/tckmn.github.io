@@ -1,6 +1,7 @@
 const $ = document.querySelector.bind(document), $$ = document.querySelectorAll.bind(document);
 
 const data = ['.-','-...','-.-.','-..','.','..-.','--.','....','..','.---','-.-','.-..','--','-.','---','.--.','--.-','.-.','...','-','..-','...-','.--','-..-','-.--','--..'];
+const commonlist = 'etarionshdluwmfcgypbkvjxqz';
 const speed = 200;
 
 let bank, validWords;
@@ -13,6 +14,8 @@ const genFuncs = [
 
 let ans, correct = 0, total = 0;
 
+let replay, cb;
+
 window.addEventListener('load', () => {
     const btns = $$('button.mode');
     btns.forEach((b, i) => b.addEventListener('click', e => {
@@ -21,6 +24,26 @@ window.addEventListener('load', () => {
         $('#ans').addEventListener('submit', guessed);
         go(genFuncs[i]);
     }));
+
+    const bigwrapper = $('#bigwrapper'), yescheat = $('#yescheat');
+    $('#nocheat').addEventListener('click', () => bigwrapper.classList.add('cheat'));
+    yescheat.addEventListener('click', () => bigwrapper.classList.remove('cheat'));
+
+    commonlist.split('').forEach(letter => {
+        var p = document.createElement('p');
+        p.appendChild(document.createTextNode(data[letter.charCodeAt(0)-97] +
+            ' ' + letter.toUpperCase()));
+        yescheat.appendChild(p);
+    });
+
+    const setLevel = level => {
+        localStorage.setItem('level', level);
+        bank = commonlist.slice(0, level);
+        Array.from(yescheat.children).forEach(ch => {
+            ch.classList.toggle('gray', !bank.includes(ch.textContent.slice(-1).toLowerCase()));
+        });
+        validWords = words.filter(x => x.split('').every(ch => bank.includes(ch)));
+    };
 
     const levelInput = $('#level');
     $$('#levelbtns > button').forEach((b, i) => b.addEventListener('click', e => {
@@ -32,21 +55,19 @@ window.addEventListener('load', () => {
         else levelInput.value = +localStorage.getItem('level');
     });
     setLevel(levelInput.value = +localStorage.getItem('level') || 5);
-});
 
-function setLevel(level) {
-    localStorage.setItem('level', level);
-    bank = 'etarionshdluwmfcgypbkvjxqz'.slice(0, level);
-    validWords = words.filter(x => x.split('').every(ch => bank.includes(ch)));
-}
+    $('#blinker').addEventListener('click', () => replay());
+
+});
 
 function go(genFun) {
     const ans = genFun();
     playMorse(ans);
+    replay = () => playMorse(ans);
     cb = guess => {
         go(genFun);
         ++total;
-        correct += guess == ans;
+        correct += guess.toLowerCase().replace(/[^a-z]/g, '') == ans;
         $('#score').textContent = `${correct}/${total} (${(correct/total).toFixed(4)})`;
         return guess == ans ? `correct: ${ans}` : `you said: ${guess} // answer: ${ans}`;
     };
