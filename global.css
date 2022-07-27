@@ -2,6 +2,10 @@
 @font-face { font-family: main; font-display: swap; src: url('/font/OpenSans-Bold.ttf'); font-weight: bold; }
 @font-face { font-family: main; font-display: swap; src: url('/font/OpenSans-Italic.ttf'); font-style: italic; }
 @font-face { font-family: main; font-display: swap; src: url('/font/OpenSans-BoldItalic.ttf'); font-weight: bold; font-style: italic; }
+@font-face { font-family: head; font-display: swap; src: url('/font/Merriweather-Regular.ttf'); }
+@font-face { font-family: head; font-display: swap; src: url('/font/Merriweather-Bold.ttf'); font-weight: bold; }
+@font-face { font-family: head; font-display: swap; src: url('/font/Merriweather-Italic.ttf'); font-style: italic; }
+@font-face { font-family: head; font-display: swap; src: url('/font/Merriweather-BoldItalic.ttf'); font-weight: bold; font-style: italic; }
 
 html,body {
     color: #d8d8d8;
@@ -100,7 +104,13 @@ a.tag, a.tag:visited {
 }
 div.hsub {
     font-size: 16px;
+    margin-bottom: 50px;
 }
+
+form#commentform textarea { width: 90%; }
+form#commentform p { margin: 5px 0; }
+form#commentform p#commentinfo, form#commentform span#commentfeedback { font-style: italic; font-size: 16px; }
+form#commentform span#commentfeedback { color: #aaa; margin-left: 1rem; }
 
 /* special.rb */
 div.chess { margin: 1em 0; }
@@ -151,9 +161,11 @@ p { margin: 1em 0; }
 /* .pind p { text-indent: 1em; } */
 /* .pind li > p, .pind p.ni { text-indent: 0; } */
 
-h1 { font-size: 26px; line-height: 1.4; margin: 0; }
-h2 { font-size: 23px; line-height: 1.4; margin: 0; }
-h3 { font-size: 20px; line-height: 1.4; margin: 0; }
+h1, h2, h3 { font-family: head; font-weight: normal; color: #fff; line-height: 1.4; margin: 0; }
+h1 { font-size: 26pt; }
+h2 { font-size: 20pt; margin-top: 50px; }
+h3 { font-size: 16pt; margin-top: 30px; }
+
 .hline { text-align: center; overflow: hidden; }
 .hline:before { right: 0.5em; margin-left:  -50%; }
 .hline:after  { left:  0.5em; margin-right: -50%; }
@@ -173,6 +185,14 @@ ul, ol { padding: 0; padding-left: 1em; margin: 1em 0; }
 li { padding: 0; margin: 1em 0; }
 ul.small li, ol.small li { margin: 0; }
 ul.selfsm, ol.selfsm { margin: 0; }
+strong { color: #fff; }
+input, textarea { background-color: #383838; border: 1px solid #585858; border-radius: 3px; color: #d8d8d8; font-size: 18px; }
+input[type='submit']:hover { background-color: #484848; }
+input[type='submit']:active { background-color: #585858; }
+input[type='submit']:disabled { background-color: #282828; border-color: #383838; color: #585858; }
 
 a { color: #7cafc2; }
 a:visited { color: #ba8baf; }
+
+span.spoiler { background-color: #000; }
+.spoiler { filter: brightness(0) invert(0.5); cursor: pointer; }

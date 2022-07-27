@@ -6,7 +6,7 @@
         <title>Names and renaming - Andy Tockman</title>
         <link rel='stylesheet' type='text/css' href='/global.css'>
         <link rel='stylesheet' type='text/css' href='names-and-renaming.css'>
-        
+        <script src='/js/comments.js'></script>
         <link rel='apple-touch-icon' sizes='180x180' href='/apple-touch-icon.png'>
         <link rel='icon' type='image/png' sizes='32x32' href='/favicon-32x32.png'>
         <link rel='icon' type='image/png' sizes='16x16' href='/favicon-16x16.png'>
@@ -78,12 +78,12 @@
         </div>
         <div id='subheader-post'></div>
 
-        <main class='pind'>
+        <main>
         <h1>Names and renaming</h1><div class='hsub'>2019-02-01 17:41 -0600 <a class='tag' href='/blog/misc'><span class='tag'>misc</span></a></div>
 <blockquote>
-<p class="ni"><em>There are only two hard things in Computer Science:
+<p><em>There are only two hard things in Computer Science:
 cache invalidation and naming things.</em></p>
-<p class="ni">—Phil Karlton</p>
+<p>—Phil Karlton</p>
 </blockquote>
 <p>With computers in general,
 naming things has been a constant source of difficulties for me.
@@ -167,6 +167,23 @@ so I do have some justification
 for spending unreasonable amounts of time thinking about this.
 But at least it's a definite improvement over my previous names.</p>
 
+    <h2 id='comments'>comments</h2>
+    <p><i>There are no comments yet.</i></p>
+    <form id='commentform' method='post' action='https://dyn.tck.mn/comment'>
+        <p><label>name: <input name='name'></label></p>
+        <p><label>contact (private, optional): <input name='cont'></label></p>
+        <p id='commentinfo'>
+            <a href='https://www.markdownguide.org/cheat-sheet/' target='_blank'>markdown</a> is supported.
+            comments require manual approval.
+        </p>
+        <p><textarea name='comm' rows='5'></textarea></p>
+        <p>
+            <input type='hidden' name='post' value='blog/names-and-renaming'>
+            <input type='submit' id='commentsubmit' value='leave a comment'>
+            <span id='commentfeedback'></span>
+        </p>
+    </form>
+    
         </main>
 
     </body>
