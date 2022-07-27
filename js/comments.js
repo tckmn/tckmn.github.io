@@ -26,7 +26,7 @@ window.addEventListener('load', () => {
             feedback.appendChild(document.createTextNode(' to post your comment.'));
         });
         req.open('POST', e.target.action);
-        req.send(new FormData(e.target));
+        req.send(new URLSearchParams(new FormData(e.target)).toString());
     });
 
     form.name.addEventListener('change', e => localStorage.commentname = form.name.value);
