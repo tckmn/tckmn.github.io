@@ -813,24 +813,23 @@ for practice.</p>
 <!-- but loses three pools -->
 <!-- (from having to place another shaded cell), -->
 <!-- for the same net result. -->
+<h2 id='comments'>comments</h2>
+<p><i>There are no comments yet.</i></p>
+<form id='commentform' method='post' action='https://dyn.tck.mn/comment'>
+    <p><label>name: <input name='name'></label></p>
+    <p><label>contact (private, optional): <input name='cont'></label></p>
+    <p id='commentinfo'>
+        <a href='https://www.markdownguide.org/cheat-sheet/' target='_blank'>markdown</a> is supported.
+        comments require manual approval.
+    </p>
+    <p><textarea name='comm' rows='5'></textarea></p>
+    <p>
+        <input type='hidden' name='post' value='blog/penalty-theory'>
+        <input type='submit' id='commentsubmit' value='leave a comment'>
+        <span id='commentfeedback'></span>
+    </p>
+</form>
 
-    <h2 id='comments'>comments</h2>
-    <p><i>There are no comments yet.</i></p>
-    <form id='commentform' method='post' action='https://dyn.tck.mn/comment'>
-        <p><label>name: <input name='name'></label></p>
-        <p><label>contact (private, optional): <input name='cont'></label></p>
-        <p id='commentinfo'>
-            <a href='https://www.markdownguide.org/cheat-sheet/' target='_blank'>markdown</a> is supported.
-            comments require manual approval.
-        </p>
-        <p><textarea name='comm' rows='5'></textarea></p>
-        <p>
-            <input type='hidden' name='post' value='blog/penalty-theory'>
-            <input type='submit' id='commentsubmit' value='leave a comment'>
-            <span id='commentfeedback'></span>
-        </p>
-    </form>
-    
         </main>
 
     </body>

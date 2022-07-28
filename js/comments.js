@@ -8,6 +8,12 @@ window.addEventListener('load', () => {
 
     form.addEventListener('submit', e => {
         e.preventDefault();
+        if (!form.name.value || !form.comm.value) {
+            feedback.textContent = 'please enter a ' +
+                (form.name.value ? 'comment.' :
+                    form.comm.value ? 'name.' : 'name and comment.');
+            return;
+        }
         var req = new XMLHttpRequest();
         submit.setAttribute('disabled', '1');
         req.addEventListener('load', () => {
