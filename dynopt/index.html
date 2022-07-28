@@ -5,14 +5,40 @@
         <meta name='viewport' content='width=device-width'>
         <title>dynopt</title>
         <script type='text/javascript' src='s.js'></script>
-        <style> #c { border: 1px solid black; width: 50%; } </style>
+        <link rel='shortcut icon' type='image/x-icon' href='favicon.ico' />
+        <style>
+
+body { background-color: #f8f8f8; }
+body, input, button, select { font: 9pt monospace; }
+input[type="number"] { width: 3em; }
+button { padding: 2px 5px; border: 1px solid black; border-radius: 2px; background-color: #eee; }
+
+#top { white-space: nowrap; overflow-x: auto; margin-bottom: 10px; display: flex; align-items: center; }
+#top > .stack { display: flex; flex-direction: column; align-items: flex-end; }
+#top > :not(:first-child) { margin-left: 10px; }
+#top input { vertical-align: middle; }
+
+#out > svg { border: 1px solid black; background-color: white; }
+
+        </style>
     </head>
     <body>
-        <p><input id=i></p>
-        <p><button id=r>random</button> <input type=number size=2 id=n value=10></p>
-        <p><button id=s>save image</button></p>
-        <p><label><input id=v type=checkbox checked=true> show signed</label></p>
-        <canvas id=c width=1000 height=1000></canvas>
-        <div id=img></div>
+        <div id=top>
+            <input id=i>
+            <div class=stack>
+                <span><button id=r>random</button> <input type=number id=n value=10 min=2 max=36></span>
+                <label>min blues <input type=number id=b value=0 min=0 max=6></label>
+            </div>
+            <label><input id=v type=checkbox checked=true> show signed</label>
+            <div class=stack>
+                <span>pt size <input id=ptsz type=range></span>
+                <span>img size <input id=imsz type=range min=200 max=1400></span>
+            </div>
+            <label>colors <select id=c></select></label>
+        </div>
+        <!-- <p><button id=s>save image</button></p> -->
+        <!-- <canvas id=cnv width=2000 height=2000></canvas> -->
+        <!-- <div id=img></div> -->
+        <div id=out></div>
     </body>
 </html>
