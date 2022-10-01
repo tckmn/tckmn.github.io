@@ -25,6 +25,24 @@ span.call.p > span.c2 { background-color: #080; }
 span.call.a > span.c2 { background-color: #880; }
 span.call.c > span.c2 { background-color: #800; }
 
+p.seq {
+    padding-left: 0.5rem;
+    margin-left: 0.5rem;
+    border-left: 1px solid #666;
+    font-size: 12pt;
+}
+
+p.seqlbl {
+    font-size: 11pt;
+    margin-bottom: 3px;
+    font-weight: bold;
+    color: #a1b56c;
+}
+
+p.seq.lbld {
+    margin-top: 0;
+}
+
 section {
     border-top: 1px dashed #fff;
     margin-top: 30px;
@@ -36,6 +54,8 @@ table.sp td:last-child { padding-right: 0; }
 td.nowrap { white-space: nowrap; }
 .scrolltbl { overflow-x: auto; white-space: nowrap; }
 table#clocktable td:nth-child(3), table#clocktable td:nth-child(4) { text-align: right; }
+table#clocktable td:nth-child(5) { font-size: 12pt; }
 
+video { max-width: 100%; }
 div.gallery img { max-width: 100%; }
 div.gallery2 img { max-width: 50%; }

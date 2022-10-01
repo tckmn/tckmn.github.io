@@ -3,7 +3,7 @@
     <head>
         <meta charset='utf-8'>
         <meta name='viewport' content='width=device-width, initial-scale=1'>
-        <title>Square dancing - Andy Tockman</title>
+        <title>While - Square dancing - Andy Tockman</title>
         <link rel='stylesheet' type='text/css' href='/global.css'>
         <link rel='stylesheet' type='text/css' href='../squares.css'>
         
@@ -14,12 +14,12 @@
         <link rel='mask-icon' href='/safari-pinned-tab.svg' color='#5bbad5'>
         <meta name='msapplication-TileColor' content='#da532c'>
         <meta name='theme-color' content='#ffffff'>
-        <meta name='description' content='Some articles on square dancing.'>
-        <meta property='og:title' content='Square dancing' />
+        <meta name='description' content='The while concept is an extension of the English word &quot;while&quot; based on a former bug in the Taminations sequencer.'>
+        <meta property='og:title' content='While' />
         <meta property='og:type' content='website' />
-        <meta property='og:url' content='https://tck.mn/squares/' />
+        <meta property='og:url' content='https://tck.mn/squares/while' />
         <meta property='og:image' content='https://tck.mn/img/dp.png' />
-        <meta property='og:description' content='Some articles on square dancing.' />
+        <meta property='og:description' content='The while concept is an extension of the English word &quot;while&quot; based on a former bug in the Taminations sequencer.' />
         <meta property='og:site_name' content='Andy Tockman' />
     </head>
     <body>
@@ -80,47 +80,139 @@
 
         <main>
         
-
+<h1>While</h1><p><a href='..'>« back</a></p>
 
 <p>
-Here are some articles on
-<a href='https://rdcu.be/cH8OH'>square dancing</a>.
-If you haven't seen modern western square dance before,
-here's an unreasonably brief summary:
-you stand in a <em>square</em> with seven other <em>dancers</em>,
-and a <em>caller</em> says some words instructing you what to do.
-You have to figure out where to walk in real time,
-solving puzzles and making cool shapes along the way.
-It's really fun, and you should try it!
+The <em>while</em> concept
+is an extension of the English word "while"
+based on a former bug in the <a href='https://www.tamtwirlers.org/taminations/'>Taminations</a> sequencer.
 </p>
 
 <p>
-Square dancing comes in different <em>levels</em>,
-with the more advanced ones requiring you to learn more things.
-Most of the stuff here is about challenge dancing,
-because it's the kind I find the most fun.
+Callers already use the word "while" all the time,
+in contexts like "centers swing thru while the ends trade".
+The <em>while</em> concept defines these cases
+in the intuitive way:
+the people designated by the first designator
+do the first call,
+and the people designated by the second designator
+do the second call.
+But what if some people are designated by <em>both</em> designators?
+</p>
+
+<p>
+The full definition of the <em>while</em> concept is as follows:
+on "X while Y",
+first memorize the path you would walk in
+if you were to do Y.
+Then, do X.
+Then, walk in the path you memorized.
+</p>
+
+<h2>history</h2>
+
+<p>
+To explain the motivation behind this definition,
+I have to tell a short story.
+</p>
+
+<p>
+When I was a wee little dancer,
+learning plus for the first time,
+I spent a lot of time studying calls on Taminations.
+(The Tech Squares plus class meets "only" once a week,
+and I was so excited by the concept of square dancing
+that this was not nearly enough to satiate my desires.
+I ended up teaching myself plus by about week 3.)
+</p>
+
+<p>
+As part of this,
+I would sometimes type random calls into the sequencer,
+just to see what would happen.
+I'm not sure what prompted me to do this,
+but one such call was <span class='call p'><span class='c1'>plus</span><span class='c2'>acey deucey</span></span>,
+which I typed in from a squared set.
+I don't remember the reason;
+my working hypothesis is that it was the alphabetically first plus call,
+so I saw it in the list and just input it having no idea what it meant.
+</p>
+
+<p>
+As any plus dancer would know,
+<span class='call p'><span class='c1'>plus</span><span class='c2'>acey deucey</span></span> from a squared set is complete nonsense,
+and should have resulted in the sequencer yelling at me.
+That is not what happened,
+and what actually happened was...
+rather more surprising, shall we say.
+</p>
+
+<video muted autoplay loop playsinline>
+    <source src='aceydeucey.webm' type='video/webm'>
+    <source src='aceydeucey.mp4' type='video/mp4'>
+</video>
+
+<p>
+Yes,
+from a squared set,
+Taminations's conception of <span class='call p'><span class='c1'>plus</span><span class='c2'>acey deucey</span></span> is
+"heads trade, heads run away".
+(This is obviously a bug,
+which has since been fixed.)
+</p>
+
+<p>
+As baffling as this behavior is,
+like many confusing things computers do,
+it has a logical explanation.
+It's actually a confluence of several facts:
 </p>
 
 <ul>
 
-    <li>concepts <ul>
-            <li>flavors of <a href='cross'>cross</a></li>
-            <li>flavors of <a href='conjugate'>conjugate</a></li>
-            <li><a href='anythingdir'>[anything] [direction]</a></li>
-            <li><a href='phony'>phony</a></li>
-            <li>wip: <a href='while'>while</a></li>
-            <li>todo: grand triple boxes bigons wind etc nonsense</li>
-    </ul></li>
+    <li>Taminations defines <span class='call p'><span class='c1'>plus</span><span class='c2'>acey deucey</span></span> as the result of evaluating the literal string <code>Center 4 Trade While Outer 4 Circulate</code>.</li>
 
-    <li><a href='systemizations'>systemizations</a></li>
+    <li>From a squared set, the code happens to identify the heads as being both the "Center 4" and the "Outer 4".</li>
 
-    <li><a href='definitions'>alternative "definitions"</a></li>
-
-    <li><a href='choreo'>choreography</a></li>
-
-    <li><a href='misc'>miscellany</a></li>
+    <li>When the same dancers appear on both sides of "While", the code evaluates both calls in sequence, but as if they started from the same starting position.</li>
 
 </ul>
+
+<p>
+As a result,
+the call "Acey Deucey" makes Taminations believe
+that the heads should do a Trade <em>while</em> the heads do a Circulate.
+The action for Trade is what you'd expect,
+and it's what they do.
+The action for Circulate,
+from a squared set,
+is to walk forward 3 positions
+(passing right shoulders),
+circulating within their box of 4.
+</p>
+
+<p>
+So the heads perform the Trade action,
+which is to flip inwards,
+and then perform the Circulate action,
+which is to walk forward 3 positions.
+</p>
+
+<p>
+After discovering all this by digging through the source code,
+I realized that I could, uh... have some fun with this.
+</p>
+
+<video muted autoplay loop playsinline>
+    <source src='spchex.webm' type='video/webm'>
+    <source src='spchex.mp4' type='video/mp4'>
+</video>
+
+<h2>examples</h2>
+
+<p>
+[todo]
+</p>
 
         </main>
 
