@@ -13,13 +13,12 @@ function go(input) {
 
     const ad = aday.findIndex(d => x.includes(d.slice(0,3).toLowerCase()));
     const ed = eday.findIndex(d => x.includes(d.slice(0,3).toLowerCase()));
-    if (!ad && !ed) return;
 
     if (ad !== -1) {
         if (th > 28) return;
         const hour = (28*ad + th + 97) % 168;
         return eday[hour / 24 | 0] + ' ' + pad(hour % 24) + ':' + pad(tm);
-    } else {
+    } else if (ed !== -1) {
         if (th > 24) return;
         const hour = (24*ed + th + 71) % 168;
         return aday[hour / 28 | 0] + ' ' + pad(hour % 28) + ':' + pad(tm);
