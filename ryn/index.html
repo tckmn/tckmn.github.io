@@ -7,12 +7,34 @@
         <script type='text/javascript' src='ryn.js'></script>
         <style>
 html, body { background-color: #000; }
-input { background-color: #181818; border: 1px solid #585858; }
+input { background-color: #181818; border: 1px solid #585858; max-width: 90%; }
 html, body, input { color: #d8d8d8; font: 16pt sans-serif; }
+#o1 { font-size: 13pt; font-style: italic; }
+#o2 { font-weight: bold; }
+#c { display: flex; align-items: flex-start; }
+#c > table {
+    font: 9pt monospace;
+    border-collapse: collapse;
+}
+#c > table th {
+    padding: 0 2px;
+    margin: 0;
+    border-bottom: 1px solid #585858;
+}
+#c > table td {
+    text-align: right;
+    padding: 0;
+    margin: 0;
+    border-bottom: 1px solid #585858;
+}
+#c > table td.active {
+    background-color: red;
+}
         </style>
     </head>
     <body>
         <p><input id='i' autocomplete='off' spellcheck='false'></p>
-        <p><span id='o'></span></p>
+        <p id='o'><span id='o1'></span> is <span id='o2'></span></p>
+        <div id='c'></div>
     </body>
 </html>
