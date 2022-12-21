@@ -107,11 +107,6 @@ div.hsub {
     margin-bottom: 50px;
 }
 
-form#commentform textarea { width: 90%; }
-form#commentform p { margin: 5px 0; }
-form#commentform p#commentinfo, form#commentform span#commentfeedback { font-style: italic; font-size: 16px; }
-form#commentform span#commentfeedback { color: #aaa; margin-left: 1rem; }
-
 /* special.rb */
 div.chess { margin: 1em 0; }
 div.chess table { border-collapse: collapse; float: left; }
@@ -150,6 +145,17 @@ div.chesspopup div.opt.odd { background-color: #444; }
 /* 390 = 45*8 + 10*3;  350 = 40*8 + 10*3 */
 @media (max-width: 390px) { div.chess td img { width: 40px; height: 40px; } }
 @media (max-width: 350px) { div.chess td img { width: 35px; height: 35px; } }
+
+div.comm { padding: 0 1rem; margin: 1rem 0 1rem; }
+div.comm > p { margin: 0; }
+div.comm .commn.me { color: #dc9656; }
+div.comm .commd { float: right; }
+
+form#commentform { margin-top: 2rem; }
+form#commentform textarea { width: 90%; }
+form#commentform p { margin: 5px 0; }
+form#commentform p#commentinfo, form#commentform span#commentfeedback { font-style: italic; font-size: 16px; }
+form#commentform span#commentfeedback { color: #aaa; margin-left: 1rem; }
 
 main {
     max-width: 800px;
