@@ -109,21 +109,27 @@ window.addEventListener('load', () => {
     anim(document.getElementById('home_conlang'), 600, elt => {
         var ps = elt.getElementsByTagName('path'), p0 = ps[0], p1 = ps[1], p2 = ps[2], p3 = ps[3];
         // angles, amplitude
-        var a1 = Math.PI*0.75, a2 = Math.PI*0.55, a3 = Math.PI*0.3, amp = 0.3;
+        const a1 = Math.PI*0.75, a2 = Math.PI*0.55, a3 = Math.PI*0.3, amp = 0.3;
+        // rotation
+        const rx = 0.07, ry = 0.32, rf = t => (1-(1-t)*(1-t))*360;
         return animSeq([1/3, 1/3, 1/3], [
             t => {
                 p1.setAttribute('transform', `translate(${Math.sin(t*Math.PI)*amp*Math.cos(a1)} ${-Math.sin(t*Math.PI)*amp*Math.sin(a1)})`);
+                p0.setAttribute('transform', `translate(${rx} ${ry}) rotate(${rf(t/3)}) translate(${-rx}, ${-ry})`)
             },
             t => {
                 p1.setAttribute('transform', '');
                 p2.setAttribute('transform', `translate(${Math.sin(t*Math.PI)*amp*Math.cos(a2)} ${-Math.sin(t*Math.PI)*amp*Math.sin(a2)})`);
+                p0.setAttribute('transform', `translate(${rx} ${ry}) rotate(${rf((1+t)/3)}) translate(${-rx}, ${-ry})`)
             },
             t => {
                 p2.setAttribute('transform', '');
                 p3.setAttribute('transform', `translate(${Math.sin(t*Math.PI)*amp*Math.cos(a3)} ${-Math.sin(t*Math.PI)*amp*Math.sin(a3)})`);
+                p0.setAttribute('transform', `translate(${rx} ${ry}) rotate(${rf((2+t)/3)}) translate(${-rx}, ${-ry})`)
             },
             t => {
                 p3.setAttribute('transform', '');
+                p0.setAttribute('transform', '');
             }
         ]);
     });
