@@ -128,6 +128,36 @@ window.addEventListener('load', () => {
         ]);
     });
 
+    anim(document.getElementById('home_squares'), 600, elt => {
+        let ps = elt.getElementsByTagName('path'), p0 = ps[0], p1 = ps[1];
+
+        // coordinate system conversions
+        const c2p = (x, y) => [Math.sqrt(x*x + y*y), Math.atan2(y, x)];
+        const p2c = (r, th) => (r * Math.cos(th)) + ' ' + (r * Math.sin(th));
+
+        // generate polar coords for blocks
+        const resolution = 20;
+        const scale = 4.5;
+
+        let pts0 = [];
+        for (let i = 0; i <= resolution; ++i) pts0.push(c2p(-1 + 4*(i/resolution), -3));
+        for (let i = 0; i <= resolution; ++i) pts0.push(c2p(3, -3 + 4*(i/resolution)));
+        for (let i = 0; i <= resolution; ++i) pts0.push(c2p(3 - 4*(i/resolution), 1));
+        for (let i = 0; i <= resolution; ++i) pts0.push(c2p(-1, 1 - 4*(i/resolution)));
+
+        let pts1 = [];
+        for (let i = 0; i <= resolution; ++i) pts1.push(c2p(-3 + 4*(i/resolution), -1));
+        for (let i = 0; i <= resolution; ++i) pts1.push(c2p(1, -1 + 4*(i/resolution)));
+        for (let i = 0; i <= resolution; ++i) pts1.push(c2p(1 - 4*(i/resolution), 3));
+        for (let i = 0; i <= resolution; ++i) pts1.push(c2p(-3, 3 - 4*(i/resolution)));
+
+        return ts => {
+            const exp = 2 - 4*(ts - 0.5)*(ts - 0.5);
+            p0.setAttribute('d', 'M ' + pts0.map(p => p2c(Math.pow(p[0]/scale, exp) * scale, p[1]*exp)).join(' L '));
+            p1.setAttribute('d', 'M ' + pts1.map(p => p2c(Math.pow(p[0]/scale, exp) * scale, p[1]*exp)).join(' L '));
+        };
+    });
+
 });
 
 function anim(elt, dur, fn) {

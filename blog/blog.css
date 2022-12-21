@@ -5,3 +5,4 @@ span.all {
     float: right;
     font-size: 16px;
 }
+main img { max-width: 100%; }
