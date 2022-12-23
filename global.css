@@ -189,7 +189,7 @@ blockquote { border-left: 5px solid #444; padding-left: 1em; margin-left: 0; }
 hr { border: none; border-bottom: 1px solid #444; }
 ul, ol { padding: 0; padding-left: 1em; margin: 1em 0; }
 li { padding: 0; margin: 1em 0; }
-ul.small li, ol.small li { margin: 0; }
+ul.small li, ol.small li, ul.small ul, ol.small ul, ul.small ol, ol.small ol { margin: 0; }
 ul.selfsm, ol.selfsm { margin: 0; }
 strong { color: #fff; }
 input, textarea, button { background-color: #383838; border: 1px solid #585858; border-radius: 3px; color: #d8d8d8; font-size: 18px; }

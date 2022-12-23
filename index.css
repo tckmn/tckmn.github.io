@@ -24,3 +24,5 @@ section a:hover {
 section svg { width: 200px; margin: -50px; }
 section a, section a:visited { text-decoration: none; color: #d8d8d8; }
 section p { margin: 0; }
+
+p#me { text-align: center; }
