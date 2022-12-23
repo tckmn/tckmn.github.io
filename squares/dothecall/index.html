@@ -3,10 +3,10 @@
     <head>
         <meta charset='utf-8'>
         <meta name='viewport' content='width=device-width, initial-scale=1'>
-        <title>Miscellany - Square dancing - Andy Tockman</title>
+        <title>Do The Call - Square dancing - Andy Tockman</title>
         <link rel='stylesheet' type='text/css' href='/global.css'>
         <link rel='stylesheet' type='text/css' href='../squares.css'>
-        
+        <script src='/js/dothecall.js'></script>
         <link rel='apple-touch-icon' sizes='180x180' href='/apple-touch-icon.png'>
         <link rel='icon' type='image/png' sizes='32x32' href='/favicon-32x32.png'>
         <link rel='icon' type='image/png' sizes='16x16' href='/favicon-16x16.png'>
@@ -14,12 +14,12 @@
         <link rel='mask-icon' href='/safari-pinned-tab.svg' color='#5bbad5'>
         <meta name='msapplication-TileColor' content='#da532c'>
         <meta name='theme-color' content='#ffffff'>
-        <meta name='description' content='Here&#39;s a bunch of square-shaped ramblings that don&#39;t fit anywhere else.'>
-        <meta property='og:title' content='Miscellany' />
+        <meta name='description' content='Dance The Sequence?'>
+        <meta property='og:title' content='Do The Call' />
         <meta property='og:type' content='website' />
-        <meta property='og:url' content='https://tck.mn/squares/misc' />
+        <meta property='og:url' content='https://tck.mn/squares/dothecall' />
         <meta property='og:image' content='https://tck.mn/img/dp.png' />
-        <meta property='og:description' content='Here&#39;s a bunch of square-shaped ramblings that don&#39;t fit anywhere else.' />
+        <meta property='og:description' content='Dance The Sequence?' />
         <meta property='og:site_name' content='Andy Tockman' />
     </head>
     <body>
@@ -87,78 +87,41 @@
 
         <main>
         
-<h1>Miscellany</h1><p><a href='..'>« back</a></p>
+<h1>Do The Call</h1><p><a href='..'>« back</a></p>
 
-<p>
-Here's a bunch of square-shaped ramblings
-that don't fit anywhere else.
+
+
+
+<div id='dtc'>
+    <div id='fst'></div>
+    <div id='the'>The</div>
+    <div id='snd'></div>
+</div>
+
+<p id='dtcbtn'>
+    <button id='another'>another?</button>
 </p>
 
-<h2>jokes</h2>
+<p>
+    level:
+    <span data-lvl=0 class='dtclvl on'>MS</span>
+    <span data-lvl=1 class='dtclvl on'>Plus</span>
+    <span data-lvl=2 class='dtclvl'>A1</span>
+    <span data-lvl=3 class='dtclvl'>A2</span>
+    <span data-lvl=4 class='dtclvl'>C1</span>
+    <span data-lvl=5 class='dtclvl'>C2</span>
+    <span data-lvl=6 class='dtclvl'>C3A</span>
+    <span data-lvl=7 class='dtclvl'>C3B</span>
+    <span data-lvl=8 class='dtclvl'>C4</span>
+</p>
 
-<ul>
-    <li>By analogy with <span class='call a'><span class='c1'>A2</span><span class='c2'>switch to a diamond</span></span> and <span class='call a'><span class='c1'>A2</span><span class='c2'>switch to an hourglass</span></span>, <span class='call c'><span class='c1'>C4</span><span class='c2'>ends cut in</span></span> could be described as "switch to a crossover"... and <span class='call p'><span class='c1'>plus</span><span class='c2'>trade</span></span> is "switch to a split".</li>
-    <li><span class='call p'><span class='c1'>plus</span><span class='c2'>explode</span></span> shouldn't be a plus call. Based on its name, it should be C4.</li>
-    <li><a href='../dothecall'>Do The Call</a></li>
-</ul>
-
-<h2>anecdotes</h2>
-
-<ul>
-    <li>
-        There was a pool dance I participated in at a squares weekend (it's exactly what it sounds like, just a square dance but in a pool. We did one on an ice rink too). My favorite moment was "pass to the cen- wait, no, dive thru!!"
-    </li>
-    <li>
-        The <a href='https://www.danceinfo.org/uploads/2/4/6/6/24661272/peasfrozen20.pdf'>frozen peas</a> anecdote
-        is documented in a few places on the internet;
-        however,
-        it's been extended even further at Tech Squares.
-        Our callback is "Kevin's peas are frozen!",
-        because a member named Kevin was the one who first introduced it here.
-        Apparently,
-        even knowledge of this one has spread;
-        at IAGSDC 2022,
-        when Sandie Bryant called a mini-busy in a hall with enough Tech Squares dancers,
-        she was ready to retort to our "Kevin's peas are frozen!"
-        with an immediate and deadpan "...they are not".
-    </li>
-</ul>
-
-<h2>observations</h2>
-
-<ul>
-    <li>From an eight chain, "circulate once and a half" is the same as "circulate a half, circulate a half".</li>
-    <li>From facing lines, 1/2 stable regroup = hocus pocus.</li>
-    <li>There's an obvious generalization to define zip code 0: centers 1/4 out and jog (i.e. the ends do their part of slim down, and the centers either phantom run or slim down).</li>
-    <li>The word "spin" has many meanings:
-        <ul>
-            <li>swing, e.g. <span class='call p'><span class='c1'>plus</span><span class='c2'>spin the top</span></span> vs <span class='call c'><span class='c1'>C3A</span><span class='c2'>the top</span></span></li>
-            <li>swing slip, e.g. <span class='call a'><span class='c1'>A2</span><span class='c2'>spin the windmill</span></span> vs <span class='call c'><span class='c1'>C1</span><span class='c2'>the windmill</span></span></li>
-            <li>hinge by 1/2 x 3/4, e.g. <span class='call p'><span class='c1'>plus</span><span class='c2'>spin chain thru</span></span> vs <span class='call c'><span class='c1'>C1</span><span class='c2'>chain thru</span></span></li>
-            <li>left touch 3/4, e.g. <span class='call c'><span class='c1'>C1</span><span class='c2'>rotary spin</span></span> vs <span class='call c'><span class='c1'>C2</span><span class='c2'>rotary</span></span></li>
-            <li>right touch 3/4, e.g. <span class='call c'><span class='c1'>C3A</span><span class='c2'>spin the pulley</span></span> vs <span class='call c'><span class='c1'>C3A</span><span class='c2'>the pulley</span></span></li>
-        </ul>
-    </li>
-    <li><pre><code>        c1
-|‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾|
-chase your neighbor
-|___| |___________|
- c3b       c2</code></pre>
-</ul>
-
-<h2>gallery</h2>
-
-<p>A dinner I cooked for my living group.</p>
-<div class='gallery'><img src='menu.jpg'></div>
-
-<p>The best warning message in <a href='https://challengedance.org/sd/'>sd</a>.</p>
-<div class='gallery'><img src='sdwarn.png'></div>
-
-<p>At a tape group once, we filled a chalkboard with silly call rebuses.</p>
-<div class='gallery'><img src='chalkboard.jpg'></div>
-
-<p>A pair of memes featuring the wonderful Ted Lizotte, caller for Tech Squares.</p>
-<div class='gallery2'><img src='tedmeme1.png'><img src='tedmeme2.png'></div>
+<div id='asin'>
+    <em>as in...</em>
+    <div>
+        <div id='asinfst'></div>
+        <div id='asinsnd'></div>
+    </div>
+</div>
 
         </main>
 

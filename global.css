@@ -192,12 +192,12 @@ li { padding: 0; margin: 1em 0; }
 ul.small li, ol.small li { margin: 0; }
 ul.selfsm, ol.selfsm { margin: 0; }
 strong { color: #fff; }
-input, textarea { background-color: #383838; border: 1px solid #585858; border-radius: 3px; color: #d8d8d8; font-size: 18px; }
+input, textarea, button { background-color: #383838; border: 1px solid #585858; border-radius: 3px; color: #d8d8d8; font-size: 18px; }
 code.pre { white-space: pre; }
 pre.widecode { overflow-x: auto; background-color: #282828; padding: 3px 6px; border-radius: 3px; }
-input[type='submit']:hover { background-color: #484848; }
-input[type='submit']:active { background-color: #585858; }
-input[type='submit']:disabled { background-color: #282828; border-color: #383838; color: #585858; }
+button:hover, input[type='submit']:hover { background-color: #484848; }
+button:active, input[type='submit']:active { background-color: #585858; }
+button:disabled, input[type='submit']:disabled { background-color: #282828; border-color: #383838; color: #585858; }
 
 a { color: #7cafc2; }
 a:visited { color: #ba8baf; }
