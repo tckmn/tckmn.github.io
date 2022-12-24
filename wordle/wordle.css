@@ -1,7 +1,0 @@
-table#speed { margin-left: 20px; }
-table#speed th { text-align: left; }
-table#speed td { vertical-align: top; padding: 20px 40px 0 0; }
-span.code { font-family: monospace; }
-span.nick { font-style: italic; font-size: 11pt; color: #aaa; display: block; }
-
-table#vars td { padding: 20px; }
