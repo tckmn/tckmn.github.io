@@ -18,12 +18,13 @@ function go(input) {
     const ad = aday.findIndex(d => x.includes(d.slice(0,3).toLowerCase()));
     const ed = eday.findIndex(d => x.includes(d.slice(0,3).toLowerCase()));
 
+    const magic = 122;
     if (ad !== -1) {
         // if (th > 28) return;
-        return [0, (28*ad + th + 97) % 168, (28*ad + th) % 168, tm];
+        return [0, (28*ad + th + magic) % 168, (28*ad + th) % 168, tm];
     } else if (ed !== -1) {
         // if (th > 24) return;
-        return [1, (24*ed + th) % 168, (24*ed + th + 71) % 168, tm];
+        return [1, (24*ed + th) % 168, (24*ed + th + 168 - magic) % 168, tm];
     }
 }
 
