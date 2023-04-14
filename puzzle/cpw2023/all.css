@@ -1,0 +1,7 @@
+body { background-color: #000; color: #d8d8d8; font: 13pt sans-serif; }
+main { max-width: 1000px; margin: 0 auto; padding: 1rem; }
+h1 { font-size: 22pt; margin: 0; }
+p#sub { font-style: italic; margin: 0 0 3rem; }
+a { color: #7cafc2; }
+a:visited { color: #ba8baf; }
+img { max-width: 100%; }

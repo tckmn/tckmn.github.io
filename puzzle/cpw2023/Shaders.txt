@@ -1,0 +1,12 @@
+In reading order:
+- gradient: green on top left, yellow on top right, red on bottom right, black on bottom left
+- orange
+- red/magenta/black/blue
+- red/magenta/black/red
+- blue
+- green gradient
+- blue/white/red
+- red gradient
+- blue gradient
+- cyan/black/black/cyan
+- magenta/blue
