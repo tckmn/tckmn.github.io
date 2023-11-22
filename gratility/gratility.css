@@ -1,0 +1,26 @@
+main {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: horizontal;
+    font-family: sans-serif;
+}
+
+section#toolbar {
+    width: 200px;
+    overflow-y: scroll;
+}
+
+section#toolbar > button { width: 100%; }
+
+div#toolbox > div {
+    display: flex;
+    justify-content: space-between;
+}
+
+svg#grid {
+    flex: 1;
+}
