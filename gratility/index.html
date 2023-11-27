@@ -10,15 +10,73 @@
         <script type='text/javascript'>requirejs(['main'])</script>
     </head>
     <body>
+
         <main>
             <section id='toolbar'>
                 <div id='toolbox'>
                 </div>
-                <button id='sltoolbox'>save/load toolbox</button>
-                <button id='slstamp'>save/load stamp</button>
-                <button id='slcolors'>save/load colors</button>
+                <div style='flex:1'></div>
+                <button class='menuaction' data-menu='addtool'>+ add tool...</button>
+                <button class='menuaction' data-menu='toolbox'>save/load toolbox</button>
+                <button class='menuaction' data-menu='stamp'>save/load stamp</button>
+                <button class='menuaction' data-menu='colors'>save/load colors</button>
             </section>
             <svg id='grid'></svg>
         </main>
+
+        <div id='menupopups'>
+
+            <div data-menu='addtool'>
+                <p><strong>binding</strong></p>
+                <div>
+                    <!-- what kind? -->
+                    <!-- <span class='menuinput multisel' data-multisel='mouse'><!-- -->
+                    <!--     -1-><button class='left active' data-multisel='mouse'>mouse</button><!-- -->
+                    <!--     -1-><button class='mid' data-multisel='key'>key</button><!-- -->
+                    <!--     -1-><button class='right' data-multisel='wheel'>wheel</button><!-- -->
+                    <!-- -1-></span> -->
+                    click, type, or scroll here:
+                    <input class='menuinput' data-menu='binding' data-event='pointerdown=bindmouse;keydown=bindkey;wheel=bindwheel;paste=nop;contextmenu=nop'>
+                </div>
+                <p><strong>action</strong></p>
+                <div id='actions' class='menuinput big' data-menu='actions' data-events='div.settool@click=settool'>
+                    <section class='group first'>
+                        <span>drawing</span>
+                        <div class='settool full' data-tool='surface'>Surface <label>color: <input></label></div>
+                        <div class='settool full' data-tool='line'>Line <label>color: <input></label></div>
+                    </section>
+
+                    <section class='group'>
+                        <span>movement</span>
+                        <div class='settool' data-tool='pan'>Pan</div>
+                        <div class='settool' data-tool='zoomin'>Zoom in</div>
+                        <div class='settool' data-tool='zoomout'>Zoom out</div>
+                    </section>
+
+                    <section class='group'>
+                        <span>stamps</span>
+                        <div class='settool' data-tool='copy'>Copy</div>
+                        <div class='settool' data-tool='paste'>Paste</div>
+                    </section>
+
+                    <section class='group'>
+                        <span>misc</span>
+                        <div class='settool' data-tool='undo'>Undo</div>
+                        <div class='settool' data-tool='redo'>Redo</div>
+                    </section>
+                </div>
+                <button class='menuinput' data-menu='go' data-event='click=go'>add</button>
+            </div>
+
+            <div data-menu='stamp'>
+                <textarea class='menuinput big' data-menu='value' data-event='keypress=key'></textarea>
+                <button class='menuinput' data-menu='go' data-event='click=go'>load</button>
+            </div>
+
+        </div>
+
+        <div id='alerts'>
+        </div>
+
     </body>
 </html>
