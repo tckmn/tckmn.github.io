@@ -97,6 +97,8 @@ div#alerts > div {
 .multisel button.active { background-color: #161; color: #eee; }
 .multisel button.active:hover { background-color: #040; }
 
+input.conflict { box-shadow: 0 0 5px 2px #f00; }
+
 section.group {
     position: relative;
     border: 1px dashed #666;
@@ -131,6 +133,7 @@ div#actions div.settool {
 
 div#actions div.settool.full {
     display: flex;
+    flex-wrap: wrap;
     width: auto;
 }
 
@@ -142,7 +145,7 @@ div#actions div.settool.addtool-active {
     background-color: #9f9;
 }
 
-div#actions div.settool label {
+div#actions div.settool > label, div#actions div.settool > span {
     background-color: #ddf;
     padding: 5px 10px;
     margin-left: 20px;

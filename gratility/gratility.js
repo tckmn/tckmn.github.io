@@ -105,6 +105,9 @@ define("draw", ["require", "exports"], function (require, exports) {
                 for (let child of v)
                     elt.appendChild(child);
             }
+            else if (k === 'textContent') {
+                elt.textContent = v;
+            }
             else {
                 elt.setAttribute(k === 'viewBox' ? k : k.replace(/[A-Z]/g, m => '-' + m.toLowerCase()), v);
             }
@@ -118,25 +121,33 @@ define("draw", ["require", "exports"], function (require, exports) {
 define("measure", ["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.hctype = exports.rhalfcell = exports.rcell = exports.halfcell = exports.cell = exports.round = exports.CELL = exports.LINE = exports.ZOOMTICK = exports.HALFCELL = exports.GRIDSIZE = exports.GRIDLINE = exports.GRIDCOLOR = void 0;
+    exports.hctype = exports.physhc = exports.hc = exports.cell = exports.round = exports.CELL = exports.EDGE = exports.LINE = exports.ZOOMTICK = exports.HALFCELL = exports.GRIDSIZE = exports.GRIDLINE = exports.GRIDCOLOR = void 0;
     exports.GRIDCOLOR = '#aaa';
     exports.GRIDLINE = 1;
     exports.GRIDSIZE = 500;
     exports.HALFCELL = 20;
     exports.ZOOMTICK = 1.1;
     exports.LINE = 5;
+    exports.EDGE = 5;
     exports.CELL = 2 * exports.HALFCELL;
-    // TODO figure these out
+    // this doesn't really belong here lol
     function round(x, r) { return Math.round(x / r) * r; }
     exports.round = round;
+    // when you only care about which square in the visual grid the point is in, use this one
     function cell(x) { return Math.floor(x / exports.CELL); }
     exports.cell = cell;
-    function halfcell(x) { return Math.round(x / exports.HALFCELL); }
-    exports.halfcell = halfcell;
-    function rcell(x) { return Math.round(x / exports.CELL) * exports.CELL; }
-    exports.rcell = rcell;
-    function rhalfcell(x) { return Math.round(x / exports.HALFCELL) * exports.HALFCELL; }
-    exports.rhalfcell = rhalfcell;
+    // i think of this as the fundamental one, i guess
+    // "spc" specifies how much to weight grid-aligned points relative to half-grid-aligned points
+    // higher values of "spc" result in rounding towards gridline intersections more
+    // cf pzv MouseInput#getpos
+    function hc(x, spc = 0.25) {
+        const prelim = x / exports.CELL, cellpos = Math.floor(prelim), offset = prelim - cellpos;
+        return cellpos * 2 + (offset >= spc ? 1 : 0) + (offset >= 1 - spc ? 1 : 0);
+    }
+    exports.hc = hc;
+    // sometimes you want the physical coordinates
+    function physhc(x, spc = 0.25) { return hc(x, spc) * exports.HALFCELL; }
+    exports.physhc = physhc;
     function hctype(x, y) {
         return (Math.abs(x % 2) << 1) | Math.abs(y % 2);
     }
@@ -145,12 +156,16 @@ define("measure", ["require", "exports"], function (require, exports) {
 define("layer", ["require", "exports", "draw", "measure"], function (require, exports, Draw, Measure) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.obj = exports.initialize = exports.stamps = exports.copypaste = exports.line = exports.surface = exports.grid = exports.parent = void 0;
+    exports.obj = exports.initialize = exports.stamps = exports.copypaste = exports.text = exports.textInd = exports.shape = exports.edge = exports.line = exports.surface = exports.grid = exports.parent = void 0;
     function initialize(svg) {
         exports.parent = Draw.draw(svg, 'g');
         exports.grid = Draw.draw(exports.parent, 'g', { stroke: Measure.GRIDCOLOR, strokeWidth: Measure.GRIDLINE });
         exports.surface = Draw.draw(exports.parent, 'g');
         exports.line = Draw.draw(exports.parent, 'g');
+        exports.edge = Draw.draw(exports.parent, 'g');
+        exports.shape = Draw.draw(exports.parent, 'g');
+        exports.textInd = Draw.draw(exports.parent, 'g');
+        exports.text = Draw.draw(exports.parent, 'g');
         exports.copypaste = Draw.draw(exports.parent, 'g');
         exports.stamps = Draw.draw(exports.parent, 'g', { opacity: 0.5 });
     }
@@ -159,6 +174,9 @@ define("layer", ["require", "exports", "draw", "measure"], function (require, ex
         switch (obj) {
             case 0 /* Data.Obj.SURFACE */: return exports.surface;
             case 1 /* Data.Obj.LINE */: return exports.line;
+            case 2 /* Data.Obj.EDGE */: return exports.edge;
+            case 3 /* Data.Obj.SHAPE */: return exports.shape;
+            case 4 /* Data.Obj.TEXT */: return exports.text;
         }
     }
     exports.obj = obj;
@@ -167,6 +185,136 @@ define("tools/tool", ["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
 });
+define("tools/copy", ["require", "exports", "data", "draw", "layer", "measure", "stamp"], function (require, exports, Data, Draw, Layer, Measure, Stamp) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class CopyTool {
+        constructor() {
+            this.repeat = false;
+            this.sx = 0;
+            this.sy = 0;
+            this.tx = 0;
+            this.ty = 0;
+        }
+        name() { return 'Copy'; }
+        icon() { }
+        ondown(x, y) {
+            this.sx = x;
+            this.sy = y;
+            this.tx = x;
+            this.ty = y;
+            this.elt = Draw.draw(Layer.copypaste, 'rect', {
+                x: x,
+                y: y,
+                width: 0,
+                height: 0,
+                fill: 'rgba(0,0,0,0.25)',
+                stroke: '#000'
+            });
+        }
+        onmove(x, y) {
+            this.tx = x;
+            this.ty = y;
+            const sx = Measure.physhc(Math.min(this.sx, this.tx));
+            const sy = Measure.physhc(Math.min(this.sy, this.ty));
+            const tx = Measure.physhc(Math.max(this.sx, this.tx));
+            const ty = Measure.physhc(Math.max(this.sy, this.ty));
+            if (this.elt !== undefined) {
+                this.elt.setAttribute('x', sx.toString());
+                this.elt.setAttribute('y', sy.toString());
+                this.elt.setAttribute('width', (tx - sx).toString());
+                this.elt.setAttribute('height', (ty - sy).toString());
+            }
+        }
+        onup() {
+            if (this.elt !== undefined)
+                Layer.copypaste.removeChild(this.elt);
+            const sx = Measure.hc(Math.min(this.sx, this.tx));
+            const sy = Measure.hc(Math.min(this.sy, this.ty));
+            const tx = Measure.hc(Math.max(this.sx, this.tx));
+            const ty = Measure.hc(Math.max(this.sy, this.ty));
+            if (sx === tx && sy === ty) {
+                Stamp.deselect();
+                return;
+            }
+            const xoff = Math.round(sx / 2) * 2;
+            const yoff = Math.round(sy / 2) * 2;
+            const stamp = new Array();
+            for (let x = sx; x <= tx; ++x) {
+                for (let y = sy; y <= ty; ++y) {
+                    const n = Data.encode(x, y);
+                    const hc = Data.halfcells.get(n);
+                    if (hc !== undefined) {
+                        stamp.push(...Array.from(hc.entries()).map(([k, v]) => {
+                            return new Data.Item(n, k, v);
+                        }));
+                    }
+                }
+            }
+            Stamp.add(stamp);
+        }
+    }
+    exports.default = CopyTool;
+});
+define("tools/edge", ["require", "exports", "data", "draw", "measure"], function (require, exports, Data, Draw, Measure) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    const HC_WEIGHT = 0.35;
+    class EdgeTool {
+        name() { return 'Edge'; }
+        icon() {
+            return Draw.draw(undefined, 'svg', {
+                viewBox: `-${Measure.HALFCELL} 0 ${Measure.CELL} ${Measure.CELL}`,
+                children: [
+                    Data.objdraw(2 /* Data.Obj.EDGE */, 0, 1, this.color)
+                ]
+            });
+        }
+        constructor(color) {
+            this.color = color;
+            this.repeat = false;
+            this.isDrawing = undefined;
+            this.x = 0;
+            this.y = 0;
+        }
+        ondown(x, y) {
+            this.x = Measure.hc(x, HC_WEIGHT);
+            this.y = Measure.hc(y, HC_WEIGHT);
+        }
+        onmove(x, y) {
+            var _a;
+            x = Measure.hc(x, HC_WEIGHT);
+            y = Measure.hc(y, HC_WEIGHT);
+            if (x === this.x && y === this.y)
+                return;
+            const dx = Math.abs(this.x - x);
+            const dy = Math.abs(this.y - y);
+            const lx = Math.min(x, this.x);
+            const ly = Math.min(y, this.y);
+            this.x = x;
+            this.y = y;
+            if (!(dx === 0 && dy === 1 && lx % 2 === 0 || dx === 1 && dy === 0 && ly % 2 === 0))
+                return;
+            const n = dx > 0 ? Data.encode(lx + (lx % 2 === 0 ? 1 : 0), ly) : Data.encode(lx, ly + (ly % 2 === 0 ? 1 : 0));
+            const edge = (_a = Data.halfcells.get(n)) === null || _a === void 0 ? void 0 : _a.get(2 /* Data.Obj.EDGE */);
+            if (this.isDrawing === undefined) {
+                this.isDrawing = edge === undefined;
+            }
+            if (edge === undefined) {
+                if (this.isDrawing) {
+                    Data.add(new Data.Change(n, 2 /* Data.Obj.EDGE */, edge, this.color));
+                }
+            }
+            else {
+                if (!this.isDrawing) {
+                    Data.add(new Data.Change(n, 2 /* Data.Obj.EDGE */, edge, undefined));
+                }
+            }
+        }
+        onup() { this.isDrawing = undefined; }
+    }
+    exports.default = EdgeTool;
+});
 define("tools/line", ["require", "exports", "data", "draw", "measure"], function (require, exports, Data, Draw, Measure) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -174,9 +322,9 @@ define("tools/line", ["require", "exports", "data", "draw", "measure"], function
         name() { return 'Line'; }
         icon() {
             return Draw.draw(undefined, 'svg', {
-                viewBox: `-${Measure.HALFCELL} 0 ${Measure.HALFCELL * 2} ${Measure.HALFCELL * 2}`,
+                viewBox: `-${Measure.HALFCELL} 0 ${Measure.CELL} ${Measure.CELL}`,
                 children: [
-                    Data.drawfns[1 /* Data.Obj.LINE */](0, 1, this.color)
+                    Data.objdraw(1 /* Data.Obj.LINE */, 0, 1, this.color)
                 ]
             });
         }
@@ -243,7 +391,7 @@ define("view", ["require", "exports", "layer", "measure"], function (require, ex
     exports.setY = setY;
     function setZ(n) { exports.z = n; }
     exports.setZ = setZ;
-    function zoom() { return Math.pow(Measure.ZOOMTICK, exports.z); }
+    function zoom(n) { return Math.pow(Measure.ZOOMTICK, n !== null && n !== void 0 ? n : exports.z); }
     exports.zoom = zoom;
     function update() {
         layer_1.parent.setAttribute('transform', `scale(${zoom()}) translate(${exports.x} ${exports.y})`);
@@ -273,166 +421,6 @@ define("tools/pan", ["require", "exports", "view"], function (require, exports, 
         onup() { }
     }
     exports.default = PanTool;
-});
-define("tools/surface", ["require", "exports", "data", "draw", "measure"], function (require, exports, Data, Draw, Measure) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    class SurfaceTool {
-        name() { return 'Surface'; }
-        icon() {
-            return Draw.draw(undefined, 'svg', {
-                viewBox: `0 0 ${Measure.HALFCELL * 2} ${Measure.HALFCELL * 2}`,
-                children: [
-                    Data.drawfns[0 /* Data.Obj.SURFACE */](0, 0, this.color)
-                ]
-            });
-        }
-        constructor(color) {
-            this.color = color;
-            this.repeat = false;
-            this.isDrawing = false;
-        }
-        ondown(x, y) {
-            var _a;
-            x = Measure.cell(x);
-            y = Measure.cell(y);
-            const n = Data.encode(x * 2, y * 2);
-            const surface = (_a = Data.halfcells.get(n)) === null || _a === void 0 ? void 0 : _a.get(0 /* Data.Obj.SURFACE */);
-            if (surface === undefined) {
-                Data.add(new Data.Change(n, 0 /* Data.Obj.SURFACE */, surface, this.color));
-                this.isDrawing = true;
-            }
-            else {
-                Data.add(new Data.Change(n, 0 /* Data.Obj.SURFACE */, surface, undefined));
-                this.isDrawing = false;
-            }
-        }
-        onmove(x, y) {
-            var _a;
-            x = Measure.cell(x);
-            y = Measure.cell(y);
-            const n = Data.encode(x * 2, y * 2);
-            const surface = (_a = Data.halfcells.get(n)) === null || _a === void 0 ? void 0 : _a.get(0 /* Data.Obj.SURFACE */);
-            if (surface === undefined) {
-                if (this.isDrawing) {
-                    Data.add(new Data.Change(n, 0 /* Data.Obj.SURFACE */, surface, this.color));
-                }
-            }
-            else {
-                if (!this.isDrawing) {
-                    Data.add(new Data.Change(n, 0 /* Data.Obj.SURFACE */, surface, undefined));
-                }
-            }
-        }
-        onup() { }
-    }
-    exports.default = SurfaceTool;
-});
-define("tools/zoom", ["require", "exports", "view"], function (require, exports, View) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    class ZoomTool {
-        name() { return 'Zoom ' + (this.amount > 0 ? 'in' : 'out'); }
-        icon() { }
-        constructor(amount) {
-            this.amount = amount;
-            this.repeat = false;
-        }
-        ondown(x, y) {
-            View.setZ(View.z + this.amount);
-            View.update();
-        }
-        onmove(x, y) { }
-        onup() { }
-    }
-    exports.default = ZoomTool;
-});
-define("tools/undo", ["require", "exports", "data"], function (require, exports, Data) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    class UndoTool {
-        name() { return this.isUndo ? 'Undo' : 'Redo'; }
-        icon() { }
-        constructor(isUndo) {
-            this.isUndo = isUndo;
-            this.repeat = true;
-        }
-        ondown() { Data.undo(this.isUndo); }
-        onmove() { }
-        onup() { }
-    }
-    exports.default = UndoTool;
-});
-define("tools/copy", ["require", "exports", "data", "draw", "layer", "measure", "stamp"], function (require, exports, Data, Draw, Layer, Measure, Stamp) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    class CopyTool {
-        constructor() {
-            this.repeat = false;
-            this.sx = 0;
-            this.sy = 0;
-            this.tx = 0;
-            this.ty = 0;
-        }
-        name() { return 'Copy'; }
-        icon() { }
-        ondown(x, y) {
-            this.sx = x;
-            this.sy = y;
-            this.tx = x;
-            this.ty = y;
-            this.elt = Draw.draw(Layer.copypaste, 'rect', {
-                x: x,
-                y: y,
-                width: 0,
-                height: 0,
-                fill: 'rgba(0,0,0,0.25)',
-                stroke: '#000'
-            });
-        }
-        onmove(x, y) {
-            this.tx = x;
-            this.ty = y;
-            const sx = Measure.rhalfcell(Math.min(this.sx, this.tx));
-            const sy = Measure.rhalfcell(Math.min(this.sy, this.ty));
-            const tx = Measure.rhalfcell(Math.max(this.sx, this.tx));
-            const ty = Measure.rhalfcell(Math.max(this.sy, this.ty));
-            if (this.elt !== undefined) {
-                this.elt.setAttribute('x', sx.toString());
-                this.elt.setAttribute('y', sy.toString());
-                this.elt.setAttribute('width', (tx - sx).toString());
-                this.elt.setAttribute('height', (ty - sy).toString());
-            }
-        }
-        onup() {
-            if (this.elt !== undefined)
-                Layer.copypaste.removeChild(this.elt);
-            const sx = Measure.halfcell(Math.min(this.sx, this.tx));
-            const sy = Measure.halfcell(Math.min(this.sy, this.ty));
-            const tx = Measure.halfcell(Math.max(this.sx, this.tx));
-            const ty = Measure.halfcell(Math.max(this.sy, this.ty));
-            if (sx === tx && sy === ty) {
-                Stamp.deselect();
-                return;
-            }
-            const xoff = Math.round(sx / 2) * 2;
-            const yoff = Math.round(sy / 2) * 2;
-            const stamp = new Array();
-            for (let x = sx; x <= tx; ++x) {
-                for (let y = sy; y <= ty; ++y) {
-                    const n = Data.encode(x, y);
-                    const hc = Data.halfcells.get(n);
-                    if (hc !== undefined) {
-                        stamp.push(...Array.from(hc.entries()).map(([k, v]) => {
-                            return new Data.Item(n, k, v);
-                        }));
-                    }
-                }
-            }
-            Stamp.add(stamp);
-        }
-    }
-    exports.default = CopyTool;
 });
 define("tools/paste", ["require", "exports", "data", "stamp", "measure"], function (require, exports, Data, Stamp, Measure) {
     "use strict";
@@ -465,7 +453,246 @@ define("tools/paste", ["require", "exports", "data", "stamp", "measure"], functi
     }
     exports.default = PasteTool;
 });
-define("toolbox", ["require", "exports", "tools/line", "tools/pan", "tools/surface", "tools/zoom", "tools/undo", "tools/copy", "tools/paste"], function (require, exports, line_1, pan_1, surface_1, zoom_1, undo_1, copy_1, paste_1) {
+define("tools/shape", ["require", "exports", "data", "draw", "measure"], function (require, exports, Data, Draw, Measure) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    // lmao surely there is a better way
+    function atlocs(x, y, locs) {
+        const dx = x / Measure.HALFCELL, dy = y / Measure.HALFCELL;
+        const fx = Math.floor(dx), fy = Math.floor(dy);
+        let best = Measure.HALFCELL * Measure.HALFCELL * 999, bx = fx, by = fy;
+        for (let xp = 0; xp <= 1; ++xp) {
+            for (let yp = 0; yp <= 1; ++yp) {
+                if ((locs & (1 << (xp + yp))) === 0)
+                    continue;
+                const tryx = fx + (fx % 2 === 0 ? xp : 1 - xp), tryy = fy + (fy % 2 === 0 ? yp : 1 - yp);
+                const dist = (dx - tryx) * (dx - tryx) + (dy - tryy) * (dy - tryy);
+                if (dist < best) {
+                    best = dist;
+                    bx = tryx;
+                    by = tryy;
+                }
+            }
+        }
+        return [bx, by];
+    }
+    class ShapeTool {
+        name() { return 'Shape'; }
+        icon() {
+            return Draw.draw(undefined, 'svg', {
+                viewBox: `0 0 ${Measure.CELL} ${Measure.CELL}`,
+                children: [
+                    Data.objdraw(3 /* Data.Obj.SHAPE */, 1, 1, [this.spec])
+                ]
+            });
+        }
+        constructor(spec, locs // bitmask: 0b center edge corner
+        ) {
+            this.spec = spec;
+            this.locs = locs;
+            this.repeat = false;
+            this.isDrawing = false;
+        }
+        ondown(x, y) {
+            var _a;
+            [x, y] = atlocs(x, y, this.locs);
+            const n = Data.encode(x, y);
+            const shape = (_a = Data.halfcells.get(n)) === null || _a === void 0 ? void 0 : _a.get(3 /* Data.Obj.SHAPE */);
+            if (shape === undefined) {
+                Data.add(new Data.Change(n, 3 /* Data.Obj.SHAPE */, shape, [this.spec]));
+                this.isDrawing = true;
+            }
+            else if (!shape.some(sh => Data.sheq(sh, this.spec))) {
+                Data.add(new Data.Change(n, 3 /* Data.Obj.SHAPE */, shape, shape.concat(this.spec)));
+                this.isDrawing = true;
+            }
+            else {
+                const remaining = shape.filter(sh => !Data.sheq(sh, this.spec));
+                Data.add(new Data.Change(n, 3 /* Data.Obj.SHAPE */, shape, remaining.length === 0 ? undefined : remaining));
+                this.isDrawing = false;
+            }
+        }
+        onmove(x, y) {
+            var _a;
+            [x, y] = atlocs(x, y, this.locs);
+            const n = Data.encode(x, y);
+            const shape = (_a = Data.halfcells.get(n)) === null || _a === void 0 ? void 0 : _a.get(3 /* Data.Obj.SHAPE */);
+            if (shape === undefined) {
+                if (this.isDrawing) {
+                    Data.add(new Data.Change(n, 3 /* Data.Obj.SHAPE */, shape, [this.spec]));
+                }
+            }
+            else if (!shape.some(sh => Data.sheq(sh, this.spec))) {
+                if (this.isDrawing) {
+                    Data.add(new Data.Change(n, 3 /* Data.Obj.SHAPE */, shape, shape.concat(this.spec)));
+                }
+            }
+            else {
+                if (!this.isDrawing) {
+                    const remaining = shape.filter(sh => !Data.sheq(sh, this.spec));
+                    Data.add(new Data.Change(n, 3 /* Data.Obj.SHAPE */, shape, remaining.length === 0 ? undefined : remaining));
+                }
+            }
+        }
+        onup() { }
+    }
+    exports.default = ShapeTool;
+});
+define("tools/surface", ["require", "exports", "data", "draw", "measure"], function (require, exports, Data, Draw, Measure) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class SurfaceTool {
+        name() { return 'Surface'; }
+        icon() {
+            return Draw.draw(undefined, 'svg', {
+                viewBox: `0 0 ${Measure.CELL} ${Measure.CELL}`,
+                children: [
+                    Data.objdraw(0 /* Data.Obj.SURFACE */, 1, 1, this.color)
+                ]
+            });
+        }
+        constructor(color) {
+            this.color = color;
+            this.repeat = false;
+            this.isDrawing = false;
+        }
+        ondown(x, y) {
+            var _a;
+            x = Measure.cell(x);
+            y = Measure.cell(y);
+            const n = Data.encode(x * 2 + 1, y * 2 + 1);
+            const surface = (_a = Data.halfcells.get(n)) === null || _a === void 0 ? void 0 : _a.get(0 /* Data.Obj.SURFACE */);
+            if (surface === undefined) {
+                Data.add(new Data.Change(n, 0 /* Data.Obj.SURFACE */, surface, this.color));
+                this.isDrawing = true;
+            }
+            else {
+                Data.add(new Data.Change(n, 0 /* Data.Obj.SURFACE */, surface, undefined));
+                this.isDrawing = false;
+            }
+        }
+        onmove(x, y) {
+            var _a;
+            x = Measure.cell(x);
+            y = Measure.cell(y);
+            const n = Data.encode(x * 2 + 1, y * 2 + 1);
+            const surface = (_a = Data.halfcells.get(n)) === null || _a === void 0 ? void 0 : _a.get(0 /* Data.Obj.SURFACE */);
+            if (surface === undefined) {
+                if (this.isDrawing) {
+                    Data.add(new Data.Change(n, 0 /* Data.Obj.SURFACE */, surface, this.color));
+                }
+            }
+            else {
+                if (!this.isDrawing) {
+                    Data.add(new Data.Change(n, 0 /* Data.Obj.SURFACE */, surface, undefined));
+                }
+            }
+        }
+        onup() { }
+    }
+    exports.default = SurfaceTool;
+});
+define("tools/text", ["require", "exports", "data", "measure", "event", "layer", "draw"], function (require, exports, Data, Measure, Event, Layer, Draw) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class TextTool {
+        name() { return 'Text'; }
+        icon() { }
+        constructor() {
+            this.repeat = false;
+            this.n = 0;
+            this.elt = undefined;
+        }
+        ondown(x, y) {
+            if (Event.keyeater.ref === undefined) {
+                const cx = Measure.cell(x) * 2, cy = Measure.cell(y) * 2;
+                this.n = Data.encode(cx + 1, cy + 1);
+                // TODO some of this goes somewhere else
+                this.elt = Draw.draw(Layer.textInd, 'rect', {
+                    x: cx * Measure.HALFCELL, y: cy * Measure.HALFCELL, width: Measure.CELL, height: Measure.CELL,
+                    fill: '#ccc',
+                    stroke: '#f88',
+                    strokeWidth: Measure.HALFCELL / 5
+                });
+                Event.keyeater.ref = this.onkey.bind(this);
+            }
+        }
+        onkey(e) {
+            var _a;
+            const text = (_a = Data.halfcells.get(this.n)) === null || _a === void 0 ? void 0 : _a.get(4 /* Data.Obj.TEXT */);
+            if (e.key === 'Enter' || e.key === 'Escape') {
+                this.deselect();
+            }
+            else if (e.key === 'Backspace') {
+                Data.add(new Data.Change(this.n, 4 /* Data.Obj.TEXT */, text, (text !== null && text !== void 0 ? text : '').slice(0, (text !== null && text !== void 0 ? text : '').length - 1)));
+            }
+            else if (e.key.length === 1) {
+                Data.add(new Data.Change(this.n, 4 /* Data.Obj.TEXT */, text, (text !== null && text !== void 0 ? text : '') + e.key));
+            }
+        }
+        deselect() {
+            Event.keyeater.ref = undefined;
+            if (this.elt !== undefined)
+                this.elt.parentNode.removeChild(this.elt);
+        }
+        onmove(x, y) { }
+        onup() { }
+    }
+    exports.default = TextTool;
+});
+define("tools/undo", ["require", "exports", "data"], function (require, exports, Data) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class UndoTool {
+        name() { return this.isUndo ? 'Undo' : 'Redo'; }
+        icon() { }
+        constructor(isUndo) {
+            this.isUndo = isUndo;
+            this.repeat = true;
+        }
+        ondown() { Data.undo(this.isUndo); }
+        onmove() { }
+        onup() { }
+    }
+    exports.default = UndoTool;
+});
+define("tools/zoom", ["require", "exports", "view"], function (require, exports, View) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class ZoomTool {
+        name() { return 'Zoom ' + (this.amount > 0 ? 'in' : 'out'); }
+        icon() { }
+        constructor(amount) {
+            this.amount = amount;
+            this.repeat = false;
+        }
+        ondown(x, y) {
+            View.setX((x + View.x) * View.zoom(-this.amount) - x);
+            View.setY((y + View.y) * View.zoom(-this.amount) - y);
+            View.setZ(View.z + this.amount);
+            View.update();
+        }
+        onmove(x, y) { }
+        onup() { }
+    }
+    exports.default = ZoomTool;
+});
+define("tools/alltools", ["require", "exports", "tools/copy", "tools/edge", "tools/line", "tools/pan", "tools/paste", "tools/shape", "tools/surface", "tools/text", "tools/undo", "tools/zoom"], function (require, exports, copy_1, edge_1, line_1, pan_1, paste_1, shape_1, surface_1, text_1, undo_1, zoom_1) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.ZoomTool = exports.UndoTool = exports.TextTool = exports.SurfaceTool = exports.ShapeTool = exports.PasteTool = exports.PanTool = exports.LineTool = exports.EdgeTool = exports.CopyTool = void 0;
+    Object.defineProperty(exports, "CopyTool", { enumerable: true, get: function () { return copy_1.default; } });
+    Object.defineProperty(exports, "EdgeTool", { enumerable: true, get: function () { return edge_1.default; } });
+    Object.defineProperty(exports, "LineTool", { enumerable: true, get: function () { return line_1.default; } });
+    Object.defineProperty(exports, "PanTool", { enumerable: true, get: function () { return pan_1.default; } });
+    Object.defineProperty(exports, "PasteTool", { enumerable: true, get: function () { return paste_1.default; } });
+    Object.defineProperty(exports, "ShapeTool", { enumerable: true, get: function () { return shape_1.default; } });
+    Object.defineProperty(exports, "SurfaceTool", { enumerable: true, get: function () { return surface_1.default; } });
+    Object.defineProperty(exports, "TextTool", { enumerable: true, get: function () { return text_1.default; } });
+    Object.defineProperty(exports, "UndoTool", { enumerable: true, get: function () { return undo_1.default; } });
+    Object.defineProperty(exports, "ZoomTool", { enumerable: true, get: function () { return zoom_1.default; } });
+});
+define("toolbox", ["require", "exports", "tools/alltools"], function (require, exports, Tools) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Toolbox {
@@ -474,16 +701,49 @@ define("toolbox", ["require", "exports", "tools/line", "tools/pan", "tools/surfa
             this.mouseTools = new Map();
             this.keyTools = new Map();
             this.wheelTools = new Map();
-            this.bindMouse(1, new pan_1.default());
-            this.bindKey(' ', new pan_1.default());
-            this.bindKey('s', new surface_1.default(0));
-            this.bindKey('d', new line_1.default(1));
-            this.bindKey('z', new undo_1.default(true));
-            this.bindKey('x', new undo_1.default(false));
-            this.bindKey('c', new copy_1.default());
-            this.bindKey('v', new paste_1.default());
-            this.bindWheel(true, new zoom_1.default(1));
-            this.bindWheel(false, new zoom_1.default(-1));
+            this.bindMouse(1, new Tools.PanTool());
+            this.bindKey(' ', new Tools.PanTool());
+            this.bindKey('s', new Tools.SurfaceTool(0));
+            this.bindKey('d', new Tools.LineTool(1));
+            this.bindKey('e', new Tools.EdgeTool(0));
+            this.bindKey('t', new Tools.TextTool());
+            this.bindKey('z', new Tools.UndoTool(true));
+            this.bindKey('x', new Tools.UndoTool(false));
+            this.bindKey('c', new Tools.CopyTool());
+            this.bindKey('v', new Tools.PasteTool());
+            this.bindWheel(true, new Tools.ZoomTool(1));
+            this.bindWheel(false, new Tools.ZoomTool(-1));
+            // temporary
+            this.bindKey('1', new Tools.ShapeTool({
+                shape: 3 /* Data.Shape.STAR */,
+                fill: 2,
+                outline: 0,
+                size: 1
+            }, 0b111));
+            this.bindKey('2', new Tools.ShapeTool({
+                shape: 3 /* Data.Shape.STAR */,
+                fill: undefined,
+                outline: 0,
+                size: 2
+            }, 0b100));
+            this.bindKey('3', new Tools.ShapeTool({
+                shape: 3 /* Data.Shape.STAR */,
+                fill: undefined,
+                outline: 0,
+                size: 3
+            }, 0b100));
+            this.bindKey('4', new Tools.ShapeTool({
+                shape: 3 /* Data.Shape.STAR */,
+                fill: undefined,
+                outline: 0,
+                size: 4
+            }, 0b100));
+            this.bindKey('5', new Tools.ShapeTool({
+                shape: 3 /* Data.Shape.STAR */,
+                fill: undefined,
+                outline: 0,
+                size: 5
+            }, 0b100));
         }
         toolDisplay(tool, txt, delcb) {
             const bind = document.createElement('div');
@@ -542,8 +802,9 @@ define("toolbox", ["require", "exports", "tools/line", "tools/pan", "tools/surfa
 define("event", ["require", "exports", "view"], function (require, exports, View) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.initialize = exports.onmove = void 0;
+    exports.initialize = exports.keyeater = exports.onmove = void 0;
     exports.onmove = [];
+    exports.keyeater = { ref: undefined };
     function initialize(svg, page, toolbox, menu) {
         const activeTools = new Set();
         const rect = svg.getBoundingClientRect();
@@ -591,6 +852,10 @@ define("event", ["require", "exports", "view"], function (require, exports, View
             if (menu.isOpen()) {
                 if (e.key === 'Escape')
                     menu.close();
+                return;
+            }
+            if (exports.keyeater.ref !== undefined) {
+                exports.keyeater.ref(e);
                 return;
             }
             const t = toolbox.keyTools.get(e.key);
@@ -658,7 +923,7 @@ define("stamp", ["require", "exports", "data", "event", "layer", "measure"], fun
         stamppos = exports.stamps.length - 1;
         Layer.stamps.replaceChildren(...cells.map(cell => {
             const [x, y] = Data.decode(cell.n);
-            return Data.drawfns[cell.obj](x - xoff, y - yoff, cell.data);
+            return Data.objdraw(cell.obj, x - xoff, y - yoff, cell.data);
         }));
     }
     exports.add = add;
@@ -679,7 +944,7 @@ define("stamp", ["require", "exports", "data", "event", "layer", "measure"], fun
     }
     exports.initialize = initialize;
 });
-define("menu", ["require", "exports", "stamp", "data", "tools/line", "tools/pan", "tools/surface", "tools/zoom", "tools/undo", "tools/copy", "tools/paste"], function (require, exports, Stamp, Data, line_2, pan_2, surface_2, zoom_2, undo_2, copy_2, paste_2) {
+define("menu", ["require", "exports", "stamp", "data", "tools/alltools"], function (require, exports, Stamp, Data, Tools) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     const menuactions = new Map([
@@ -703,16 +968,22 @@ define("menu", ["require", "exports", "stamp", "data", "tools/line", "tools/pan"
         if (e.button !== 0)
             e.preventDefault();
         target.value = 'click ' + e.button;
-        resolve = tool => manager.toolbox.bindMouse(e.button, tool);
+        const conflict = manager.toolbox.mouseTools.has(e.button);
+        target.classList.toggle('conflict', conflict);
+        resolve = conflict ? undefined : tool => manager.toolbox.bindMouse(e.button, tool);
     });
     menuevents.set('addtool-bindkey', (manager, menu, e, target) => {
         e.preventDefault();
         target.value = 'key [' + e.key + ']';
-        resolve = tool => manager.toolbox.bindKey(e.key, tool);
+        const conflict = manager.toolbox.keyTools.has(e.key);
+        target.classList.toggle('conflict', conflict);
+        resolve = conflict ? undefined : tool => manager.toolbox.bindKey(e.key, tool);
     });
     menuevents.set('addtool-bindwheel', (manager, menu, e, target) => {
         target.value = 'scr ' + (e.deltaY < 0 ? 'up' : 'dn');
-        resolve = tool => manager.toolbox.bindWheel(e.deltaY < 0, tool);
+        const conflict = manager.toolbox.wheelTools.has(e.deltaY < 0);
+        target.classList.toggle('conflict', conflict);
+        resolve = conflict ? undefined : tool => manager.toolbox.bindWheel(e.deltaY < 0, tool);
     });
     menuevents.set('addtool-nop', (manager, menu, e) => {
         e.preventDefault();
@@ -725,7 +996,7 @@ define("menu", ["require", "exports", "stamp", "data", "tools/line", "tools/pan"
     });
     menuevents.set('addtool-go', (manager, menu) => {
         if (resolve === undefined) {
-            MenuManager.alert('please pick a binding for this tool');
+            MenuManager.alert('please pick an available binding for this tool');
             return;
         }
         const el = document.getElementsByClassName('addtool-active')[0];
@@ -733,40 +1004,69 @@ define("menu", ["require", "exports", "stamp", "data", "tools/line", "tools/pan"
             MenuManager.alert('please pick an action for this tool');
             return;
         }
-        const args = Array.from(el.getElementsByTagName('input')).map(x => x.value);
+        const args = Array.from(el.getElementsByClassName('arg')).map(el => {
+            var _a;
+            if (el.tagName === 'INPUT') {
+                return el.value;
+            }
+            else if (el.classList.contains('multisel')) {
+                return (_a = el.dataset.multisel) !== null && _a !== void 0 ? _a : '';
+            }
+            else {
+                return '???'; // TODO
+            }
+        });
         switch (el.dataset.tool) {
             case 'surface':
-                resolve(new surface_2.default(parseInt(args[0], 10)));
+                resolve(new Tools.SurfaceTool(parseInt(args[0], 10)));
                 break;
             case 'line':
-                resolve(new line_2.default(parseInt(args[0], 10)));
+                resolve(new Tools.LineTool(parseInt(args[0], 10)));
+                break;
+            case 'edge':
+                resolve(new Tools.EdgeTool(parseInt(args[0], 10)));
+                break;
+            case 'shape':
+                if (parseInt(args[3], 10) < 1 || parseInt(args[3], 10) > 5) {
+                    MenuManager.alert('shape size should be between 1 and 5');
+                    return;
+                }
+                resolve(new Tools.ShapeTool({
+                    shape: parseInt(args[0], 10),
+                    fill: args[1] === '' ? undefined : parseInt(args[1], 10),
+                    outline: args[2] === '' ? undefined : parseInt(args[2], 10),
+                    size: parseInt(args[3], 10)
+                }, args[4].split('|').map(x => parseInt(x, 10)).reduce((x, y) => x + y, 0)));
+                break;
+            case 'text':
+                resolve(new Tools.TextTool());
                 break;
             case 'pan':
-                resolve(new pan_2.default());
+                resolve(new Tools.PanTool());
                 break;
             case 'zoomin':
-                resolve(new zoom_2.default(1));
+                resolve(new Tools.ZoomTool(1));
                 break;
             case 'zoomout':
-                resolve(new zoom_2.default(-1));
+                resolve(new Tools.ZoomTool(-1));
                 break;
             case 'copy':
-                resolve(new copy_2.default());
+                resolve(new Tools.CopyTool());
                 break;
             case 'paste':
-                resolve(new paste_2.default());
+                resolve(new Tools.PasteTool());
                 break;
             case 'undo':
-                resolve(new undo_2.default(true));
+                resolve(new Tools.UndoTool(true));
                 break;
             case 'redo':
-                resolve(new undo_2.default(false));
+                resolve(new Tools.UndoTool(false));
                 break;
             default:
                 MenuManager.alert('unknown tool??');
                 return;
         }
-        menu.close();
+        manager.close();
     });
     // ###### STAMP MENU ###### //
     menuevents.set('stamp-open', (manager, menu) => {
@@ -781,36 +1081,36 @@ define("menu", ["require", "exports", "stamp", "data", "tools/line", "tools/pan"
     menuevents.set('stamp-go', (manager, menu) => {
         const elt = menu.inputs.get('value');
         Stamp.add(Data.deserialize(new Uint8Array(atob(elt.value).split('').map(c => c.charCodeAt(0)))));
-        menu.close();
+        manager.close();
     });
     menuevents.set('stamp-key', (manager, menu, e) => {
         if (e.key === 'Enter')
             manager.menuevent(menu, 'go');
     });
     class Menu {
-        constructor(manager, name, popup, inputs) {
-            this.manager = manager;
+        constructor(name, popup, inputs) {
             this.name = name;
             this.popup = popup;
             this.inputs = inputs;
         }
-        open() {
-            if (this.manager.isOpen())
-                return;
-            this.manager.activeMenu = this;
-            this.popup.style.display = 'flex';
-            this.manager.menuevent(this, 'open');
-        }
-        close() {
-            this.manager.activeMenu = undefined;
-            this.popup.style.display = 'none';
-            this.manager.menuevent(this, 'close');
-        }
+        open() { this.popup.style.display = 'flex'; }
+        close() { this.popup.style.display = 'none'; }
     }
     class MenuManager {
         isOpen() { return this.activeMenu !== undefined; }
-        close() { if (this.activeMenu !== undefined)
-            this.activeMenu.close(); }
+        open(menu) {
+            menu.open();
+            this.activeMenu = menu;
+            this.menuevent(menu, 'open');
+        }
+        close() {
+            if (this.activeMenu !== undefined) {
+                const menu = this.activeMenu;
+                this.activeMenu.close();
+                this.activeMenu = undefined;
+                this.menuevent(menu, 'close');
+            }
+        }
         // TODO
         static alert(msg) {
             const alerts = document.getElementById('alerts');
@@ -825,14 +1125,14 @@ define("menu", ["require", "exports", "stamp", "data", "tools/line", "tools/pan"
         }
         constructor(btns, popups, toolbox) {
             this.toolbox = toolbox;
-            // this should morally be private; only Menu accesses it directly
             this.activeMenu = undefined;
             this.menus = new Map();
             for (const btn of btns) {
                 btn.addEventListener('click', () => {
                     const menu = this.menus.get(btn.dataset.menu);
-                    if (menu !== undefined)
-                        menu.open();
+                    if (menu !== undefined && this.activeMenu === undefined) {
+                        this.open(menu);
+                    }
                     else {
                         const fn = menuactions.get(btn.dataset.menu);
                         if (fn !== undefined)
@@ -841,7 +1141,7 @@ define("menu", ["require", "exports", "stamp", "data", "tools/line", "tools/pan"
                 });
             }
             for (const popup of popups) {
-                const menu = new Menu(this, popup.dataset.menu, popup, new Map(Array.from(popup.getElementsByClassName('menuinput')).map(ipt => {
+                const menu = new Menu(popup.dataset.menu, popup, new Map(Array.from(popup.getElementsByClassName('menuinput')).map(ipt => {
                     const evs = ipt.dataset.event;
                     if (evs !== undefined) {
                         for (const ev of evs.split(';')) {
@@ -872,7 +1172,7 @@ define("menu", ["require", "exports", "stamp", "data", "tools/line", "tools/pan"
                 close.textContent = '×';
                 close.className = 'menuclose';
                 close.addEventListener('click', () => {
-                    menu.close();
+                    this.close();
                 });
                 popup.appendChild(close);
             }
@@ -888,7 +1188,7 @@ define("menu", ["require", "exports", "stamp", "data", "tools/line", "tools/pan"
 define("data", ["require", "exports", "draw", "layer", "measure", "menu", "bitstream"], function (require, exports, Draw, Layer, Measure, menu_1, bitstream_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.undo = exports.add = exports.halfcells = exports.deserialize = exports.serialize = exports.drawfns = exports.Change = exports.Item = exports.decode = exports.encode = void 0;
+    exports.undo = exports.add = exports.halfcells = exports.deserialize = exports.serialize = exports.objdraw = exports.Change = exports.Item = exports.sheq = exports.decode = exports.encode = void 0;
     function encode(x, y) {
         return (x << 16) | (y & 0xffff);
     }
@@ -897,6 +1197,10 @@ define("data", ["require", "exports", "draw", "layer", "measure", "menu", "bitst
         return [n >> 16, n << 16 >> 16];
     }
     exports.decode = decode;
+    function sheq(a, b) {
+        return a.shape === b.shape && a.size === b.size;
+    }
+    exports.sheq = sheq;
     class Item {
         constructor(n, obj, data) {
             this.n = n;
@@ -917,15 +1221,16 @@ define("data", ["require", "exports", "draw", "layer", "measure", "menu", "bitst
     exports.Change = Change;
     const colors = [
         '#000000',
-        '#008000'
+        '#008000',
+        '#ffffff'
     ];
-    exports.drawfns = {
+    const drawfns = {
         [0 /* Obj.SURFACE */]: (x, y, data) => {
             return Draw.draw(undefined, 'rect', {
                 width: Measure.CELL,
                 height: Measure.CELL,
-                x: Measure.HALFCELL * x,
-                y: Measure.HALFCELL * y,
+                x: Measure.HALFCELL * (x - 1),
+                y: Measure.HALFCELL * (y - 1),
                 fill: colors[data]
             });
         },
@@ -940,18 +1245,107 @@ define("data", ["require", "exports", "draw", "layer", "measure", "menu", "bitst
                 strokeWidth: Measure.LINE,
                 strokeLinecap: 'round'
             });
-        }
+        },
+        [2 /* Obj.EDGE */]: (x, y, data) => {
+            const horiz = Measure.hctype(x, y) === 1 /* Measure.HC.EVERT */ ? 0 : 1;
+            return Draw.draw(undefined, 'line', {
+                x1: (x - horiz) * Measure.HALFCELL,
+                x2: (x + horiz) * Measure.HALFCELL,
+                y1: (y - (1 - horiz)) * Measure.HALFCELL,
+                y2: (y + (1 - horiz)) * Measure.HALFCELL,
+                stroke: colors[data],
+                strokeWidth: Measure.EDGE,
+                strokeLinecap: 'round'
+            });
+        },
+        [3 /* Obj.SHAPE */]: (x, y, data) => {
+            const g = Draw.draw(undefined, 'g', {
+                transform: `translate(${x * Measure.HALFCELL} ${y * Measure.HALFCELL})`
+            });
+            for (const spec of data) {
+                const r = Measure.HALFCELL * (spec.size / 6);
+                const strokeWidth = Measure.HALFCELL * (0.05 + 0.1 * (spec.size / 12));
+                const fill = spec.fill === undefined ? 'transparent' : colors[spec.fill];
+                const stroke = spec.outline === undefined ? 'transparent' : colors[spec.outline];
+                switch (spec.shape) {
+                    case 0 /* Shape.CIRCLE */:
+                        Draw.draw(g, 'circle', {
+                            cx: 0, cy: 0, r: r,
+                            strokeWidth, fill, stroke
+                        });
+                        break;
+                    case 1 /* Shape.SQUARE */:
+                        Draw.draw(g, 'rect', {
+                            width: r * 2, height: r * 2, x: -r, y: -r,
+                            strokeWidth, fill, stroke
+                        });
+                        break;
+                    case 2 /* Shape.CROSS */:
+                        // TODO
+                        break;
+                    case 3 /* Shape.STAR */:
+                        Draw.draw(g, 'path', {
+                            d: 'M' + [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(n => (r * (n % 2 === 0 ? 1 : 0.5) * Math.cos((n / 5 + 0.5) * Math.PI) + ' ' +
+                                -r * (n % 2 === 0 ? 1 : 0.5) * Math.sin((n / 5 + 0.5) * Math.PI))).join('L') + 'Z',
+                            strokeWidth, fill, stroke
+                        });
+                        break;
+                }
+            }
+            return g;
+        },
+        [4 /* Obj.TEXT */]: (x, y, data) => {
+            return Draw.draw(undefined, 'text', {
+                x: Measure.HALFCELL * x,
+                y: Measure.HALFCELL * y,
+                textAnchor: 'middle',
+                dominantBaseline: 'central',
+                textContent: data
+            });
+        },
     };
+    function objdraw(obj, x, y, data) {
+        return drawfns[obj](x, y, data);
+    }
+    exports.objdraw = objdraw;
     const N_BITS = 32;
     const OBJ_BITS = 6;
+    const SHAPE_BITS = 6;
     const COLOR_BITS = 6;
+    const SIZE_BITS = 3;
+    const VLQ_CHUNK = 4;
     const serializefns = {
         [0 /* Obj.SURFACE */]: (bs, data) => {
             bs.write(COLOR_BITS, data);
         },
         [1 /* Obj.LINE */]: (bs, data) => {
             bs.write(COLOR_BITS, data);
-        }
+        },
+        [2 /* Obj.EDGE */]: (bs, data) => {
+            bs.write(COLOR_BITS, data);
+        },
+        [3 /* Obj.SHAPE */]: (bs, data) => {
+            bs.writeVLQ(VLQ_CHUNK, data.length);
+            for (const spec of data) {
+                bs.write(SHAPE_BITS, spec.shape);
+                if (spec.fill === undefined)
+                    bs.write(1, 0);
+                else {
+                    bs.write(1, 1);
+                    bs.write(COLOR_BITS, spec.fill);
+                }
+                if (spec.outline === undefined)
+                    bs.write(1, 0);
+                else {
+                    bs.write(1, 1);
+                    bs.write(COLOR_BITS, spec.outline);
+                }
+                bs.write(SIZE_BITS, spec.size);
+            }
+        },
+        [4 /* Obj.TEXT */]: (bs, data) => {
+            // TODO
+        },
     };
     const deserializefns = {
         [0 /* Obj.SURFACE */]: (bs) => {
@@ -959,7 +1353,26 @@ define("data", ["require", "exports", "draw", "layer", "measure", "menu", "bitst
         },
         [1 /* Obj.LINE */]: (bs) => {
             return bs.read(COLOR_BITS);
-        }
+        },
+        [2 /* Obj.EDGE */]: (bs) => {
+            return bs.read(COLOR_BITS);
+        },
+        [3 /* Obj.SHAPE */]: (bs) => {
+            // TODO don't allow maliciously constructed encodings lol
+            const len = bs.readVLQ(VLQ_CHUNK);
+            const arr = [];
+            for (let i = 0; i < len; ++i) {
+                const shape = bs.read(SHAPE_BITS);
+                const fill = bs.read(1) === 0 ? undefined : bs.read(COLOR_BITS);
+                const outline = bs.read(1) === 0 ? undefined : bs.read(COLOR_BITS);
+                const size = bs.read(SIZE_BITS);
+                arr.push({ shape, fill, outline, size });
+            }
+            return arr;
+        },
+        [4 /* Obj.TEXT */]: (bs) => {
+            // TODO
+        },
     };
     function serialize(stamp) {
         const bs = bitstream_1.default.empty();
@@ -1028,7 +1441,7 @@ define("data", ["require", "exports", "draw", "layer", "measure", "menu", "bitst
                 exports.halfcells.get(change.n).set(change.obj, post);
                 // draw it
                 const [x, y] = decode(change.n);
-                const elt = exports.drawfns[change.obj](x, y, post);
+                const elt = objdraw(change.obj, x, y, post);
                 Layer.obj(change.obj).appendChild(elt);
                 // save the element
                 if (!drawn.has(change.n))
@@ -1072,10 +1485,14 @@ define("main", ["require", "exports", "layer", "event", "grid", "view", "stamp",
         const children = Array.from(multisel.children);
         for (const child of children) {
             child.addEventListener('click', () => {
-                for (const ch of children)
-                    ch.classList.remove('active');
-                child.classList.add('active');
-                multisel.dataset.multisel = child.dataset.multisel;
+                if (!multisel.classList.contains('any'))
+                    for (const ch of children)
+                        ch.classList.remove('active');
+                child.classList.toggle('active');
+                multisel.dataset.multisel = children
+                    .filter(ch => ch.classList.contains('active'))
+                    .map(ch => ch.dataset.multisel)
+                    .join('|');
             });
         }
     }

@@ -29,12 +29,6 @@
             <div data-menu='addtool'>
                 <p><strong>binding</strong></p>
                 <div>
-                    <!-- what kind? -->
-                    <!-- <span class='menuinput multisel' data-multisel='mouse'><!-- -->
-                    <!--     -1-><button class='left active' data-multisel='mouse'>mouse</button><!-- -->
-                    <!--     -1-><button class='mid' data-multisel='key'>key</button><!-- -->
-                    <!--     -1-><button class='right' data-multisel='wheel'>wheel</button><!-- -->
-                    <!-- -1-></span> -->
                     click, type, or scroll here:
                     <input class='menuinput' data-menu='binding' data-event='pointerdown=bindmouse;keydown=bindkey;wheel=bindwheel;paste=nop;contextmenu=nop'>
                 </div>
@@ -42,8 +36,31 @@
                 <div id='actions' class='menuinput big' data-menu='actions' data-events='div.settool@click=settool'>
                     <section class='group first'>
                         <span>drawing</span>
-                        <div class='settool full' data-tool='surface'>Surface <label>color: <input></label></div>
-                        <div class='settool full' data-tool='line'>Line <label>color: <input></label></div>
+                        <div class='settool full' data-tool='surface'>Surface <label>color: <input class='arg'></label></div>
+                        <div class='settool full' data-tool='line'>Line <label>color: <input class='arg'></label></div>
+                        <div class='settool full' data-tool='edge'>Edge <label>color: <input class='arg'></label></div>
+                        <div class='settool full' data-tool='shape'>Shape
+                            <span>shape:
+                                <span class='arg menuinput multisel' data-multisel='0'><!--
+                                    --><button class='left active' data-multisel='0'>circle</button><!--
+                                    --><button class='mid' data-multisel='1'>square</button><!--
+                                    --><button class='mid' data-multisel='2'>cross</button><!--
+                                    --><button class='right' data-multisel='3'>star</button><!--
+                                --></span>
+                            </span>
+                            <label>fill: <input class='arg'></label>
+                            <label>outline: <input class='arg'></label>
+                            <label>size: <input class='arg'></label>
+                            <span>location:
+                                <span class='arg menuinput multisel any' data-multisel=''><!--
+                                    --><button class='left' data-multisel='1'>center</button><!--
+                                    --><button class='mid' data-multisel='2'>edge</button><!--
+                                    --><button class='right' data-multisel='4'>corner</button><!--
+                                --></span>
+                            </span>
+                        </div>
+
+                        <div class='settool full' data-tool='text'>Text</div>
                     </section>
 
                     <section class='group'>
