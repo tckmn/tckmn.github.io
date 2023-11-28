@@ -713,37 +713,6 @@ define("toolbox", ["require", "exports", "tools/alltools"], function (require, e
             this.bindKey('v', new Tools.PasteTool());
             this.bindWheel(true, new Tools.ZoomTool(1));
             this.bindWheel(false, new Tools.ZoomTool(-1));
-            // temporary
-            this.bindKey('1', new Tools.ShapeTool({
-                shape: 3 /* Data.Shape.STAR */,
-                fill: 2,
-                outline: 0,
-                size: 1
-            }, 0b111));
-            this.bindKey('2', new Tools.ShapeTool({
-                shape: 3 /* Data.Shape.STAR */,
-                fill: undefined,
-                outline: 0,
-                size: 2
-            }, 0b100));
-            this.bindKey('3', new Tools.ShapeTool({
-                shape: 3 /* Data.Shape.STAR */,
-                fill: undefined,
-                outline: 0,
-                size: 3
-            }, 0b100));
-            this.bindKey('4', new Tools.ShapeTool({
-                shape: 3 /* Data.Shape.STAR */,
-                fill: undefined,
-                outline: 0,
-                size: 4
-            }, 0b100));
-            this.bindKey('5', new Tools.ShapeTool({
-                shape: 3 /* Data.Shape.STAR */,
-                fill: undefined,
-                outline: 0,
-                size: 5
-            }, 0b100));
         }
         toolDisplay(tool, txt, delcb) {
             const bind = document.createElement('div');
