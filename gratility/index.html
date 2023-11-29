@@ -20,8 +20,14 @@
                 <button class='menuaction' data-menu='toolbox'>save/load toolbox</button>
                 <button class='menuaction' data-menu='stamp'>save/load stamp</button>
                 <button class='menuaction' data-menu='colors'>save/load colors</button>
+                <button class='menuaction' data-menu='dark'>toggle dark mode</button>
             </section>
-            <svg id='grid'></svg>
+            <svg id='grid'>
+                <!-- Filter+ from Dark Reader, https://github.com/darkreader/darkreader/blob/7f047b20909b09b8cdb3e45550d0c586abeb98a4/src/generators/utils/matrix.ts#L42 -->
+                <filter id="invertFilter" x="0" y="0" width="999999" height="999999" style={"color-interpolation-filters": "srgb"}>
+                <feColorMatrix type="matrix" values="0.33333 -0.66667 -0.66667 0 1 -0.66667 0.33333 -0.66667 0 1 -0.66667 -0.66667 0.33333 0 1 0 0 0 1 0"/>
+                </filter>
+            </svg>
         </main>
 
         <div id='menupopups'>
@@ -36,28 +42,34 @@
                 <div id='actions' class='menuinput big' data-menu='actions' data-events='div.settool@click=settool'>
                     <section class='group first'>
                         <span>drawing</span>
-                        <div class='settool full' data-tool='surface'>Surface <label>color: <input class='arg'></label></div>
-                        <div class='settool full' data-tool='line'>Line <label>color: <input class='arg'></label></div>
-                        <div class='settool full' data-tool='edge'>Edge <label>color: <input class='arg'></label></div>
+                        <div class='settool full' data-tool='surface'>Surface
+                            <label>color: <span class='arg colorpicker'></span></label>
+                        </div>
+                        <div class='settool full' data-tool='line'>Line
+                            <label>color: <span class='arg colorpicker'></span></label>
+                        </div>
+                        <div class='settool full' data-tool='edge'>Edge
+                            <label>color: <span class='arg colorpicker'></span></label>
+                        </div>
                         <div class='settool full' data-tool='shape'>Shape
                             <span>shape:
-                                <span class='arg menuinput multisel' data-multisel='0'><!--
-                                    --><button class='left active' data-multisel='0'>circle</button><!--
+                                <span class='arg menuinput multisel'><!--
+                                    --><button class='left' data-multisel='0'>circle</button><!--
                                     --><button class='mid' data-multisel='1'>square</button><!--
                                     --><button class='mid' data-multisel='2'>cross</button><!--
                                     --><button class='right' data-multisel='3'>star</button><!--
                                 --></span>
                             </span>
-                            <label>fill: <input class='arg'></label>
-                            <label>outline: <input class='arg'></label>
-                            <label>size: <input class='arg'></label>
+                            <label>size: <input class='arg' type='number' size=3 min=1 max=5></label>
                             <span>location:
-                                <span class='arg menuinput multisel any' data-multisel=''><!--
-                                    --><button class='left' data-multisel='1'>center</button><!--
+                                <span class='arg menuinput multisel any'><!--
+                                    --><button class='left' data-multisel='4'>center</button><!--
                                     --><button class='mid' data-multisel='2'>edge</button><!--
-                                    --><button class='right' data-multisel='4'>corner</button><!--
+                                    --><button class='right' data-multisel='1'>corner</button><!--
                                 --></span>
                             </span>
+                            <label>fill: <span class='arg colorpicker optional'></span></label>
+                            <label>outline: <span class='arg colorpicker optional'></span></label>
                         </div>
 
                         <div class='settool full' data-tool='text'>Text</div>

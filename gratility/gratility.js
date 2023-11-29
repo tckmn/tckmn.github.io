@@ -93,6 +93,30 @@ define("bitstream", ["require", "exports"], function (require, exports) {
     }
     exports.default = BitStream;
 });
+define("color", ["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.colors = void 0;
+    exports.colors = [
+        '#000000',
+        '#666666',
+        '#989898',
+        '#bbbbbb',
+        '#ffffff',
+        '#333399',
+        '#3366ff',
+        '#00c7c7',
+        '#008000',
+        '#00c000',
+        '#800080',
+        '#d000d0',
+        '#a00000',
+        '#ff0000',
+        '#855723',
+        '#ed8e00',
+        '#eced00'
+    ];
+});
 define("draw", ["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -704,7 +728,7 @@ define("toolbox", ["require", "exports", "tools/alltools"], function (require, e
             this.bindMouse(1, new Tools.PanTool());
             this.bindKey(' ', new Tools.PanTool());
             this.bindKey('s', new Tools.SurfaceTool(0));
-            this.bindKey('d', new Tools.LineTool(1));
+            this.bindKey('d', new Tools.LineTool(8));
             this.bindKey('e', new Tools.EdgeTool(0));
             this.bindKey('t', new Tools.TextTool());
             this.bindKey('z', new Tools.UndoTool(true));
@@ -917,10 +941,9 @@ define("menu", ["require", "exports", "stamp", "data", "tools/alltools"], functi
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     const menuactions = new Map([
-    // ['stamp', () => {
-    //     console.log(Stamp.stamps[Stamp.stamppos].cells);
-    //     console.log(Data.deserialize(Data.serialize(Stamp.stamps[Stamp.stamppos].cells)));
-    // }]
+        ['dark', () => {
+                document.body.classList.toggle('dark');
+            }]
     ]);
     const menuevents = new Map();
     // ###### ADD TOOL MENU ###### //
@@ -974,12 +997,11 @@ define("menu", ["require", "exports", "stamp", "data", "tools/alltools"], functi
             return;
         }
         const args = Array.from(el.getElementsByClassName('arg')).map(el => {
-            var _a;
             if (el.tagName === 'INPUT') {
                 return el.value;
             }
-            else if (el.classList.contains('multisel')) {
-                return (_a = el.dataset.multisel) !== null && _a !== void 0 ? _a : '';
+            else if (el.dataset.value !== undefined) {
+                return el.dataset.value;
             }
             else {
                 return '???'; // TODO
@@ -996,16 +1018,24 @@ define("menu", ["require", "exports", "stamp", "data", "tools/alltools"], functi
                 resolve(new Tools.EdgeTool(parseInt(args[0], 10)));
                 break;
             case 'shape':
-                if (parseInt(args[3], 10) < 1 || parseInt(args[3], 10) > 5) {
+                if (!(parseInt(args[1], 10) >= 1 && parseInt(args[1], 10) <= 5)) {
                     MenuManager.alert('shape size should be between 1 and 5');
+                    return;
+                }
+                if (args[2] === '') {
+                    MenuManager.alert('shape should be placeable in at least one location');
+                    return;
+                }
+                if (args[3] === '' && args[4] === '') {
+                    MenuManager.alert('shape should should have at least one of fill or outline');
                     return;
                 }
                 resolve(new Tools.ShapeTool({
                     shape: parseInt(args[0], 10),
-                    fill: args[1] === '' ? undefined : parseInt(args[1], 10),
-                    outline: args[2] === '' ? undefined : parseInt(args[2], 10),
-                    size: parseInt(args[3], 10)
-                }, args[4].split('|').map(x => parseInt(x, 10)).reduce((x, y) => x + y, 0)));
+                    size: parseInt(args[1], 10),
+                    fill: args[3] === '' ? undefined : parseInt(args[3], 10),
+                    outline: args[4] === '' ? undefined : parseInt(args[4], 10)
+                }, args[2].split('|').map(x => parseInt(x, 10)).reduce((x, y) => x + y, 0)));
                 break;
             case 'text':
                 resolve(new Tools.TextTool());
@@ -1154,7 +1184,7 @@ define("menu", ["require", "exports", "stamp", "data", "tools/alltools"], functi
     }
     exports.default = MenuManager;
 });
-define("data", ["require", "exports", "draw", "layer", "measure", "menu", "bitstream"], function (require, exports, Draw, Layer, Measure, menu_1, bitstream_1) {
+define("data", ["require", "exports", "draw", "layer", "measure", "color", "menu", "bitstream"], function (require, exports, Draw, Layer, Measure, Color, menu_1, bitstream_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.undo = exports.add = exports.halfcells = exports.deserialize = exports.serialize = exports.objdraw = exports.Change = exports.Item = exports.sheq = exports.decode = exports.encode = void 0;
@@ -1188,11 +1218,6 @@ define("data", ["require", "exports", "draw", "layer", "measure", "menu", "bitst
         }
     }
     exports.Change = Change;
-    const colors = [
-        '#000000',
-        '#008000',
-        '#ffffff'
-    ];
     const drawfns = {
         [0 /* Obj.SURFACE */]: (x, y, data) => {
             return Draw.draw(undefined, 'rect', {
@@ -1200,7 +1225,7 @@ define("data", ["require", "exports", "draw", "layer", "measure", "menu", "bitst
                 height: Measure.CELL,
                 x: Measure.HALFCELL * (x - 1),
                 y: Measure.HALFCELL * (y - 1),
-                fill: colors[data]
+                fill: Color.colors[data]
             });
         },
         [1 /* Obj.LINE */]: (x, y, data) => {
@@ -1210,7 +1235,7 @@ define("data", ["require", "exports", "draw", "layer", "measure", "menu", "bitst
                 x2: (x + horiz) * Measure.HALFCELL,
                 y1: (y - (1 - horiz)) * Measure.HALFCELL,
                 y2: (y + (1 - horiz)) * Measure.HALFCELL,
-                stroke: colors[data],
+                stroke: Color.colors[data],
                 strokeWidth: Measure.LINE,
                 strokeLinecap: 'round'
             });
@@ -1222,7 +1247,7 @@ define("data", ["require", "exports", "draw", "layer", "measure", "menu", "bitst
                 x2: (x + horiz) * Measure.HALFCELL,
                 y1: (y - (1 - horiz)) * Measure.HALFCELL,
                 y2: (y + (1 - horiz)) * Measure.HALFCELL,
-                stroke: colors[data],
+                stroke: Color.colors[data],
                 strokeWidth: Measure.EDGE,
                 strokeLinecap: 'round'
             });
@@ -1234,8 +1259,8 @@ define("data", ["require", "exports", "draw", "layer", "measure", "menu", "bitst
             for (const spec of data) {
                 const r = Measure.HALFCELL * (spec.size / 6);
                 const strokeWidth = Measure.HALFCELL * (0.05 + 0.1 * (spec.size / 12));
-                const fill = spec.fill === undefined ? 'transparent' : colors[spec.fill];
-                const stroke = spec.outline === undefined ? 'transparent' : colors[spec.outline];
+                const fill = spec.fill === undefined ? 'transparent' : Color.colors[spec.fill];
+                const stroke = spec.outline === undefined ? 'transparent' : Color.colors[spec.outline];
                 switch (spec.shape) {
                     case 0 /* Shape.CIRCLE */:
                         Draw.draw(g, 'circle', {
@@ -1269,6 +1294,10 @@ define("data", ["require", "exports", "draw", "layer", "measure", "menu", "bitst
                 y: Measure.HALFCELL * y,
                 textAnchor: 'middle',
                 dominantBaseline: 'central',
+                fontSize: Measure.CELL * (data.length === 1 ? 0.75 :
+                    data.length === 2 ? 0.55 :
+                        data.length === 3 ? 0.4 :
+                            0.3),
                 textContent: data
             });
         },
@@ -1313,7 +1342,7 @@ define("data", ["require", "exports", "draw", "layer", "measure", "menu", "bitst
             }
         },
         [4 /* Obj.TEXT */]: (bs, data) => {
-            // TODO
+            bs.writeString(data);
         },
     };
     const deserializefns = {
@@ -1340,7 +1369,7 @@ define("data", ["require", "exports", "draw", "layer", "measure", "menu", "bitst
             return arr;
         },
         [4 /* Obj.TEXT */]: (bs) => {
-            // TODO
+            return bs.readString();
         },
     };
     function serialize(stamp) {
@@ -1437,7 +1466,7 @@ define("grid", ["require", "exports", "draw", "layer", "measure"], function (req
     }
     exports.initialize = initialize;
 });
-define("main", ["require", "exports", "layer", "event", "grid", "view", "stamp", "menu", "toolbox"], function (require, exports, Layer, Event, Grid, View, Stamp, menu_2, toolbox_1) {
+define("main", ["require", "exports", "layer", "event", "grid", "view", "stamp", "color", "menu", "toolbox"], function (require, exports, Layer, Event, Grid, View, Stamp, Color, menu_2, toolbox_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     // TODO make this better i guess
@@ -1451,18 +1480,56 @@ define("main", ["require", "exports", "layer", "event", "grid", "view", "stamp",
     Stamp.initialize();
     // TODO this stuff should really go somewhere else
     for (const multisel of Array.from(document.getElementsByClassName('multisel'))) {
+        const any = multisel.classList.contains('any');
         const children = Array.from(multisel.children);
         for (const child of children) {
             child.addEventListener('click', () => {
-                if (!multisel.classList.contains('any'))
+                if (!any)
                     for (const ch of children)
                         ch.classList.remove('active');
                 child.classList.toggle('active');
-                multisel.dataset.multisel = children
+                multisel.dataset.value = children
                     .filter(ch => ch.classList.contains('active'))
                     .map(ch => ch.dataset.multisel)
                     .join('|');
             });
         }
+        if (any) {
+            multisel.dataset.value = '';
+        }
+        else {
+            children[0].classList.add('active');
+            multisel.dataset.value = children[0].dataset.multisel;
+        }
+    }
+    for (const colorpicker of Array.from(document.getElementsByClassName('colorpicker'))) {
+        const children = [];
+        // TODO less repetition
+        if (colorpicker.classList.contains('optional')) {
+            const el = document.createElement('span');
+            el.classList.add('transparent');
+            el.addEventListener('click', () => {
+                for (const ch of children)
+                    ch.classList.remove('active');
+                el.classList.add('active');
+                colorpicker.dataset.value = '';
+            });
+            colorpicker.appendChild(el);
+            children.push(el);
+        }
+        Color.colors.forEach((color, i) => {
+            const el = document.createElement('span');
+            el.style.backgroundColor = color;
+            el.addEventListener('click', () => {
+                for (const ch of children)
+                    ch.classList.remove('active');
+                el.classList.add('active');
+                colorpicker.dataset.value = i.toString();
+            });
+            colorpicker.appendChild(el);
+            children.push(el);
+        });
+        children[0].classList.add('active');
+        colorpicker.dataset.value = colorpicker.classList.contains('optional') ? '' : '0';
     }
 });
