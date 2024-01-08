@@ -5,3 +5,9 @@ p#sub { font-style: italic; margin: 0 0 3rem; }
 a { color: #7cafc2; }
 a:visited { color: #ba8baf; }
 img { max-width: 100%; }
+
+@media print {
+    body { background-color: #fff; color: #000; }
+    .np { display: none; }
+    .bb { break-before: page; }
+}
