@@ -31,9 +31,7 @@ window.addEventListener('load', () => {
             feedback.appendChild(clink);
             feedback.appendChild(document.createTextNode(' to post your comment.'));
         };
-        req.addEventListener('load', () => {
-            req.status === 303 ? good() : bad();
-        });
+        req.addEventListener('load', () => req.status === 200 ? good() : bad());
         req.addEventListener('error', bad);
         req.open('POST', e.target.action);
         req.send(new URLSearchParams(new FormData(e.target)).toString());
