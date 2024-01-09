@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <meta charset='utf-8'>
+        <meta name='viewport' content='width=device-width'>
+        <title>bsd checksum</title>
+        <script>window.onload=function(){(i=document.getElementById('i')).onkeyup=function(){s=0;i.value.split('').forEach(function(c){s=(((s>>1)+((s&1)<<15))+c.charCodeAt())&0xffff});document.getElementById('o').textContent=('000'+s.toString(16)).slice(-4)}}</script>
+        <style>*{font:16px monospace}</style>
+    </head>
+    <body>
+        <input id='i' type='text'>
+        <span id='o'>0000</span>
+    </body>
+</html>
