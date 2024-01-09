@@ -16,12 +16,12 @@ window.addEventListener('load', () => {
         }
         var req = new XMLHttpRequest();
         submit.setAttribute('disabled', '1');
-        req.addEventListener('load', () => {
+        var good = () => {
             submit.removeAttribute('disabled');
             feedback.textContent = 'your comment was submitted!';
             form.comm.value = '';
-        });
-        req.addEventListener('error', () => {
+        };
+        var bad = () => {
             submit.removeAttribute('disabled');
             while (feedback.firstChild) feedback.removeChild(feedback.firstChild);
             feedback.appendChild(document.createTextNode('sorry, something went wrong. please '));
@@ -30,7 +30,11 @@ window.addEventListener('load', () => {
             clink.textContent = 'contact me';
             feedback.appendChild(clink);
             feedback.appendChild(document.createTextNode(' to post your comment.'));
+        };
+        req.addEventListener('load', () => {
+            req.status === 303 ? good() : bad();
         });
+        req.addEventListener('error', bad);
         req.open('POST', e.target.action);
         req.send(new URLSearchParams(new FormData(e.target)).toString());
     });
