@@ -18,6 +18,17 @@ seemingly totally unrelated to what the rules literally say.</description>
 </item>
 
 <item>
+    <title>Splitting hairs</title>
+    <link>https://tck.mn/blog/splitting-hairs</link>
+    <description>The split function,
+near-universal in modern programming languages,
+for separating a string into a list of strings on a delimiter:
+how hard could it be?</description>
+    <pubDate>Thu, 11 Jan 2024 02:13:00 -0500</pubDate>
+    <guid>https://tck.mn/blog/splitting-hairs</guid>
+</item>
+
+<item>
     <title>Tier lists</title>
     <link>https://tck.mn/blog/tier-lists</link>
     <description>Here I will rank the items of various lists by my opinion of good they are,
