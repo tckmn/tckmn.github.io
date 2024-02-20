@@ -5,16 +5,14 @@
         <description>Andy Tockman's blog</description>
         <language>en</language>
 <item>
-    <title>Penalty theory in dynasty puzzles</title>
-    <link>https://tck.mn/blog/penalty-theory</link>
-    <description>Nikoli-style pencil-and-paper logic puzzles,
-like Sudoku, Yajilin, and many more,
-have very simple rules.
-But you can often build puzzles
-that require thinking in really cool ways,
-seemingly totally unrelated to what the rules literally say.</description>
-    <pubDate>Wed, 27 Jul 2022 04:44:00 -0400</pubDate>
-    <guid>https://tck.mn/blog/penalty-theory</guid>
+    <title>A Slay the Spire puzzle</title>
+    <link>https://tck.mn/blog/a-slay-the-spire-puzzle</link>
+    <description>You are peacefully going about your day
+when you are suddenly thrust into the following position
+in a game of Slay the Spire.
+What do you do?</description>
+    <pubDate>Mon, 19 Feb 2024 22:01:00 -0500</pubDate>
+    <guid>https://tck.mn/blog/a-slay-the-spire-puzzle</guid>
 </item>
 
 <item>
@@ -26,6 +24,19 @@ for separating a string into a list of strings on a delimiter:
 how hard could it be?</description>
     <pubDate>Thu, 11 Jan 2024 02:13:00 -0500</pubDate>
     <guid>https://tck.mn/blog/splitting-hairs</guid>
+</item>
+
+<item>
+    <title>Penalty theory in dynasty puzzles</title>
+    <link>https://tck.mn/blog/penalty-theory</link>
+    <description>Nikoli-style pencil-and-paper logic puzzles,
+like Sudoku, Yajilin, and many more,
+have very simple rules.
+But you can often build puzzles
+that require thinking in really cool ways,
+seemingly totally unrelated to what the rules literally say.</description>
+    <pubDate>Wed, 27 Jul 2022 04:44:00 -0400</pubDate>
+    <guid>https://tck.mn/blog/penalty-theory</guid>
 </item>
 
 <item>
