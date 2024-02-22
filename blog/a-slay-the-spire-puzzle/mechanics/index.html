@@ -3,8 +3,8 @@
     <head>
         <meta charset='utf-8'>
         <meta name='viewport' content='width=device-width, initial-scale=1'>
-        <title>Posts tagged puzzles - Andy Tockman</title>
-        <link rel='stylesheet' href='/css/global-86ef9c94.css'><link rel='stylesheet' href='/css/blogindex-f0810d2a.css'>
+        <title>Mechanics - a Slay the Spire puzzle - Andy Tockman</title>
+        <script src='/js/spire.js'></script><link rel='stylesheet' href='/css/global-86ef9c94.css'><link rel='stylesheet' href='/css/spire-8a8b422c.css'>
         <link rel='apple-touch-icon' sizes='180x180' href='/apple-touch-icon.png'>
         <link rel='icon' type='image/png' sizes='32x32' href='/favicon-32x32.png'>
         <link rel='icon' type='image/png' sizes='16x16' href='/favicon-16x16.png'>
@@ -12,12 +12,12 @@
         <link rel='mask-icon' href='/safari-pinned-tab.svg' color='#5bbad5'>
         <meta name='msapplication-TileColor' content='#da532c'>
         <meta name='theme-color' content='#ffffff'>
-        <meta name='description' content='All blog posts with the puzzles tag.'>
-        <meta property='og:title' content='Posts tagged puzzles' />
+        <meta name='description' content='hi'>
+        <meta property='og:title' content='Mechanics' />
         <meta property='og:type' content='website' />
-        <meta property='og:url' content='https://tck.mn/blog/puzzles' />
+        <meta property='og:url' content='https://tck.mn/blog/a-slay-the-spire-puzzle/mechanics' />
         <meta property='og:image' content='https://tck.mn/img/dp.png' />
-        <meta property='og:description' content='All blog posts with the puzzles tag.' />
+        <meta property='og:description' content='hi' />
         <meta property='og:site_name' content='Andy Tockman' />
     </head>
     <body>
@@ -84,16 +84,255 @@
         <div id='subheader-post'></div>
 
         <main>
-        <h1>posts tagged <a class='tag' href='/blog/puzzles'><span class='tag'>puzzles</span></a><span class='all'><a href='/blog'>view all »</a></span></h1><hr class='c'><h2><a href='/blog/a-slay-the-spire-puzzle'>A Slay the Spire puzzle</a></h2><div class='hsub'>2024-02-21 23:56 -0500 <a class='tag' href='/blog/games'><span class='tag'>games</span></a><a class='tag' href='/blog/video-games'><span class='tag'>video games</span></a><a class='tag' href='/blog/slay-the spire'><span class='tag'>slay the spire</span></a><a class='tag' href='/blog/puzzles'><span class='tag'>puzzles</span></a><a class='tag' href='/blog/math'><span class='tag'>math</span></a></div><p>You are peacefully going about your day
-when you are suddenly thrust into the following position
-in a game of Slay the Spire.
-What do you do?</p>
-<h2><a href='/blog/penalty-theory'>Penalty theory in dynasty puzzles</a></h2><div class='hsub'>2022-07-27 04:44 -0400 <a class='tag' href='/blog/puzzles'><span class='tag'>puzzles</span></a><a class='tag' href='/blog/logic-puzzles'><span class='tag'>logic puzzles</span></a><a class='tag' href='/blog/math'><span class='tag'>math</span></a></div><p><a href="https://www.nikoli.co.jp/en/">Nikoli</a>-style pencil-and-paper logic puzzles,
-like Sudoku, Yajilin, and many more,
-have very simple rules.
-But you can often build puzzles
-that require thinking in really cool ways,
-seemingly totally unrelated to what the rules literally say.</p>
+        
+
+<h1>Mechanics</h1><p><a href='..'>« back</a></p>
+
+
+<p>Here's the screenshots again:</p>
+<p><a href="../puz1.png"><img src="../puz1.png" alt="" /></a></p>
+<p><a href="../puz2.png"><img src="../puz2.png" alt="" /></a></p>
+<p>Unfortunately,
+I'm going to have to give you a bunch of irrelevant information,
+because if I only told you the relevant information
+that would give away part of the puzzle.
+So get ready for a lot of words.</p>
+<h2>the basics</h2>
+<p><em>(If you've played Slay the Spire before,
+you can skip this section.)</em></p>
+<p>Slay the Spire is a turn-based card battling game.
+I am playing as the Watcher, on the left.
+It is currently my turn,
+and I am fighting two enemies, on the right:
+a Cultist
+and the Awakened One.
+We all have <strong>health</strong> bars,
+shown below us.
+Whenever anyone's health reaches 0,
+they die.
+If all the enemies die, I win,
+and if I die, I lose.</p>
+<p>The primary two mechanics in fights are dealing <strong>damage</strong> and gaining <strong>block</strong>.
+When anyone deals damage to anyone else,
+the amount of damage is first subtracted from their current block,
+if they have any.
+If the amount of damage exceeds the amount of block,
+the unblocked damage is subtracted from their health.
+Any remaining block is removed at the start of one's turn.
+Currently, nobody has any block.</p>
+<p>How do I and my opponents damage or block?
+Let's start with the opponents.
+All enemies have preset attack patterns,
+and their current <strong>intent</strong> is shown above their head.
+When I end my turn,
+each enemy will perform the depicted action.
+In this case,
+the Cultist will deal 6 damage,
+and the Awakened One will deal 8 damage 4 times.</p>
+<p>On the other hand,
+the way I do things is by playing <strong>cards</strong>.
+All of the cards in my deck start in the <strong>draw pile</strong> at the beginning of the fight,
+ordered randomly.
+At the start of each turn,
+I draw 5 cards into my <strong>hand</strong>.
+Each card has an <strong>energy</strong> cost,
+depicted in the top left.
+My current energy is shown to the left of my hand:
+I have 2 energy left out of the 4 that I start with every turn.
+My energy is set to 4 at the beginning of every turn;
+any unused energy from the previous turn is wasted.
+To <strong>play</strong> a card from my hand,
+I first have to pay its energy cost.
+Then its effect occurs.
+Finally,
+after its effect has been processed,
+it goes into the <strong>discard pile</strong>.</p>
+<p>If at any point I attempt to draw a card
+but my draw pile is empty,
+all the cards in my discard pile get shuffled
+and then moved back to the draw pile.
+Also,
+there is a hand size limit of 10,
+so I can never have more than 10 cards in my hand at once.</p>
+<h2>the cards</h2>
+<p>If a card has a + after its name,
+that means it's been <strong>upgraded</strong>,
+which improves it in some way.
+If you hover over a card name,
+you will see its in-game text --
+the text in parentheses indicates what the upgrade does.</p>
+<p>My discard pile is empty.
+I have the following cards in my hand:</p>
+<ul>
+<li>
+<p><span class='sts stsu stsrr stscp stsgs' data-desc='Draw cards until your hand is full. Exhaust./1 (0)'>Scrawl+</span>.
+For 0 energy,
+this draws cards until my hand has 10 cards in it.
+It then <strong>Exhausts</strong>,
+which means that instead of going into my discard pile,
+it disappears for the rest of this fight.</p>
+</li>
+<li>
+<p><span class='sts stsu stsru stscp stsgs' data-desc='Draw 2 (3) cards. Exit your Stance./1'>Empty Mind+</span>.
+For 1 energy,
+this exits my <strong>stance</strong> and draws 3 cards.
+Stances are a mechanic unique to the Watcher,
+the character I am playing as.
+They are simply a state that persists between turns.
+I am always in one of four stances:</p>
+<ul>
+<li><strong>Wrath</strong>. When in Wrath, all of my attacks deal double damage, but all enemy attacks also deal double damage.</li>
+<li><strong>Calm</strong>. Being in Calm has no effect, but upon exiting Calm, I immediately gain 2 Energy.</li>
+<li><strong>Divinity</strong>. When in Divinity, all of my attacks deal triple damage. Also, I immediately gain 3 Energy upon entering Divinity.</li>
+<li>No stance. I start the fight in no stance, and e.g. playing <span class='sts stsu stsru stscp stsgs' data-desc='Draw 2 (3) cards. Exit your Stance./1'>Empty Mind+</span> will leave me in no stance again.</li>
+</ul>
+</li>
+<li>
+<p><span class='sts stsru stscp stsgs' data-desc='If you are in Calm, draw 3 (4) cards, otherwise enter Calm./1'>Inner Peace</span>.
+For 1 energy,
+this either enters Calm (if I am not currently in Calm)
+or draws 3 cards (if I am currently in Calm).</p>
+</li>
+<li>
+<p><span class='sts stsrc stscp stsga' data-desc='Deal 6 (9) damage./1'>Strike</span>.
+For 1 energy,
+this deals 6 damage.
+This card <strong>targets</strong> an enemy,
+meaning I choose which one to deal the 6 damage to.</p>
+</li>
+</ul>
+<p>As for the cards in my draw pile:</p>
+<ul>
+<li>
+<p><span class='sts stsrc stscp stsgs' data-desc='Gain 5 (8) Block./1'>Defend</span>. For 1 energy, this gains 6 block.</p>
+</li>
+<li>
+<p><span class='sts stsu stsrb stscp stsga' data-desc='Deal 9 damage. Enter Wrath./2 (1)'>Eruption+</span>. For 1 energy, this deals 9 damage, then enters Wrath.</p>
+</li>
+<li>
+<p><span class='sts stsu stsrb stscp stsgs' data-desc='Gain 8 (12) Block. Enter Calm./2'>Vigilance+</span>. For 2 energy, this gains 12 block, then enters Calm.</p>
+</li>
+<li>
+<p><span class='sts stsu stsrc stscp stsga' data-desc='Deal 7 (9) damage. Scry 2 (3). Draw 1 card./1'>Cut Through Fate+</span>. For 1 energy, this deals 7 damage, <strong>scries</strong> 2, and then draws 1 card.
+Scry is another mechanic unique to the Watcher.
+Whenever I &quot;scry 2&quot;,
+I get to see the next 2 cards I will draw in order.
+I can additionally choose to discard either or both of them.
+If my draw pile only has 0 or 1 cards in it,
+I only get to see those cards --
+the discard pile is not reshuffled.</p>
+</li>
+<li>
+<p><span class='sts stsu stsrc stscp stsga' data-desc='Deal 9 (14) damage. Exit your Stance./1'>Empty Fist+</span>. For 1 energy, this deals 14 damage, then exits my current stance.</p>
+</li>
+<li>
+<p><span class='sts stsrc stscp stsgs' data-desc='Apply 8 (11) Mark. ALL enemies lose HP equal to their Mark./1'>Pressure Points</span>. For 0 energy, this adds 8 <strong>Mark</strong> to the target, then deals damage to all enemies equal to their current Mark.
+Mark is a mechanic only used by this specific card.
+It starts at 0 and carries over between turns.
+Also note that this card does not normally cost 0,
+but it does for the current battle because of previous actions.</p>
+</li>
+<li>
+<p><span class='sts stsru stscp stsgs' data-desc='Put a Miracle+ into your hand at the start of your next X(+1) turns. Exhaust./X'>Collect</span>. This consumes all of my energy,
+and will then add a <span class='sts stsu stsrs stscc stsgs' data-desc='Retain. Gain [W] ([W]). Exhaust./0'>Miracle+</span> to my hand at the beginning of my next X turns,
+where X is the amount of energy that was consumed.
+It then Exhausts.
+Note that X can be 0,
+in which case I still play the card but for no effect
+(other than Exhausting).</p>
+<ul>
+<li><span class='sts stsu stsrs stscc stsgs' data-desc='Retain. Gain [W] ([W]). Exhaust./0'>Miracle+</span>, which can be generated from <span class='sts stsru stscp stsgs' data-desc='Put a Miracle+ into your hand at the start of your next X(+1) turns. Exhaust./X'>Collect</span>,
+simply gains 2 energy for free, then Exhausts.
+It also <strong>retains</strong>,
+which means I do not discard it at the end of my turn
+(but I still draw 5 cards at the beginning of the next turn as usual,
+which would leave me with 6 in my hand total).</li>
+</ul>
+</li>
+<li>
+<p><span class='sts stsru stscc stsgs' data-desc='Exhaust up to 3 (5) cards in your hand. Exhaust./0'>Purity</span>. For 0 energy, this lets me choose anywhere from 0 to 3 cards in my hand to Exhaust, and then Exhausts itself.</p>
+</li>
+<li>
+<p><span class='sts stsru stscp stsgs' data-desc='(Retain.) Gain 5 Mantra./2'>Worship</span>. For 0 energy, this gains 5 <strong>Mantra</strong>.
+Mantra is another Watcher-specific mechanic.
+It is a value that persists between turns,
+and if at any point I ever have 10 or more Mantra,
+I lose 10 Mantra and enter the Divinity stance.
+Again,
+this card does not normally cost 0,
+but it does for the current battle.</p>
+</li>
+</ul>
+<h2>enemies, buffs, and debuffs</h2>
+<p>I will continue describing the first screenshot from bottom to top;
+if I skip something,
+that means it's not important.</p>
+<p>Below each combatant,
+you can see several icons.
+These are <strong>buffs</strong> and <strong>debuffs</strong>,
+static effects that persist between turns.
+They are applied by various player or enemy actions.
+From left to right,
+my character has:</p>
+<ul>
+<li>1 <strong>Strength</strong>, which means all damage numbers on my cards are increased by 1. This means a <span class='sts stsrc stscp stsga' data-desc='Deal 6 (9) damage./1'>Strike</span> actually does 7 damage.</li>
+<li>1 <strong>Dexterity</strong>, which means all block numbers on my cards are increased by 1. This means a <span class='sts stsrc stscp stsgs' data-desc='Gain 5 (8) Block./1'>Defend</span> actually blocks for 6.</li>
+<li>3 <strong>Mantra</strong>, described above (for the card <span class='sts stsru stscp stsgs' data-desc='(Retain.) Gain 5 Mantra./2'>Worship</span>).</li>
+<li>6 <strong>Thorns</strong>, which means every time an enemy hits me, they take 6 damage. (Since the Awakened One intends to hit me 4 times, it will take 24 damage.)</li>
+</ul>
+<p>The Cultist has:</p>
+<ul>
+<li>4 <strong>Ritual</strong>, which means at the end of all of its turns, it will gain 4 Strength. The Cultist's attack pattern is to simply attack for 6 repeatedly, but due to the Strength gain, its damage will actually be 6, then 10, then 14, and so on.</li>
+</ul>
+<p>The Awakened One has:</p>
+<ul>
+<li>10 <strong>Regen</strong>, which means it heals 10 HP at the start of its turn.</li>
+<li>1 <strong>Curiosity</strong>, which is not important.</li>
+<li>1 <strong>Unawakened</strong>. This enemy has a unique mechanic where when it dies for the first time,
+it does not actually die.
+Instead,
+it immediately enters a &quot;waking up&quot; state,
+in which it can no longer be targeted by cards.
+At the beginning of its next turn,
+it will then replenish all of its HP
+and enter a second phase,
+where its attack pattern becomes significantly deadlier.</li>
+<li>2 <strong>Strength</strong>.</li>
+</ul>
+<p>Before waking up,
+the Awakened One's attack pattern
+is approximately random between attacking for 20 and 6x4.
+(Since it has 2 Strength, these will actually be 22 and 8x4.)
+On the turn that it wakes up,
+its intent is a 40 (42 with Strength) damage attack.
+For all future turns,
+it is then approximately random between attacking for 10x3 (12x3),
+and simultaneously attacking for 18 (20) and adding a <span class='sts stsrc stscc stsgs' data-desc='Unplayable. Ethereal. Whenever this card is drawn, lose 1 Energy.'>Void</span> into my draw pile.
+<span class='sts stsrc stscc stsgs' data-desc='Unplayable. Ethereal. Whenever this card is drawn, lose 1 Energy.'>Void</span> is an unplayable card that immediately reduces my energy by 1 when I draw it (unless I have no energy),
+but it is <strong>Ethereal</strong>, which means it Exhausts itself if it is in my hand at the end of my turn.</p>
+<h2>relics and potions</h2>
+<p>The row of 17 icons above my character
+is my collection of <strong>relics</strong>.
+These are items that I have collected throughout the current game
+which give various benefits in every fight.
+I will only explain the ones that could possibly be relevant.</p>
+<ul>
+<li><span class='sts stsrelic' data-desc='At the start of your turn, gain 1 Mantra.'>Damaru</span>: At the start of my turn, I gain 1 Mantra.</li>
+<li><span class='sts stsrelic' data-desc='The first time you lose HP each combat, draw 3 cards.'>Centennial Puzzle</span>: The first time I take damage this battle, I draw 3 cards. (I have not yet taken damage.)</li>
+<li><span class='sts stsrelic' data-desc='Every time you play 3 Attacks in a single turn, gain 4 Block.'>Ornamental Fan</span>: Every time I play 3 Attack cards in the same turn, I gain 4 block. (The type of each card is visible in the screenshots.)</li>
+<li><span class='sts stsrelic' data-desc='Double the effectiveness of potions.'>Sacred Bark</span>: Effects of most <strong>potions</strong> are doubled.</li>
+</ul>
+<p>What is a potion, you ask?
+Those are what can occupy the four slots above my relic bar.
+Potions are one-time use items,
+and I can use them at any time during my turn.
+I currently have 3 potions:</p>
+<ul>
+<li><span class='sts stspotion' data-desc='This turn, your next 1 (2) cards are played twice.'>Duplication Potion</span>: After using this potion, the next 2 cards I play are played twice.</li>
+<li><span class='sts stspotion' data-desc='Play the top 3 (6) cards of your draw pile.'>Distilled Chaos</span>: Immediately play the next 6 cards in my draw pile in sequence. If there are less than 6, do not reshuffle, just play all of them.</li>
+<li><span class='sts stspotion' data-desc='Upgrade all cards in your hand for the rest of combat.'>Blessing of the Forge</span>: Upgrade all cards in my hand for the rest of this battle. You can see the effects of each upgrade by hovering over the card names in the &quot;cards&quot; section above.</li>
+</ul>
+<p style='margin-top:3em'><a href='..'>« return to post</a></p>
 
         </main>
 
