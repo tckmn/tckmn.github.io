@@ -21,6 +21,7 @@
                 <button class='menuaction' data-menu='stamp'>save/load stamp</button>
                 <button class='menuaction' data-menu='colors'>save/load colors</button>
                 <button class='menuaction' data-menu='dark'>toggle dark mode</button>
+                <button class='menuaction' data-menu='dlstamp'>download stamp</button>
             </section>
             <svg id='grid'>
                 <!-- Filter+ from Dark Reader, https://github.com/darkreader/darkreader/blob/7f047b20909b09b8cdb3e45550d0c586abeb98a4/src/generators/utils/matrix.ts#L42 -->
@@ -46,17 +47,33 @@
                             <label>color: <span class='arg colorpicker'></span></label>
                         </div>
                         <div class='settool full' data-tool='line'>Line
+                            <span>type:
+                                <span class='arg menuinput multisel'><!--
+                                    --><button class='left' data-multisel='0'>path</button><!--
+                                    --><button class='right' data-multisel='1'>edge</button><!--
+                                --></span>
+                            </span>
                             <label>color: <span class='arg colorpicker'></span></label>
-                        </div>
-                        <div class='settool full' data-tool='edge'>Edge
-                            <label>color: <span class='arg colorpicker'></span></label>
+                            <span>thickness:
+                                <span class='arg menuinput multisel'><!--
+                                    --><button class='left' data-multisel='1'>thin</button><!--
+                                    --><button class='mid' data-multisel='2'>normal</button><!--
+                                    --><button class='right' data-multisel='3'>thick</button><!--
+                                --></span>
+                            </span>
+                            <span>head:
+                                <span class='arg menuinput multisel'><!--
+                                    --><button class='left' data-multisel='0'>none</button><!--
+                                    --><button class='right' data-multisel='1'>arrow</button><!--
+                                --></span>
+                            </span>
                         </div>
                         <div class='settool full' data-tool='shape'>Shape
                             <span>shape:
                                 <span class='arg menuinput multisel'><!--
                                     --><button class='left' data-multisel='0'>circle</button><!--
                                     --><button class='mid' data-multisel='1'>square</button><!--
-                                    --><button class='mid' data-multisel='2'>cross</button><!--
+                                    --><button class='mid' data-multisel='2'>flag</button><!--
                                     --><button class='right' data-multisel='3'>star</button><!--
                                 --></span>
                             </span>
@@ -71,8 +88,9 @@
                             <label>fill: <span class='arg colorpicker optional'></span></label>
                             <label>outline: <span class='arg colorpicker optional'></span></label>
                         </div>
-
-                        <div class='settool full' data-tool='text'>Text</div>
+                        <div class='settool full' data-tool='text'>Text
+                            <label>preset: <input class='arg'></label>
+                        </div>
                     </section>
 
                     <section class='group'>
@@ -95,6 +113,11 @@
                     </section>
                 </div>
                 <button class='menuinput' data-menu='go' data-event='click=go'>add</button>
+            </div>
+
+            <div data-menu='toolbox'>
+                <textarea class='menuinput big' data-menu='value' data-event='keypress=key'></textarea>
+                <button class='menuinput' data-menu='go' data-event='click=go'>load</button>
             </div>
 
             <div data-menu='stamp'>

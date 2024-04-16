@@ -117,42 +117,15 @@ define("color", ["require", "exports"], function (require, exports) {
         '#eced00'
     ];
 });
-define("draw", ["require", "exports"], function (require, exports) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.draw = void 0;
-    const svgNS = 'http://www.w3.org/2000/svg';
-    function draw(parent, tagname, attrs = {}) {
-        const elt = document.createElementNS(svgNS, tagname);
-        for (let [k, v] of Object.entries(attrs)) {
-            if (k === 'children') {
-                for (let child of v)
-                    elt.appendChild(child);
-            }
-            else if (k === 'textContent') {
-                elt.textContent = v;
-            }
-            else {
-                elt.setAttribute(k === 'viewBox' ? k : k.replace(/[A-Z]/g, m => '-' + m.toLowerCase()), v);
-            }
-        }
-        if (parent !== undefined)
-            parent.appendChild(elt);
-        return elt;
-    }
-    exports.draw = draw;
-});
 define("measure", ["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.hctype = exports.physhc = exports.hc = exports.cell = exports.round = exports.CELL = exports.EDGE = exports.LINE = exports.ZOOMTICK = exports.HALFCELL = exports.GRIDSIZE = exports.GRIDLINE = exports.GRIDCOLOR = void 0;
+    exports.hctype = exports.physhc = exports.hc = exports.cell = exports.round = exports.CELL = exports.LINE = exports.ZOOMTICK = exports.HALFCELL = exports.GRIDLINE = exports.GRIDCOLOR = void 0;
     exports.GRIDCOLOR = '#aaa';
     exports.GRIDLINE = 1;
-    exports.GRIDSIZE = 500;
     exports.HALFCELL = 20;
     exports.ZOOMTICK = 1.1;
-    exports.LINE = 5;
-    exports.EDGE = 5;
+    exports.LINE = 2;
     exports.CELL = 2 * exports.HALFCELL;
     // this doesn't really belong here lol
     function round(x, r) { return Math.round(x / r) * r; }
@@ -177,57 +150,190 @@ define("measure", ["require", "exports"], function (require, exports) {
     }
     exports.hctype = hctype;
 });
-define("layer", ["require", "exports", "draw", "measure"], function (require, exports, Draw, Measure) {
+define("image", ["require", "exports", "measure", "color"], function (require, exports, Measure, Color) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.obj = exports.initialize = exports.stamps = exports.copypaste = exports.text = exports.textInd = exports.shape = exports.edge = exports.line = exports.surface = exports.grid = exports.parent = void 0;
-    function initialize(svg) {
-        exports.parent = Draw.draw(svg, 'g');
-        exports.grid = Draw.draw(exports.parent, 'g', { stroke: Measure.GRIDCOLOR, strokeWidth: Measure.GRIDLINE });
-        exports.surface = Draw.draw(exports.parent, 'g');
-        exports.line = Draw.draw(exports.parent, 'g');
-        exports.edge = Draw.draw(exports.parent, 'g');
-        exports.shape = Draw.draw(exports.parent, 'g');
-        exports.textInd = Draw.draw(exports.parent, 'g');
-        exports.text = Draw.draw(exports.parent, 'g');
-        exports.copypaste = Draw.draw(exports.parent, 'g');
-        exports.stamps = Draw.draw(exports.parent, 'g', { opacity: 0.5 });
-    }
-    exports.initialize = initialize;
-    function obj(obj) {
-        switch (obj) {
-            case 0 /* Data.Obj.SURFACE */: return exports.surface;
-            case 1 /* Data.Obj.LINE */: return exports.line;
-            case 2 /* Data.Obj.EDGE */: return exports.edge;
-            case 3 /* Data.Obj.SHAPE */: return exports.shape;
-            case 4 /* Data.Obj.TEXT */: return exports.text;
+    const svgNS = 'http://www.w3.org/2000/svg';
+    const drawfns = {
+        [0 /* Data.Obj.SURFACE */]: (image, x, y, data) => {
+            return image.draw(undefined, 'rect', {
+                width: Measure.CELL,
+                height: Measure.CELL,
+                x: Measure.HALFCELL * (x - 1),
+                y: Measure.HALFCELL * (y - 1),
+                fill: Color.colors[data]
+            });
+        },
+        [1 /* Data.Obj.LINE */]: (image, x, y, [spec, reversed]) => {
+            const g = image.draw(undefined, 'g', {
+                transform: `
+                rotate(${((y % 2 === 0) == spec.isEdge ? 0 : 90) + (reversed ? 180 : 0)} ${x * Measure.HALFCELL} ${y * Measure.HALFCELL})
+                `
+            });
+            const stroke = Color.colors[spec.color];
+            const strokeLinecap = 'round';
+            const strokeWidth = Measure.LINE * spec.thickness;
+            const adjust = (z, n) => (z * Measure.HALFCELL + n * Math.sqrt(spec.thickness));
+            image.draw(g, 'line', {
+                x1: adjust(x + 1, 0),
+                x2: adjust(x - 1, 0),
+                y1: adjust(y, 0),
+                y2: adjust(y, 0),
+                stroke, strokeLinecap, strokeWidth
+            });
+            switch (spec.head) {
+                case 0 /* Data.Head.NONE */:
+                    break;
+                case 1 /* Data.Head.ARROW */:
+                    image.draw(g, 'path', {
+                        d: `M ${adjust(x, 3)} ${adjust(y, 5)} L ${adjust(x, -2)} ${adjust(y, 0)} L ${adjust(x, 3)} ${adjust(y, -5)}`,
+                        fill: 'none',
+                        stroke, strokeLinecap, strokeWidth
+                    });
+            }
+            return g;
+        },
+        [2 /* Data.Obj.SHAPE */]: (image, x, y, data) => {
+            const g = image.draw(undefined, 'g', {
+                transform: `translate(${x * Measure.HALFCELL} ${y * Measure.HALFCELL})`
+            });
+            for (const spec of data) {
+                const r = Measure.HALFCELL * (spec.size / 6);
+                const strokeWidth = Measure.HALFCELL * (0.05 + 0.1 * (spec.size / 12));
+                const fill = spec.fill === undefined ? 'transparent' : Color.colors[spec.fill];
+                const stroke = spec.outline === undefined ? 'transparent' : Color.colors[spec.outline];
+                switch (spec.shape) {
+                    case 0 /* Data.Shape.CIRCLE */:
+                        image.draw(g, 'circle', {
+                            cx: 0, cy: 0, r: r,
+                            strokeWidth, fill, stroke
+                        });
+                        break;
+                    case 1 /* Data.Shape.SQUARE */:
+                        image.draw(g, 'rect', {
+                            width: r * 2, height: r * 2, x: -r, y: -r,
+                            strokeWidth, fill, stroke
+                        });
+                        break;
+                    case 2 /* Data.Shape.FLAG */:
+                        image.draw(g, 'path', {
+                            d: 'M -0.8 1 L -0.8 -1 L -0.6 -1 L 0.8 -0.5 L -0.6 0 L -0.6 1 Z',
+                            transform: `scale(${r * 0.9})`,
+                            strokeWidth: strokeWidth / (r * 0.9), fill, stroke
+                        });
+                        break;
+                    case 3 /* Data.Shape.STAR */:
+                        image.draw(g, 'path', {
+                            d: 'M' + [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(n => (r * (n % 2 === 0 ? 1 : 0.5) * Math.cos((n / 5 + 0.5) * Math.PI) + ' ' +
+                                -r * (n % 2 === 0 ? 1 : 0.5) * Math.sin((n / 5 + 0.5) * Math.PI))).join('L') + 'Z',
+                            strokeWidth, fill, stroke
+                        });
+                        break;
+                }
+            }
+            return g;
+        },
+        [3 /* Data.Obj.TEXT */]: (image, x, y, data) => {
+            return image.draw(undefined, 'text', {
+                x: Measure.HALFCELL * x,
+                y: Measure.HALFCELL * y,
+                textAnchor: 'middle',
+                dominantBaseline: 'central',
+                fontSize: Measure.CELL * (data.length === 1 ? 0.75 :
+                    data.length === 2 ? 0.55 :
+                        data.length === 3 ? 0.4 :
+                            0.3),
+                textContent: data
+            });
+        },
+    };
+    class Image {
+        constructor(document, svg) {
+            this.document = document;
+            this.root = this.draw(svg, 'g');
+            this.gridlines = this.draw(this.root, 'g', { stroke: Measure.GRIDCOLOR, strokeWidth: Measure.GRIDLINE });
+            this.surface = this.draw(this.root, 'g');
+            this.path = this.draw(this.root, 'g');
+            this.edge = this.draw(this.root, 'g');
+            this.shape = this.draw(this.root, 'g');
+            this.textInd = this.draw(this.root, 'g');
+            this.text = this.draw(this.root, 'g');
+            this.copypaste = this.draw(this.root, 'g');
+            this.stamps = this.draw(this.root, 'g', { opacity: 0.5 });
+        }
+        draw(parent, tagname, attrs = {}) {
+            const elt = this.document.createElementNS(svgNS, tagname);
+            for (let [k, v] of Object.entries(attrs)) {
+                if (k === 'children') {
+                    for (let child of v)
+                        elt.appendChild(child);
+                }
+                else if (k === 'textContent') {
+                    elt.textContent = v;
+                }
+                else {
+                    elt.setAttribute(k === 'viewBox' ? k : k.replace(/[A-Z]/g, m => '-' + m.toLowerCase()), v);
+                }
+            }
+            if (parent !== undefined)
+                parent.appendChild(elt);
+            return elt;
+        }
+        obj(obj) {
+            switch (obj) {
+                case 0 /* Data.Layer.SURFACE */: return this.surface;
+                case 1 /* Data.Layer.PATH */: return this.path;
+                case 2 /* Data.Layer.EDGE */: return this.edge;
+                case 3 /* Data.Layer.SHAPE */: return this.shape;
+                case 4 /* Data.Layer.TEXT */: return this.text;
+            }
+        }
+        objdraw(elt, x, y) {
+            return drawfns[elt.obj](this, x, y, elt.data);
+        }
+        grid(xmin, xmax, ymin, ymax) {
+            for (let x = Math.ceil(xmin / 2) * 2; x <= xmax; x += 2) {
+                this.draw(this.gridlines, 'line', {
+                    x1: x * Measure.HALFCELL, x2: x * Measure.HALFCELL,
+                    y1: ymin * Measure.HALFCELL, y2: ymax * Measure.HALFCELL
+                });
+            }
+            for (let y = Math.ceil(ymin / 2) * 2; y <= ymax; y += 2) {
+                this.draw(this.gridlines, 'line', {
+                    x1: xmin * Measure.HALFCELL, x2: xmax * Measure.HALFCELL,
+                    y1: y * Measure.HALFCELL, y2: y * Measure.HALFCELL
+                });
+            }
         }
     }
-    exports.obj = obj;
+    exports.default = Image;
 });
 define("tools/tool", ["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
 });
-define("tools/copy", ["require", "exports", "data", "draw", "layer", "measure", "stamp"], function (require, exports, Data, Draw, Layer, Measure, Stamp) {
+define("tools/copy", ["require", "exports", "data", "measure", "stamp"], function (require, exports, Data, Measure, Stamp) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class CopyTool {
         constructor() {
             this.repeat = false;
+            this.tid = 'copy';
             this.sx = 0;
             this.sy = 0;
             this.tx = 0;
             this.ty = 0;
         }
         name() { return 'Copy'; }
-        icon() { }
-        ondown(x, y) {
+        icon(image) { }
+        save() { return ''; }
+        static load(_) { return new CopyTool(); }
+        ondown(x, y, image) {
             this.sx = x;
             this.sy = y;
             this.tx = x;
             this.ty = y;
-            this.elt = Draw.draw(Layer.copypaste, 'rect', {
+            this.elt = image.draw(image.copypaste, 'rect', {
                 x: x,
                 y: y,
                 width: 0,
@@ -250,9 +356,9 @@ define("tools/copy", ["require", "exports", "data", "draw", "layer", "measure", 
                 this.elt.setAttribute('height', (ty - sy).toString());
             }
         }
-        onup() {
+        onup(image) {
             if (this.elt !== undefined)
-                Layer.copypaste.removeChild(this.elt);
+                image.copypaste.removeChild(this.elt);
             const sx = Measure.hc(Math.min(this.sx, this.tx));
             const sy = Measure.hc(Math.min(this.sy, this.ty));
             const tx = Measure.hc(Math.max(this.sx, this.tx));
@@ -280,116 +386,102 @@ define("tools/copy", ["require", "exports", "data", "draw", "layer", "measure", 
     }
     exports.default = CopyTool;
 });
-define("tools/edge", ["require", "exports", "data", "draw", "measure"], function (require, exports, Data, Draw, Measure) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    const HC_WEIGHT = 0.35;
-    class EdgeTool {
-        name() { return 'Edge'; }
-        icon() {
-            return Draw.draw(undefined, 'svg', {
-                viewBox: `-${Measure.HALFCELL} 0 ${Measure.CELL} ${Measure.CELL}`,
-                children: [
-                    Data.objdraw(2 /* Data.Obj.EDGE */, 0, 1, this.color)
-                ]
-            });
-        }
-        constructor(color) {
-            this.color = color;
-            this.repeat = false;
-            this.isDrawing = undefined;
-            this.x = 0;
-            this.y = 0;
-        }
-        ondown(x, y) {
-            this.x = Measure.hc(x, HC_WEIGHT);
-            this.y = Measure.hc(y, HC_WEIGHT);
-        }
-        onmove(x, y) {
-            var _a;
-            x = Measure.hc(x, HC_WEIGHT);
-            y = Measure.hc(y, HC_WEIGHT);
-            if (x === this.x && y === this.y)
-                return;
-            const dx = Math.abs(this.x - x);
-            const dy = Math.abs(this.y - y);
-            const lx = Math.min(x, this.x);
-            const ly = Math.min(y, this.y);
-            this.x = x;
-            this.y = y;
-            if (!(dx === 0 && dy === 1 && lx % 2 === 0 || dx === 1 && dy === 0 && ly % 2 === 0))
-                return;
-            const n = dx > 0 ? Data.encode(lx + (lx % 2 === 0 ? 1 : 0), ly) : Data.encode(lx, ly + (ly % 2 === 0 ? 1 : 0));
-            const edge = (_a = Data.halfcells.get(n)) === null || _a === void 0 ? void 0 : _a.get(2 /* Data.Obj.EDGE */);
-            if (this.isDrawing === undefined) {
-                this.isDrawing = edge === undefined;
-            }
-            if (edge === undefined) {
-                if (this.isDrawing) {
-                    Data.add(new Data.Change(n, 2 /* Data.Obj.EDGE */, edge, this.color));
-                }
-            }
-            else {
-                if (!this.isDrawing) {
-                    Data.add(new Data.Change(n, 2 /* Data.Obj.EDGE */, edge, undefined));
-                }
-            }
-        }
-        onup() { this.isDrawing = undefined; }
-    }
-    exports.default = EdgeTool;
-});
-define("tools/line", ["require", "exports", "data", "draw", "measure"], function (require, exports, Data, Draw, Measure) {
+define("tools/line", ["require", "exports", "data", "measure"], function (require, exports, Data, Measure) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class LineTool {
         name() { return 'Line'; }
-        icon() {
-            return Draw.draw(undefined, 'svg', {
+        icon(image) {
+            return image.draw(undefined, 'svg', {
                 viewBox: `-${Measure.HALFCELL} 0 ${Measure.CELL} ${Measure.CELL}`,
                 children: [
-                    Data.objdraw(1 /* Data.Obj.LINE */, 0, 1, this.color)
+                    image.objdraw(new Data.Element(1 /* Data.Obj.LINE */, [this.spec, false]), 0, 1)
                 ]
             });
         }
-        constructor(color) {
-            this.color = color;
+        save() {
+            return [
+                this.spec.isEdge ? 'E' : 'L',
+                this.spec.color.toString(),
+                this.spec.thickness.toString(),
+                this.spec.head.toString()
+            ].join(' ');
+        }
+        static load(s) {
+            const ss = s.split(' '), ns = ss.map(x => parseInt(x, 10));
+            return new LineTool({
+                isEdge: ss[0] === 'E',
+                color: ns[1],
+                thickness: ns[2],
+                head: ns[3]
+            });
+        }
+        constructor(spec) {
+            this.spec = spec;
             this.repeat = false;
+            this.tid = 'line';
             this.isDrawing = undefined;
             this.x = 0;
             this.y = 0;
+            this.HC_WEIGHT = spec.isEdge ? 0.35 : 0;
+            this.LAYER = spec.isEdge ? 2 /* Data.Layer.EDGE */ : 1 /* Data.Layer.PATH */;
         }
         ondown(x, y) {
-            this.x = Measure.cell(x);
-            this.y = Measure.cell(y);
+            this.x = Measure.hc(x, this.HC_WEIGHT);
+            this.y = Measure.hc(y, this.HC_WEIGHT);
         }
         onmove(x, y) {
             var _a;
-            x = Measure.cell(x);
-            y = Measure.cell(y);
+            x = Measure.hc(x, this.HC_WEIGHT);
+            y = Measure.hc(y, this.HC_WEIGHT);
             if (x === this.x && y === this.y)
                 return;
-            const dx = Math.abs(this.x - x);
-            const dy = Math.abs(this.y - y);
+            let dx = this.x - x;
+            let dy = this.y - y;
             const lx = Math.min(x, this.x);
             const ly = Math.min(y, this.y);
             this.x = x;
             this.y = y;
-            if (!(dx === 0 && dy === 1 || dx === 1 && dy === 0))
-                return;
-            const n = dx > 0 ? Data.encode(lx * 2 + 2, ly * 2 + 1) : Data.encode(lx * 2 + 1, ly * 2 + 2);
-            const line = (_a = Data.halfcells.get(n)) === null || _a === void 0 ? void 0 : _a.get(1 /* Data.Obj.LINE */);
-            if (this.isDrawing === undefined) {
-                this.isDrawing = line === undefined;
+            let cx, cy, dir;
+            if (!this.spec.isEdge) {
+                dx = dx / 2;
+                dy = dy / 2;
             }
-            if (line === undefined) {
-                if (this.isDrawing) {
-                    Data.add(new Data.Change(n, 1 /* Data.Obj.LINE */, line, this.color));
+            dir = dx + dy;
+            if (dx ** 2 + dy ** 2 !== 1)
+                return;
+            if (this.spec.isEdge) {
+                if (dx === 0) {
+                    if (x % 2 !== 0)
+                        return;
+                    cx = x;
+                    cy = y % 2 ? y : y + dy;
+                }
+                else {
+                    if (y % 2 !== 0)
+                        return;
+                    cy = y;
+                    cx = x % 2 ? x : x + dx;
                 }
             }
             else {
-                if (!this.isDrawing) {
-                    Data.add(new Data.Change(n, 1 /* Data.Obj.LINE */, line, undefined));
+                cx = x + dx;
+                cy = y + dy;
+            }
+            const n = Data.encode(cx, cy);
+            const oldline = (_a = Data.halfcells.get(n)) === null || _a === void 0 ? void 0 : _a.get(this.LAYER);
+            const newline = new Data.Element(1 /* Data.Obj.LINE */, [this.spec, dir === -1]);
+            if (this.isDrawing === undefined) {
+                this.isDrawing = oldline === undefined || !Data.lineeq(oldline.data, newline.data);
+            }
+            if (this.isDrawing) {
+                if (oldline === undefined || !Data.lineeq(oldline.data, newline.data)) {
+                    Data.add(new Data.Change(n, this.LAYER, oldline, newline));
+                }
+            }
+            else {
+                if (oldline !== undefined) {
+                    Data.add(new Data.Change(n, this.LAYER, oldline, undefined));
                 }
             }
         }
@@ -397,16 +489,17 @@ define("tools/line", ["require", "exports", "data", "draw", "measure"], function
     }
     exports.default = LineTool;
 });
-define("view", ["require", "exports", "layer", "measure"], function (require, exports, layer_1, Measure) {
+define("view", ["require", "exports", "measure"], function (require, exports, Measure) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.update = exports.zoom = exports.setZ = exports.setY = exports.setX = exports.initialize = exports.z = exports.y = exports.x = void 0;
     exports.x = 0;
     exports.y = 0;
     exports.z = 0;
-    let elt;
-    function initialize(svg) {
-        elt = svg;
+    // TODO this is absolutely an extremely temporary bandaid lol
+    let img;
+    function initialize(image) {
+        img = image;
     }
     exports.initialize = initialize;
     function setX(n) { exports.x = n; }
@@ -418,7 +511,7 @@ define("view", ["require", "exports", "layer", "measure"], function (require, ex
     function zoom(n) { return Math.pow(Measure.ZOOMTICK, n !== null && n !== void 0 ? n : exports.z); }
     exports.zoom = zoom;
     function update() {
-        layer_1.parent.setAttribute('transform', `scale(${zoom()}) translate(${exports.x} ${exports.y})`);
+        img.root.setAttribute('transform', `scale(${zoom()}) translate(${exports.x} ${exports.y})`);
     }
     exports.update = update;
 });
@@ -428,11 +521,14 @@ define("tools/pan", ["require", "exports", "view"], function (require, exports, 
     class PanTool {
         constructor() {
             this.repeat = false;
+            this.tid = 'pan';
             this.mx = 0;
             this.my = 0;
         }
         name() { return 'Pan'; }
-        icon() { }
+        icon(image) { }
+        save() { return ''; }
+        static load() { return new PanTool(); }
         ondown(x, y) {
             this.mx = x;
             this.my = y;
@@ -446,38 +542,30 @@ define("tools/pan", ["require", "exports", "view"], function (require, exports, 
     }
     exports.default = PanTool;
 });
-define("tools/paste", ["require", "exports", "data", "stamp", "measure"], function (require, exports, Data, Stamp, Measure) {
+define("tools/paste", ["require", "exports", "stamp", "measure"], function (require, exports, Stamp, Measure) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class PasteTool {
         constructor() {
             this.repeat = false;
+            this.tid = 'paste';
         }
         name() { return 'Paste'; }
-        icon() { }
+        icon(image) { }
+        save() { return ''; }
+        static load() { return new PasteTool(); }
         ondown(x, y) {
             var _a;
             const xoff = Math.round(x / Measure.CELL) * 2;
             const yoff = Math.round(y / Measure.CELL) * 2;
-            const stamp = Stamp.current();
-            if (stamp === undefined)
-                return;
-            for (let i = 0; i < stamp.cells.length; ++i) {
-                const cell = stamp.cells[i];
-                const [x, y] = Data.decode(cell.n);
-                const newn = Data.encode(x - stamp.xoff + xoff, y - stamp.yoff + yoff);
-                const pre = (_a = Data.halfcells.get(newn)) === null || _a === void 0 ? void 0 : _a.get(cell.obj);
-                if (pre !== cell.data) {
-                    Data.add(new Data.Change(newn, cell.obj, pre, cell.data, i !== stamp.cells.length - 1));
-                }
-            }
+            (_a = Stamp.current()) === null || _a === void 0 ? void 0 : _a.apply(xoff, yoff);
         }
         onmove(x, y) { }
         onup() { }
     }
     exports.default = PasteTool;
 });
-define("tools/shape", ["require", "exports", "data", "draw", "measure"], function (require, exports, Data, Draw, Measure) {
+define("tools/shape", ["require", "exports", "data", "measure"], function (require, exports, Data, Measure) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     // lmao surely there is a better way
@@ -502,37 +590,58 @@ define("tools/shape", ["require", "exports", "data", "draw", "measure"], functio
     }
     class ShapeTool {
         name() { return 'Shape'; }
-        icon() {
-            return Draw.draw(undefined, 'svg', {
+        icon(image) {
+            return image.draw(undefined, 'svg', {
                 viewBox: `0 0 ${Measure.CELL} ${Measure.CELL}`,
                 children: [
-                    Data.objdraw(3 /* Data.Obj.SHAPE */, 1, 1, [this.spec])
+                    image.objdraw(new Data.Element(2 /* Data.Obj.SHAPE */, [this.spec]), 1, 1)
                 ]
             });
+        }
+        save() {
+            return [
+                this.spec.shape.toString(),
+                this.spec.fill === undefined ? '-' : this.spec.fill.toString(),
+                this.spec.outline === undefined ? '-' : this.spec.outline.toString(),
+                this.spec.size.toString(),
+                this.locs.toString()
+            ].join(' ');
+        }
+        static load(s) {
+            const ss = s.split(' '), ns = ss.map(x => parseInt(x, 10));
+            return new ShapeTool({
+                shape: ns[0],
+                fill: ss[1] === '-' ? undefined : ns[1],
+                outline: ss[2] === '-' ? undefined : ns[2],
+                size: ns[3]
+            }, ns[4]);
         }
         constructor(spec, locs // bitmask: 0b center edge corner
         ) {
             this.spec = spec;
             this.locs = locs;
             this.repeat = false;
+            this.tid = 'shape';
             this.isDrawing = false;
         }
         ondown(x, y) {
             var _a;
             [x, y] = atlocs(x, y, this.locs);
             const n = Data.encode(x, y);
-            const shape = (_a = Data.halfcells.get(n)) === null || _a === void 0 ? void 0 : _a.get(3 /* Data.Obj.SHAPE */);
-            if (shape === undefined) {
-                Data.add(new Data.Change(n, 3 /* Data.Obj.SHAPE */, shape, [this.spec]));
+            const shape = (_a = Data.halfcells.get(n)) === null || _a === void 0 ? void 0 : _a.get(3 /* Data.Layer.SHAPE */);
+            const shapelst = shape === null || shape === void 0 ? void 0 : shape.data;
+            if (shapelst === undefined) {
+                Data.add(new Data.Change(n, 3 /* Data.Layer.SHAPE */, shape, new Data.Element(2 /* Data.Obj.SHAPE */, [this.spec])));
                 this.isDrawing = true;
             }
-            else if (!shape.some(sh => Data.sheq(sh, this.spec))) {
-                Data.add(new Data.Change(n, 3 /* Data.Obj.SHAPE */, shape, shape.concat(this.spec)));
+            else if (!shapelst.some(sh => Data.sheq(sh, this.spec))) {
+                Data.add(new Data.Change(n, 3 /* Data.Layer.SHAPE */, shape, new Data.Element(2 /* Data.Obj.SHAPE */, shapelst.concat(this.spec))));
                 this.isDrawing = true;
             }
             else {
-                const remaining = shape.filter(sh => !Data.sheq(sh, this.spec));
-                Data.add(new Data.Change(n, 3 /* Data.Obj.SHAPE */, shape, remaining.length === 0 ? undefined : remaining));
+                const remaining = shapelst.filter(sh => !Data.sheq(sh, this.spec));
+                Data.add(new Data.Change(n, 3 /* Data.Layer.SHAPE */, shape, remaining.length === 0 ? undefined
+                    : new Data.Element(2 /* Data.Obj.SHAPE */, remaining)));
                 this.isDrawing = false;
             }
         }
@@ -540,21 +649,23 @@ define("tools/shape", ["require", "exports", "data", "draw", "measure"], functio
             var _a;
             [x, y] = atlocs(x, y, this.locs);
             const n = Data.encode(x, y);
-            const shape = (_a = Data.halfcells.get(n)) === null || _a === void 0 ? void 0 : _a.get(3 /* Data.Obj.SHAPE */);
-            if (shape === undefined) {
+            const shape = (_a = Data.halfcells.get(n)) === null || _a === void 0 ? void 0 : _a.get(3 /* Data.Layer.SHAPE */);
+            const shapelst = shape === null || shape === void 0 ? void 0 : shape.data;
+            if (shapelst === undefined) {
                 if (this.isDrawing) {
-                    Data.add(new Data.Change(n, 3 /* Data.Obj.SHAPE */, shape, [this.spec]));
+                    Data.add(new Data.Change(n, 3 /* Data.Layer.SHAPE */, shape, new Data.Element(2 /* Data.Obj.SHAPE */, [this.spec])));
                 }
             }
-            else if (!shape.some(sh => Data.sheq(sh, this.spec))) {
+            else if (!shapelst.some(sh => Data.sheq(sh, this.spec))) {
                 if (this.isDrawing) {
-                    Data.add(new Data.Change(n, 3 /* Data.Obj.SHAPE */, shape, shape.concat(this.spec)));
+                    Data.add(new Data.Change(n, 3 /* Data.Layer.SHAPE */, shape, new Data.Element(2 /* Data.Obj.SHAPE */, shapelst.concat(this.spec))));
                 }
             }
             else {
                 if (!this.isDrawing) {
-                    const remaining = shape.filter(sh => !Data.sheq(sh, this.spec));
-                    Data.add(new Data.Change(n, 3 /* Data.Obj.SHAPE */, shape, remaining.length === 0 ? undefined : remaining));
+                    const remaining = shapelst.filter(sh => !Data.sheq(sh, this.spec));
+                    Data.add(new Data.Change(n, 3 /* Data.Layer.SHAPE */, shape, remaining.length === 0 ? undefined :
+                        new Data.Element(2 /* Data.Obj.SHAPE */, remaining)));
                 }
             }
         }
@@ -562,36 +673,40 @@ define("tools/shape", ["require", "exports", "data", "draw", "measure"], functio
     }
     exports.default = ShapeTool;
 });
-define("tools/surface", ["require", "exports", "data", "draw", "measure"], function (require, exports, Data, Draw, Measure) {
+define("tools/surface", ["require", "exports", "data", "measure"], function (require, exports, Data, Measure) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class SurfaceTool {
         name() { return 'Surface'; }
-        icon() {
-            return Draw.draw(undefined, 'svg', {
+        icon(image) {
+            return image.draw(undefined, 'svg', {
                 viewBox: `0 0 ${Measure.CELL} ${Measure.CELL}`,
                 children: [
-                    Data.objdraw(0 /* Data.Obj.SURFACE */, 1, 1, this.color)
+                    image.objdraw(this.element, 1, 1)
                 ]
             });
         }
+        save() { return this.color.toString(); }
+        static load(s) { return new SurfaceTool(parseInt(s, 10)); }
         constructor(color) {
             this.color = color;
             this.repeat = false;
+            this.tid = 'surface';
             this.isDrawing = false;
+            this.element = new Data.Element(0 /* Data.Obj.SURFACE */, this.color);
         }
         ondown(x, y) {
             var _a;
             x = Measure.cell(x);
             y = Measure.cell(y);
             const n = Data.encode(x * 2 + 1, y * 2 + 1);
-            const surface = (_a = Data.halfcells.get(n)) === null || _a === void 0 ? void 0 : _a.get(0 /* Data.Obj.SURFACE */);
+            const surface = (_a = Data.halfcells.get(n)) === null || _a === void 0 ? void 0 : _a.get(0 /* Data.Layer.SURFACE */);
             if (surface === undefined) {
-                Data.add(new Data.Change(n, 0 /* Data.Obj.SURFACE */, surface, this.color));
+                Data.add(new Data.Change(n, 0 /* Data.Layer.SURFACE */, surface, new Data.Element(0 /* Data.Obj.SURFACE */, this.color)));
                 this.isDrawing = true;
             }
             else {
-                Data.add(new Data.Change(n, 0 /* Data.Obj.SURFACE */, surface, undefined));
+                Data.add(new Data.Change(n, 0 /* Data.Layer.SURFACE */, surface, undefined));
                 this.isDrawing = false;
             }
         }
@@ -600,15 +715,15 @@ define("tools/surface", ["require", "exports", "data", "draw", "measure"], funct
             x = Measure.cell(x);
             y = Measure.cell(y);
             const n = Data.encode(x * 2 + 1, y * 2 + 1);
-            const surface = (_a = Data.halfcells.get(n)) === null || _a === void 0 ? void 0 : _a.get(0 /* Data.Obj.SURFACE */);
+            const surface = (_a = Data.halfcells.get(n)) === null || _a === void 0 ? void 0 : _a.get(0 /* Data.Layer.SURFACE */);
             if (surface === undefined) {
                 if (this.isDrawing) {
-                    Data.add(new Data.Change(n, 0 /* Data.Obj.SURFACE */, surface, this.color));
+                    Data.add(new Data.Change(n, 0 /* Data.Layer.SURFACE */, surface, this.element));
                 }
             }
             else {
                 if (!this.isDrawing) {
-                    Data.add(new Data.Change(n, 0 /* Data.Obj.SURFACE */, surface, undefined));
+                    Data.add(new Data.Change(n, 0 /* Data.Layer.SURFACE */, surface, undefined));
                 }
             }
         }
@@ -616,23 +731,41 @@ define("tools/surface", ["require", "exports", "data", "draw", "measure"], funct
     }
     exports.default = SurfaceTool;
 });
-define("tools/text", ["require", "exports", "data", "measure", "event", "layer", "draw"], function (require, exports, Data, Measure, Event, Layer, Draw) {
+define("tools/text", ["require", "exports", "data", "measure", "event"], function (require, exports, Data, Measure, Event) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class TextTool {
         name() { return 'Text'; }
-        icon() { }
-        constructor() {
+        icon(image) { }
+        save() { return this.preset; }
+        static load(s) { return new TextTool(s); }
+        constructor(preset) {
+            this.preset = preset;
             this.repeat = false;
+            this.tid = 'text';
             this.n = 0;
             this.elt = undefined;
+            this.isDrawing = false;
         }
-        ondown(x, y) {
-            if (Event.keyeater.ref === undefined) {
+        ondown(x, y, image) {
+            var _a;
+            if (this.preset !== '') {
+                const n = Data.encode(Measure.cell(x) * 2 + 1, Measure.cell(y) * 2 + 1);
+                const text = (_a = Data.halfcells.get(n)) === null || _a === void 0 ? void 0 : _a.get(4 /* Data.Layer.TEXT */);
+                if (text && text.data === this.preset) {
+                    Data.add(new Data.Change(n, 4 /* Data.Layer.TEXT */, text, undefined));
+                    this.isDrawing = false;
+                }
+                else {
+                    Data.add(new Data.Change(n, 4 /* Data.Layer.TEXT */, text, new Data.Element(3 /* Data.Obj.TEXT */, this.preset)));
+                    this.isDrawing = true;
+                }
+            }
+            else if (Event.keyeater.ref === undefined) {
                 const cx = Measure.cell(x) * 2, cy = Measure.cell(y) * 2;
                 this.n = Data.encode(cx + 1, cy + 1);
                 // TODO some of this goes somewhere else
-                this.elt = Draw.draw(Layer.textInd, 'rect', {
+                this.elt = image.draw(image.textInd, 'rect', {
                     x: cx * Measure.HALFCELL, y: cy * Measure.HALFCELL, width: Measure.CELL, height: Measure.CELL,
                     fill: '#ccc',
                     stroke: '#f88',
@@ -642,16 +775,16 @@ define("tools/text", ["require", "exports", "data", "measure", "event", "layer",
             }
         }
         onkey(e) {
-            var _a;
-            const text = (_a = Data.halfcells.get(this.n)) === null || _a === void 0 ? void 0 : _a.get(4 /* Data.Obj.TEXT */);
+            var _a, _b, _c, _d;
+            const text = (_a = Data.halfcells.get(this.n)) === null || _a === void 0 ? void 0 : _a.get(4 /* Data.Layer.TEXT */);
             if (e.key === 'Enter' || e.key === 'Escape') {
                 this.deselect();
             }
             else if (e.key === 'Backspace') {
-                Data.add(new Data.Change(this.n, 4 /* Data.Obj.TEXT */, text, (text !== null && text !== void 0 ? text : '').slice(0, (text !== null && text !== void 0 ? text : '').length - 1)));
+                Data.add(new Data.Change(this.n, 4 /* Data.Layer.TEXT */, text, new Data.Element(3 /* Data.Obj.TEXT */, ((_b = text === null || text === void 0 ? void 0 : text.data) !== null && _b !== void 0 ? _b : '').slice(0, ((_c = text === null || text === void 0 ? void 0 : text.data) !== null && _c !== void 0 ? _c : '').length - 1))));
             }
             else if (e.key.length === 1) {
-                Data.add(new Data.Change(this.n, 4 /* Data.Obj.TEXT */, text, (text !== null && text !== void 0 ? text : '') + e.key));
+                Data.add(new Data.Change(this.n, 4 /* Data.Layer.TEXT */, text, new Data.Element(3 /* Data.Obj.TEXT */, ((_d = text === null || text === void 0 ? void 0 : text.data) !== null && _d !== void 0 ? _d : '') + e.key)));
             }
         }
         deselect() {
@@ -659,7 +792,23 @@ define("tools/text", ["require", "exports", "data", "measure", "event", "layer",
             if (this.elt !== undefined)
                 this.elt.parentNode.removeChild(this.elt);
         }
-        onmove(x, y) { }
+        onmove(x, y) {
+            var _a;
+            if (this.preset === '')
+                return;
+            const n = Data.encode(Measure.cell(x) * 2 + 1, Measure.cell(y) * 2 + 1);
+            const text = (_a = Data.halfcells.get(n)) === null || _a === void 0 ? void 0 : _a.get(4 /* Data.Layer.TEXT */);
+            if (text && text.data === this.preset) {
+                if (!this.isDrawing) {
+                    Data.add(new Data.Change(n, 4 /* Data.Layer.TEXT */, text, undefined));
+                }
+            }
+            else {
+                if (this.isDrawing) {
+                    Data.add(new Data.Change(n, 4 /* Data.Layer.TEXT */, text, new Data.Element(3 /* Data.Obj.TEXT */, this.preset)));
+                }
+            }
+        }
         onup() { }
     }
     exports.default = TextTool;
@@ -670,9 +819,12 @@ define("tools/undo", ["require", "exports", "data"], function (require, exports,
     class UndoTool {
         name() { return this.isUndo ? 'Undo' : 'Redo'; }
         icon() { }
+        save() { return this.isUndo ? 'u' : 'r'; }
+        static load(s) { return new UndoTool(s === 'u'); }
         constructor(isUndo) {
             this.isUndo = isUndo;
             this.repeat = true;
+            this.tid = 'undo';
         }
         ondown() { Data.undo(this.isUndo); }
         onmove() { }
@@ -686,9 +838,12 @@ define("tools/zoom", ["require", "exports", "view"], function (require, exports,
     class ZoomTool {
         name() { return 'Zoom ' + (this.amount > 0 ? 'in' : 'out'); }
         icon() { }
+        save() { return this.amount.toString(); }
+        static load(s) { return new ZoomTool(parseInt(s, 10)); }
         constructor(amount) {
             this.amount = amount;
             this.repeat = false;
+            this.tid = 'zoom';
         }
         ondown(x, y) {
             View.setX((x + View.x) * View.zoom(-this.amount) - x);
@@ -701,26 +856,45 @@ define("tools/zoom", ["require", "exports", "view"], function (require, exports,
     }
     exports.default = ZoomTool;
 });
-define("tools/alltools", ["require", "exports", "tools/copy", "tools/edge", "tools/line", "tools/pan", "tools/paste", "tools/shape", "tools/surface", "tools/text", "tools/undo", "tools/zoom"], function (require, exports, copy_1, edge_1, line_1, pan_1, paste_1, shape_1, surface_1, text_1, undo_1, zoom_1) {
+define("tools/alltools", ["require", "exports", "tools/copy", "tools/line", "tools/pan", "tools/paste", "tools/shape", "tools/surface", "tools/text", "tools/undo", "tools/zoom", "tools/copy", "tools/line", "tools/pan", "tools/paste", "tools/shape", "tools/surface", "tools/text", "tools/undo", "tools/zoom"], function (require, exports, copy_js_1, line_js_1, pan_js_1, paste_js_1, shape_js_1, surface_js_1, text_js_1, undo_js_1, zoom_js_1, copy_js_2, line_js_2, pan_js_2, paste_js_2, shape_js_2, surface_js_2, text_js_2, undo_js_2, zoom_js_2) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.ZoomTool = exports.UndoTool = exports.TextTool = exports.SurfaceTool = exports.ShapeTool = exports.PasteTool = exports.PanTool = exports.LineTool = exports.EdgeTool = exports.CopyTool = void 0;
-    Object.defineProperty(exports, "CopyTool", { enumerable: true, get: function () { return copy_1.default; } });
-    Object.defineProperty(exports, "EdgeTool", { enumerable: true, get: function () { return edge_1.default; } });
-    Object.defineProperty(exports, "LineTool", { enumerable: true, get: function () { return line_1.default; } });
-    Object.defineProperty(exports, "PanTool", { enumerable: true, get: function () { return pan_1.default; } });
-    Object.defineProperty(exports, "PasteTool", { enumerable: true, get: function () { return paste_1.default; } });
-    Object.defineProperty(exports, "ShapeTool", { enumerable: true, get: function () { return shape_1.default; } });
-    Object.defineProperty(exports, "SurfaceTool", { enumerable: true, get: function () { return surface_1.default; } });
-    Object.defineProperty(exports, "TextTool", { enumerable: true, get: function () { return text_1.default; } });
-    Object.defineProperty(exports, "UndoTool", { enumerable: true, get: function () { return undo_1.default; } });
-    Object.defineProperty(exports, "ZoomTool", { enumerable: true, get: function () { return zoom_1.default; } });
+    exports.tidtotool = exports.ZoomTool = exports.UndoTool = exports.TextTool = exports.SurfaceTool = exports.ShapeTool = exports.PasteTool = exports.PanTool = exports.LineTool = exports.CopyTool = void 0;
+    Object.defineProperty(exports, "CopyTool", { enumerable: true, get: function () { return copy_js_2.default; } });
+    Object.defineProperty(exports, "LineTool", { enumerable: true, get: function () { return line_js_2.default; } });
+    Object.defineProperty(exports, "PanTool", { enumerable: true, get: function () { return pan_js_2.default; } });
+    Object.defineProperty(exports, "PasteTool", { enumerable: true, get: function () { return paste_js_2.default; } });
+    Object.defineProperty(exports, "ShapeTool", { enumerable: true, get: function () { return shape_js_2.default; } });
+    Object.defineProperty(exports, "SurfaceTool", { enumerable: true, get: function () { return surface_js_2.default; } });
+    Object.defineProperty(exports, "TextTool", { enumerable: true, get: function () { return text_js_2.default; } });
+    Object.defineProperty(exports, "UndoTool", { enumerable: true, get: function () { return undo_js_2.default; } });
+    Object.defineProperty(exports, "ZoomTool", { enumerable: true, get: function () { return zoom_js_2.default; } });
+    /*
+     * TODO:
+     * these strings must be manually checked to match the "tid" instance of each class.
+     * afaict, there's no good way to fix this with typescript's """type system""",
+     * because this needs to be accessible both statically and from an instance.
+     * you can't even put static constraints on an interface.
+     * object-oriented programming is a blight upon this world :(
+     */
+    exports.tidtotool = new Map([
+        ['copy', copy_js_1.default.load],
+        ['line', line_js_1.default.load],
+        ['pan', pan_js_1.default.load],
+        ['paste', paste_js_1.default.load],
+        ['shape', shape_js_1.default.load],
+        ['surface', surface_js_1.default.load],
+        ['text', text_js_1.default.load],
+        ['undo', undo_js_1.default.load],
+        ['zoom', zoom_js_1.default.load],
+    ]);
 });
 define("toolbox", ["require", "exports", "tools/alltools"], function (require, exports, Tools) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Toolbox {
-        constructor(container) {
+        constructor(image, container) {
+            this.image = image;
             this.container = container;
             this.mouseTools = new Map();
             this.keyTools = new Map();
@@ -728,9 +902,19 @@ define("toolbox", ["require", "exports", "tools/alltools"], function (require, e
             this.bindMouse(1, new Tools.PanTool());
             this.bindKey(' ', new Tools.PanTool());
             this.bindKey('s', new Tools.SurfaceTool(0));
-            this.bindKey('d', new Tools.LineTool(8));
-            this.bindKey('e', new Tools.EdgeTool(0));
-            this.bindKey('t', new Tools.TextTool());
+            this.bindKey('d', new Tools.LineTool({
+                isEdge: false,
+                head: 0 /* Data.Head.NONE */,
+                color: 8,
+                thickness: 2
+            }));
+            this.bindKey('e', new Tools.LineTool({
+                isEdge: true,
+                head: 0 /* Data.Head.NONE */,
+                color: 0,
+                thickness: 2
+            }));
+            this.bindKey('t', new Tools.TextTool(''));
             this.bindKey('z', new Tools.UndoTool(true));
             this.bindKey('x', new Tools.UndoTool(false));
             this.bindKey('c', new Tools.CopyTool());
@@ -746,7 +930,7 @@ define("toolbox", ["require", "exports", "tools/alltools"], function (require, e
             name.textContent = tool.name();
             this.container.appendChild(name);
             const icon = document.createElement('div');
-            const maybeIcon = tool.icon();
+            const maybeIcon = tool.icon(this.image);
             if (maybeIcon !== undefined)
                 icon.appendChild(maybeIcon);
             this.container.appendChild(icon);
@@ -789,6 +973,23 @@ define("toolbox", ["require", "exports", "tools/alltools"], function (require, e
             });
             return true;
         }
+        save() {
+            // the delimiter is :: to avoid any confusion about keybinds to Space
+            // maybe i should just globally turn ' ' into 'Space' everywhere,
+            // but whatever
+            return [
+                ...Array.from(this.mouseTools.entries()).map(([btn, tool]) => `m${btn}::${tool.tid}:${tool.save()}`),
+                ...Array.from(this.keyTools.entries()).map(([key, tool]) => `k${key}::${tool.tid}:${tool.save()}`),
+                ...Array.from(this.wheelTools.entries()).map(([dir, tool]) => `w${+dir}::${tool.tid}:${tool.save()}`)
+            ].join('\n');
+        }
+        clear() {
+            while (this.container.firstChild)
+                this.container.removeChild(this.container.firstChild);
+            this.mouseTools.clear();
+            this.keyTools.clear();
+            this.wheelTools.clear();
+        }
     }
     exports.default = Toolbox;
 });
@@ -798,7 +999,7 @@ define("event", ["require", "exports", "view"], function (require, exports, View
     exports.initialize = exports.keyeater = exports.onmove = void 0;
     exports.onmove = [];
     exports.keyeater = { ref: undefined };
-    function initialize(svg, page, toolbox, menu) {
+    function initialize(image, svg, page, toolbox, menu) {
         const activeTools = new Set();
         const rect = svg.getBoundingClientRect();
         let lastX = 0;
@@ -813,7 +1014,7 @@ define("event", ["require", "exports", "view"], function (require, exports, View
                 return;
             upd(e);
             for (const t of activeTools)
-                t.onmove(lastX, lastY);
+                t.onmove(lastX, lastY, image);
             for (const f of exports.onmove)
                 f(lastX, lastY);
         });
@@ -824,7 +1025,7 @@ define("event", ["require", "exports", "view"], function (require, exports, View
             const t = toolbox.mouseTools.get(e.button);
             if (t === undefined)
                 return;
-            t.ondown(lastX, lastY);
+            t.ondown(lastX, lastY, image);
             activeTools.add(t);
         });
         svg.addEventListener('pointerup', e => {
@@ -833,12 +1034,12 @@ define("event", ["require", "exports", "view"], function (require, exports, View
             const t = toolbox.mouseTools.get(e.button);
             if (t === undefined)
                 return;
-            t.onup();
+            t.onup(image);
             activeTools.delete(t);
         });
         svg.addEventListener('pointerleave', e => {
             for (const t of activeTools)
-                t.onup();
+                t.onup(image);
             activeTools.clear();
         });
         page.addEventListener('keydown', e => {
@@ -856,7 +1057,7 @@ define("event", ["require", "exports", "view"], function (require, exports, View
                 return;
             if (e.repeat && !t.repeat)
                 return;
-            t.ondown(lastX, lastY);
+            t.ondown(lastX, lastY, image);
             activeTools.add(t);
         });
         page.addEventListener('keyup', e => {
@@ -865,7 +1066,7 @@ define("event", ["require", "exports", "view"], function (require, exports, View
             const t = toolbox.keyTools.get(e.key);
             if (t === undefined)
                 return;
-            t.onup();
+            t.onup(image);
             activeTools.delete(t);
         });
         page.addEventListener('wheel', e => {
@@ -874,28 +1075,44 @@ define("event", ["require", "exports", "view"], function (require, exports, View
             const t = toolbox.wheelTools.get(e.deltaY < 0);
             if (t === undefined)
                 return;
-            t.ondown(lastX, lastY);
-            t.onup();
+            t.ondown(lastX, lastY, image);
+            t.onup(image);
         });
     }
     exports.initialize = initialize;
 });
-define("stamp", ["require", "exports", "data", "event", "layer", "measure"], function (require, exports, Data, Event, Layer, Measure) {
+define("stamp", ["require", "exports", "data", "event", "measure"], function (require, exports, Data, Event, Measure) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.initialize = exports.deselect = exports.current = exports.add = exports.stamps = void 0;
+    exports.initialize = exports.deselect = exports.current = exports.add = exports.render = exports.stamps = void 0;
     class Stamp {
-        constructor(cells, xoff, yoff) {
+        constructor(cells, xoff, yoff, xmin, xmax, ymin, ymax) {
             this.cells = cells;
             this.xoff = xoff;
             this.yoff = yoff;
+            this.xmin = xmin;
+            this.xmax = xmax;
+            this.ymin = ymin;
+            this.ymax = ymax;
+        }
+        apply(xoff, yoff) {
+            var _a;
+            for (let i = 0; i < this.cells.length; ++i) {
+                const cell = this.cells[i];
+                const [x, y] = Data.decode(cell.n);
+                const newn = Data.encode(x - this.xoff + xoff, y - this.yoff + yoff);
+                const pre = (_a = Data.halfcells.get(newn)) === null || _a === void 0 ? void 0 : _a.get(cell.layer);
+                if (pre !== cell.elt.data) {
+                    Data.add(new Data.Change(newn, cell.layer, pre, cell.elt, i !== this.cells.length - 1));
+                }
+            }
         }
     }
+    // TODO this is absolutely an extremely temporary bandaid lol
+    let img;
     exports.stamps = new Array();
     let stamppos = 0;
-    function add(cells) {
-        if (cells.length === 0)
-            return;
+    function render(cells) {
         const [xtmp, ytmp] = Data.decode(cells[0].n);
         let xmin = xtmp, xmax = xtmp, ymin = ytmp, ymax = ytmp;
         for (const cell of cells) {
@@ -911,12 +1128,19 @@ define("stamp", ["require", "exports", "data", "event", "layer", "measure"], fun
         }
         const xoff = Measure.round((xmin + xmax) / 2, 2);
         const yoff = Measure.round((ymin + ymax) / 2, 2);
-        const stamp = new Stamp(cells, xoff, yoff);
+        const stamp = new Stamp(cells, xoff, yoff, xmin - xoff, xmax - xoff, ymin - yoff, ymax - yoff);
+        return stamp;
+    }
+    exports.render = render;
+    function add(cells) {
+        if (cells.length === 0)
+            return;
+        const stamp = render(cells);
         exports.stamps.push(stamp);
         stamppos = exports.stamps.length - 1;
-        Layer.stamps.replaceChildren(...cells.map(cell => {
+        img.stamps.replaceChildren(...cells.map(cell => {
             const [x, y] = Data.decode(cell.n);
-            return Data.objdraw(cell.obj, x - xoff, y - yoff, cell.data);
+            return img.objdraw(cell.elt, x - stamp.xoff, y - stamp.yoff);
         }));
     }
     exports.add = add;
@@ -926,13 +1150,14 @@ define("stamp", ["require", "exports", "data", "event", "layer", "measure"], fun
     exports.current = current;
     function deselect() {
         stamppos = exports.stamps.length;
-        Layer.stamps.replaceChildren();
+        img.stamps.replaceChildren();
     }
     exports.deselect = deselect;
-    function initialize() {
+    function initialize(image) {
+        img = image;
         Event.onmove.push((x, y) => {
             // if (stamppos === -1) return;
-            Layer.stamps.setAttribute('transform', `translate(${Measure.round(x, Measure.CELL)} ${Measure.round(y, Measure.CELL)})`);
+            img.stamps.setAttribute('transform', `translate(${Measure.round(x, Measure.CELL)} ${Measure.round(y, Measure.CELL)})`);
         });
     }
     exports.initialize = initialize;
@@ -943,6 +1168,21 @@ define("menu", ["require", "exports", "stamp", "data", "tools/alltools"], functi
     const menuactions = new Map([
         ['dark', () => {
                 document.body.classList.toggle('dark');
+            }],
+        ['dlstamp', () => {
+                const stamp = Stamp.current();
+                if (stamp === undefined)
+                    return;
+                const blob = new Blob([Data.serialize(stamp.cells)], { type: 'application/octet-stream' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.setAttribute('href', url);
+                a.setAttribute('download', 'gratility.stamp');
+                a.style.display = 'none';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                setTimeout(() => URL.revokeObjectURL(url), 10000);
             }]
     ]);
     const menuevents = new Map();
@@ -1012,10 +1252,12 @@ define("menu", ["require", "exports", "stamp", "data", "tools/alltools"], functi
                 resolve(new Tools.SurfaceTool(parseInt(args[0], 10)));
                 break;
             case 'line':
-                resolve(new Tools.LineTool(parseInt(args[0], 10)));
-                break;
-            case 'edge':
-                resolve(new Tools.EdgeTool(parseInt(args[0], 10)));
+                resolve(new Tools.LineTool({
+                    isEdge: parseInt(args[0]) === 1,
+                    color: parseInt(args[1]),
+                    thickness: parseInt(args[2]),
+                    head: parseInt(args[3]),
+                }));
                 break;
             case 'shape':
                 if (!(parseInt(args[1], 10) >= 1 && parseInt(args[1], 10) <= 5)) {
@@ -1038,7 +1280,7 @@ define("menu", ["require", "exports", "stamp", "data", "tools/alltools"], functi
                 }, args[2].split('|').map(x => parseInt(x, 10)).reduce((x, y) => x + y, 0)));
                 break;
             case 'text':
-                resolve(new Tools.TextTool());
+                resolve(new Tools.TextTool(args[0]));
                 break;
             case 'pan':
                 resolve(new Tools.PanTool());
@@ -1086,6 +1328,51 @@ define("menu", ["require", "exports", "stamp", "data", "tools/alltools"], functi
         if (e.key === 'Enter')
             manager.menuevent(menu, 'go');
     });
+    // ###### TOOLBOX MENU ###### //
+    menuevents.set('toolbox-open', (manager, menu) => {
+        const elt = menu.inputs.get('value');
+        elt.value = manager.toolbox.save();
+        elt.focus();
+        elt.select();
+    });
+    function onesplit(s, delim) {
+        const parts = s.split(delim);
+        return parts.length === 1 ? [s, undefined] : [parts[0], parts.slice(1).join(delim)];
+    }
+    menuevents.set('toolbox-go', (manager, menu) => {
+        const elt = menu.inputs.get('value');
+        manager.toolbox.clear();
+        for (const line of elt.value.split('\n')) {
+            const [bind, rest] = onesplit(line, '::');
+            if (rest === undefined)
+                continue;
+            const [tid, spec] = onesplit(rest, ':');
+            if (spec === undefined)
+                continue;
+            const toolfn = Tools.tidtotool.get(tid);
+            if (toolfn === undefined)
+                continue;
+            const bindtype = bind[0];
+            const bindval = bind.slice(1);
+            const tool = toolfn(spec);
+            switch (bindtype) {
+                case 'm':
+                    manager.toolbox.bindMouse(parseInt(bindval, 10), tool);
+                    break;
+                case 'k':
+                    manager.toolbox.bindKey(bindval, tool);
+                    break;
+                case 'w':
+                    manager.toolbox.bindWheel(bindval === '1', tool);
+                    break;
+            }
+        }
+        manager.close();
+    });
+    menuevents.set('toolbox-key', (manager, menu, e) => {
+        if (e.key === 'Enter')
+            manager.menuevent(menu, 'go');
+    });
     class Menu {
         constructor(name, popup, inputs) {
             this.name = name;
@@ -1122,8 +1409,9 @@ define("menu", ["require", "exports", "stamp", "data", "tools/alltools"], functi
             setTimeout(rm, Math.max(3000, 250 * msg.length));
             alerts.insertBefore(elt, alerts.firstChild);
         }
-        constructor(btns, popups, toolbox) {
+        constructor(btns, popups, toolbox, image) {
             this.toolbox = toolbox;
+            this.image = image;
             this.activeMenu = undefined;
             this.menus = new Map();
             for (const btn of btns) {
@@ -1184,10 +1472,12 @@ define("menu", ["require", "exports", "stamp", "data", "tools/alltools"], functi
     }
     exports.default = MenuManager;
 });
-define("data", ["require", "exports", "draw", "layer", "measure", "color", "menu", "bitstream"], function (require, exports, Draw, Layer, Measure, Color, menu_1, bitstream_1) {
+define("data", ["require", "exports", "menu", "bitstream"], function (require, exports, menu_js_1, bitstream_js_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.undo = exports.add = exports.halfcells = exports.deserialize = exports.serialize = exports.objdraw = exports.Change = exports.Item = exports.sheq = exports.decode = exports.encode = void 0;
+    exports.initialize = exports.undo = exports.add = exports.halfcells = exports.deserialize = exports.serialize = exports.Change = exports.Item = exports.Element = exports.lineeq = exports.linedateq = exports.sheq = exports.headsymmetric = exports.decode = exports.encode = void 0;
+    // TODO this is absolutely an extremely temporary bandaid lol
+    let img;
     function encode(x, y) {
         return (x << 16) | (y & 0xffff);
     }
@@ -1196,133 +1486,82 @@ define("data", ["require", "exports", "draw", "layer", "measure", "color", "menu
         return [n >> 16, n << 16 >> 16];
     }
     exports.decode = decode;
+    function headsymmetric(h) {
+        switch (h) {
+            case 0 /* Head.NONE */: return true;
+            case 1 /* Head.ARROW */: return false;
+        }
+    }
+    exports.headsymmetric = headsymmetric;
     function sheq(a, b) {
         return a.shape === b.shape && a.size === b.size;
     }
     exports.sheq = sheq;
-    class Item {
-        constructor(n, obj, data) {
-            this.n = n;
+    function linedateq(a, b) {
+        return a.isEdge === b.isEdge && a.head === b.head
+            && a.color === b.color && a.thickness === b.thickness;
+    }
+    exports.linedateq = linedateq;
+    function lineeq([spec1, dir1], [spec2, dir2]) {
+        if (!linedateq(spec1, spec2))
+            return false;
+        switch (spec1.head) {
+            case 0 /* Head.NONE */: return true;
+            case 1 /* Head.ARROW */: return dir1 === dir2;
+        }
+    }
+    exports.lineeq = lineeq;
+    class Element {
+        constructor(obj, data) {
             this.obj = obj;
             this.data = data;
         }
     }
+    exports.Element = Element;
+    class Item {
+        constructor(n, layer, elt) {
+            this.n = n;
+            this.layer = layer;
+            this.elt = elt;
+        }
+    }
     exports.Item = Item;
     class Change {
-        constructor(n, obj, pre, post, linked = false) {
+        constructor(n, layer, pre, post, linked = false) {
             this.n = n;
-            this.obj = obj;
+            this.layer = layer;
             this.pre = pre;
             this.post = post;
             this.linked = linked;
         }
     }
     exports.Change = Change;
-    const drawfns = {
-        [0 /* Obj.SURFACE */]: (x, y, data) => {
-            return Draw.draw(undefined, 'rect', {
-                width: Measure.CELL,
-                height: Measure.CELL,
-                x: Measure.HALFCELL * (x - 1),
-                y: Measure.HALFCELL * (y - 1),
-                fill: Color.colors[data]
-            });
-        },
-        [1 /* Obj.LINE */]: (x, y, data) => {
-            const horiz = Measure.hctype(x, y) === 1 /* Measure.HC.EVERT */ ? 1 : 0;
-            return Draw.draw(undefined, 'line', {
-                x1: (x - horiz) * Measure.HALFCELL,
-                x2: (x + horiz) * Measure.HALFCELL,
-                y1: (y - (1 - horiz)) * Measure.HALFCELL,
-                y2: (y + (1 - horiz)) * Measure.HALFCELL,
-                stroke: Color.colors[data],
-                strokeWidth: Measure.LINE,
-                strokeLinecap: 'round'
-            });
-        },
-        [2 /* Obj.EDGE */]: (x, y, data) => {
-            const horiz = Measure.hctype(x, y) === 1 /* Measure.HC.EVERT */ ? 0 : 1;
-            return Draw.draw(undefined, 'line', {
-                x1: (x - horiz) * Measure.HALFCELL,
-                x2: (x + horiz) * Measure.HALFCELL,
-                y1: (y - (1 - horiz)) * Measure.HALFCELL,
-                y2: (y + (1 - horiz)) * Measure.HALFCELL,
-                stroke: Color.colors[data],
-                strokeWidth: Measure.EDGE,
-                strokeLinecap: 'round'
-            });
-        },
-        [3 /* Obj.SHAPE */]: (x, y, data) => {
-            const g = Draw.draw(undefined, 'g', {
-                transform: `translate(${x * Measure.HALFCELL} ${y * Measure.HALFCELL})`
-            });
-            for (const spec of data) {
-                const r = Measure.HALFCELL * (spec.size / 6);
-                const strokeWidth = Measure.HALFCELL * (0.05 + 0.1 * (spec.size / 12));
-                const fill = spec.fill === undefined ? 'transparent' : Color.colors[spec.fill];
-                const stroke = spec.outline === undefined ? 'transparent' : Color.colors[spec.outline];
-                switch (spec.shape) {
-                    case 0 /* Shape.CIRCLE */:
-                        Draw.draw(g, 'circle', {
-                            cx: 0, cy: 0, r: r,
-                            strokeWidth, fill, stroke
-                        });
-                        break;
-                    case 1 /* Shape.SQUARE */:
-                        Draw.draw(g, 'rect', {
-                            width: r * 2, height: r * 2, x: -r, y: -r,
-                            strokeWidth, fill, stroke
-                        });
-                        break;
-                    case 2 /* Shape.CROSS */:
-                        // TODO
-                        break;
-                    case 3 /* Shape.STAR */:
-                        Draw.draw(g, 'path', {
-                            d: 'M' + [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(n => (r * (n % 2 === 0 ? 1 : 0.5) * Math.cos((n / 5 + 0.5) * Math.PI) + ' ' +
-                                -r * (n % 2 === 0 ? 1 : 0.5) * Math.sin((n / 5 + 0.5) * Math.PI))).join('L') + 'Z',
-                            strokeWidth, fill, stroke
-                        });
-                        break;
-                }
-            }
-            return g;
-        },
-        [4 /* Obj.TEXT */]: (x, y, data) => {
-            return Draw.draw(undefined, 'text', {
-                x: Measure.HALFCELL * x,
-                y: Measure.HALFCELL * y,
-                textAnchor: 'middle',
-                dominantBaseline: 'central',
-                fontSize: Measure.CELL * (data.length === 1 ? 0.75 :
-                    data.length === 2 ? 0.55 :
-                        data.length === 3 ? 0.4 :
-                            0.3),
-                textContent: data
-            });
-        },
-    };
-    function objdraw(obj, x, y, data) {
-        return drawfns[obj](x, y, data);
-    }
-    exports.objdraw = objdraw;
     const N_BITS = 32;
     const OBJ_BITS = 6;
+    const LAYER_BITS = 6;
     const SHAPE_BITS = 6;
     const COLOR_BITS = 6;
     const SIZE_BITS = 3;
     const VLQ_CHUNK = 4;
+    const HEAD_BITS = 3;
+    const THICKNESS_BITS = 3;
     const serializefns = {
         [0 /* Obj.SURFACE */]: (bs, data) => {
             bs.write(COLOR_BITS, data);
         },
-        [1 /* Obj.LINE */]: (bs, data) => {
-            bs.write(COLOR_BITS, data);
+        [1 /* Obj.LINE */]: (bs, [spec, dir]) => {
+            bs.write(1, spec.isEdge ? 1 : 0);
+            if (spec.color === undefined)
+                bs.write(1, 0);
+            else {
+                bs.write(1, 1);
+                bs.write(COLOR_BITS, spec.color);
+            }
+            bs.write(THICKNESS_BITS, spec.thickness);
+            bs.write(HEAD_BITS, spec.head);
+            bs.write(1, dir ? 1 : 0);
         },
-        [2 /* Obj.EDGE */]: (bs, data) => {
-            bs.write(COLOR_BITS, data);
-        },
-        [3 /* Obj.SHAPE */]: (bs, data) => {
+        [2 /* Obj.SHAPE */]: (bs, data) => {
             bs.writeVLQ(VLQ_CHUNK, data.length);
             for (const spec of data) {
                 bs.write(SHAPE_BITS, spec.shape);
@@ -1341,7 +1580,7 @@ define("data", ["require", "exports", "draw", "layer", "measure", "color", "menu
                 bs.write(SIZE_BITS, spec.size);
             }
         },
-        [4 /* Obj.TEXT */]: (bs, data) => {
+        [3 /* Obj.TEXT */]: (bs, data) => {
             bs.writeString(data);
         },
     };
@@ -1350,12 +1589,14 @@ define("data", ["require", "exports", "draw", "layer", "measure", "color", "menu
             return bs.read(COLOR_BITS);
         },
         [1 /* Obj.LINE */]: (bs) => {
-            return bs.read(COLOR_BITS);
+            const isEdge = bs.read(1) === 1;
+            const color = bs.read(1) === 0 ? undefined : bs.read(COLOR_BITS);
+            const thickness = bs.read(THICKNESS_BITS);
+            const head = bs.read(HEAD_BITS);
+            const dir = bs.read(1) === 1;
+            return [{ isEdge, color, thickness, head }, dir];
         },
-        [2 /* Obj.EDGE */]: (bs) => {
-            return bs.read(COLOR_BITS);
-        },
-        [3 /* Obj.SHAPE */]: (bs) => {
+        [2 /* Obj.SHAPE */]: (bs) => {
             // TODO don't allow maliciously constructed encodings lol
             const len = bs.readVLQ(VLQ_CHUNK);
             const arr = [];
@@ -1368,27 +1609,28 @@ define("data", ["require", "exports", "draw", "layer", "measure", "color", "menu
             }
             return arr;
         },
-        [4 /* Obj.TEXT */]: (bs) => {
+        [3 /* Obj.TEXT */]: (bs) => {
             return bs.readString();
         },
     };
     function serialize(stamp) {
-        const bs = bitstream_1.default.empty();
+        const bs = bitstream_js_1.default.empty();
         bs.write(1, 0);
         for (const item of stamp) {
             bs.write(N_BITS, item.n);
-            bs.write(OBJ_BITS, item.obj);
-            serializefns[item.obj](bs, item.data);
+            bs.write(OBJ_BITS, item.elt.obj);
+            bs.write(LAYER_BITS, item.layer);
+            serializefns[item.elt.obj](bs, item.elt.data);
         }
         return bs.cut();
     }
     exports.serialize = serialize;
     function deserialize(arr) {
         const stamp = new Array();
-        const bs = bitstream_1.default.fromArr(arr);
+        const bs = bitstream_js_1.default.fromArr(arr);
         const version = bs.read(1);
         if (version !== 0) {
-            menu_1.default.alert('deserialize: invalid version number');
+            menu_js_1.default.alert('deserialize: invalid version number');
             return [];
         }
         while (1) {
@@ -1396,7 +1638,8 @@ define("data", ["require", "exports", "draw", "layer", "measure", "color", "menu
             if (!bs.inbounds())
                 break;
             const obj = bs.read(OBJ_BITS);
-            stamp.push(new Item(n, obj, deserializefns[obj](bs)));
+            const layer = bs.read(LAYER_BITS);
+            stamp.push(new Item(n, layer, new Element(obj, deserializefns[obj](bs))));
         }
         return stamp;
     }
@@ -1423,12 +1666,12 @@ define("data", ["require", "exports", "draw", "layer", "measure", "color", "menu
             if (pre !== undefined) {
                 // TODO undefined cases here should never happen
                 // delete the drawing
-                const elt = (_a = drawn.get(change.n)) === null || _a === void 0 ? void 0 : _a.get(change.obj);
+                const elt = (_a = drawn.get(change.n)) === null || _a === void 0 ? void 0 : _a.get(change.layer);
                 if (elt !== undefined)
-                    Layer.obj(change.obj).removeChild(elt);
+                    img.obj(change.layer).removeChild(elt);
                 // delete item
                 const hc = exports.halfcells.get(change.n);
-                hc === null || hc === void 0 ? void 0 : hc.delete(change.obj);
+                hc === null || hc === void 0 ? void 0 : hc.delete(change.layer);
                 if ((hc === null || hc === void 0 ? void 0 : hc.size) === 0)
                     exports.halfcells.delete(change.n);
             }
@@ -1436,48 +1679,38 @@ define("data", ["require", "exports", "draw", "layer", "measure", "color", "menu
                 // create item
                 if (!exports.halfcells.has(change.n))
                     exports.halfcells.set(change.n, new Map());
-                exports.halfcells.get(change.n).set(change.obj, post);
+                exports.halfcells.get(change.n).set(change.layer, post);
                 // draw it
                 const [x, y] = decode(change.n);
-                const elt = objdraw(change.obj, x, y, post);
-                Layer.obj(change.obj).appendChild(elt);
+                const elt = img.objdraw(post, x, y);
+                img.obj(change.layer).appendChild(elt);
                 // save the element
                 if (!drawn.has(change.n))
                     drawn.set(change.n, new Map());
-                (_b = drawn.get(change.n)) === null || _b === void 0 ? void 0 : _b.set(change.obj, elt);
+                (_b = drawn.get(change.n)) === null || _b === void 0 ? void 0 : _b.set(change.layer, elt);
             }
         } while ((_c = history[histpos - 1]) === null || _c === void 0 ? void 0 : _c.linked);
     }
     exports.undo = undo;
-});
-define("grid", ["require", "exports", "draw", "layer", "measure"], function (require, exports, Draw, Layer, Measure) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.initialize = void 0;
-    function initialize() {
-        for (let i = 0; i < Measure.GRIDSIZE; ++i) {
-            Draw.draw(Layer.grid, 'line', {
-                x1: 0, x2: Measure.GRIDSIZE * Measure.CELL, y1: i * Measure.CELL, y2: i * Measure.CELL
-            });
-            Draw.draw(Layer.grid, 'line', {
-                x1: i * Measure.CELL, x2: i * Measure.CELL, y1: 0, y2: Measure.GRIDSIZE * Measure.CELL
-            });
-        }
+    function initialize(image) {
+        img = image;
     }
     exports.initialize = initialize;
 });
-define("main", ["require", "exports", "layer", "event", "grid", "view", "stamp", "color", "menu", "toolbox"], function (require, exports, Layer, Event, Grid, View, Stamp, Color, menu_2, toolbox_1) {
+define("main", ["require", "exports", "event", "view", "stamp", "color", "data", "menu", "toolbox", "image"], function (require, exports, Event, View, Stamp, Color, Data, menu_js_2, toolbox_js_1, image_js_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     // TODO make this better i guess
     const svg = document.getElementById('grid');
-    const toolbox = new toolbox_1.default(document.getElementById('toolbox'));
-    const menu = new menu_2.default(Array.from(document.getElementsByClassName('menuaction')), Array.from(document.getElementById('menupopups').children), toolbox);
-    Layer.initialize(svg);
-    Event.initialize(svg, document.body, toolbox, menu);
-    View.initialize(svg);
-    Grid.initialize();
-    Stamp.initialize();
+    const image = new image_js_1.default(document, svg);
+    const toolbox = new toolbox_js_1.default(image, document.getElementById('toolbox'));
+    const menu = new menu_js_2.default(Array.from(document.getElementsByClassName('menuaction')), Array.from(document.getElementById('menupopups').children), toolbox, image);
+    Event.initialize(image, svg, document.body, toolbox, menu);
+    View.initialize(image);
+    Stamp.initialize(image);
+    Data.initialize(image);
+    // TODO better
+    image.grid(-500, 500, -500, 500);
     // TODO this stuff should really go somewhere else
     for (const multisel of Array.from(document.getElementsByClassName('multisel'))) {
         const any = multisel.classList.contains('any');
@@ -1532,4 +1765,5 @@ define("main", ["require", "exports", "layer", "event", "grid", "view", "stamp",
         children[0].classList.add('active');
         colorpicker.dataset.value = colorpicker.classList.contains('optional') ? '' : '0';
     }
+    window.addEventListener('beforeunload', e => { e.preventDefault(); e.returnValue = true; });
 });
