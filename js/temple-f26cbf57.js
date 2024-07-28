@@ -89,6 +89,7 @@ window.addEventListener('load', () => {
             deltas[didx] = t - lastpress;
             didx = (didx + 1) % DBUF;
             lastpress = t;
+            ucb2 = ()=>{};
             c.classList.add('on');
             if (deltas.every(x=>x>0)) {
                 let arr = deltas.map(Math.log).sort((a,b)=>a-b);
