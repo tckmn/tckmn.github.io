@@ -135,6 +135,7 @@ DSolve[f@x==Sum[D[f@x,{x,k}],{k,n}],f@x,x]//.{x-&gt;0,Plus-&gt;Times,_@x_:&gt;x}
 Nest[(#[[0]]+1)@@ConstantArray[#,#[[0]]]&amp;,1@0,n]/.Except[0,_Integer]-&gt;Sequence//Length@*f
 Cases[PowersRepresentations[n(1+n)(1+2n)/6,n,2],{1,x___/;DuplicateFreeQ@{x},n}:&gt;x*n][[1]]
 n/(n-1)Times@@Module[{f},f[a_?NumberQ]:=Sow@a;Reap@FindInstance[0&lt;x&lt;n&amp;&amp;f@x==n-1,x,Integers]][[2,1]]</pre>
+
 <h2 id='comments'>comments</h2>
 <p><i>There are no comments yet.</i></p>
 <form id='commentform' method='post' action='https://dyn.tck.mn/comment'>
