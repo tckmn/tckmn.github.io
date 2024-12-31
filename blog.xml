@@ -5,6 +5,22 @@
         <description>Andy Tockman's blog</description>
         <language>en</language>
 <item>
+    <title>An unnecessarily deep dive into the board game Gizmos</title>
+    <link>https://tck.mn/blog/gizmos-boardgame</link>
+    <description>Gizmos
+is a nifty engine building game
+themed around collecting a bunch of little gadgets that work together.
+I would guess that about 0.2% of the people reading this
+are wondering about questions such as
+&amp;quot;what is the maximum theoretically possible score?&amp;quot;
+or &amp;quot;what is the fastest theoretically possible game?&amp;quot;
+To those 0.2% of people...
+I'm so glad you asked!</description>
+    <pubDate>Tue, 31 Dec 2024 14:24:00 -0500</pubDate>
+    <guid>https://tck.mn/blog/gizmos-boardgame</guid>
+</item>
+
+<item>
     <title>Penalty theory in wall puzzles</title>
     <link>https://tck.mn/blog/penalty-theory-wall</link>
     <description>Nikoli-style pencil-and-paper logic puzzles,
