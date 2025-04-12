@@ -150,13 +150,18 @@ define("measure", ["require", "exports"], function (require, exports) {
     }
     exports.hctype = hctype;
 });
-define("image", ["require", "exports", "measure", "color"], function (require, exports, Measure, Color) {
+define("draw", ["require", "exports", "measure", "color"], function (require, exports, Measure, Color) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    exports.objdraw = exports.draw = exports.initialize = void 0;
+    // TODO this is absolutely an extremely temporary bandaid lol
+    let doc;
+    function initialize(document) { doc = document; }
+    exports.initialize = initialize;
     const svgNS = 'http://www.w3.org/2000/svg';
     const drawfns = {
-        [0 /* Data.Obj.SURFACE */]: (image, x, y, data) => {
-            return image.draw(undefined, 'rect', {
+        [0 /* Data.Obj.SURFACE */]: (x, y, data) => {
+            return draw(undefined, 'rect', {
                 width: Measure.CELL,
                 height: Measure.CELL,
                 x: Measure.HALFCELL * (x - 1),
@@ -164,8 +169,8 @@ define("image", ["require", "exports", "measure", "color"], function (require, e
                 fill: Color.colors[data]
             });
         },
-        [1 /* Data.Obj.LINE */]: (image, x, y, [spec, reversed]) => {
-            const g = image.draw(undefined, 'g', {
+        [1 /* Data.Obj.LINE */]: (x, y, [spec, reversed]) => {
+            const g = draw(undefined, 'g', {
                 transform: `
                 rotate(${((y % 2 === 0) == spec.isEdge ? 0 : 90) + (reversed ? 180 : 0)} ${x * Measure.HALFCELL} ${y * Measure.HALFCELL})
                 `
@@ -174,7 +179,7 @@ define("image", ["require", "exports", "measure", "color"], function (require, e
             const strokeLinecap = 'round';
             const strokeWidth = Measure.LINE * spec.thickness;
             const adjust = (z, n) => (z * Measure.HALFCELL + n * Math.sqrt(spec.thickness));
-            image.draw(g, 'line', {
+            draw(g, 'line', {
                 x1: adjust(x + 1, 0),
                 x2: adjust(x - 1, 0),
                 y1: adjust(y, 0),
@@ -185,7 +190,7 @@ define("image", ["require", "exports", "measure", "color"], function (require, e
                 case 0 /* Data.Head.NONE */:
                     break;
                 case 1 /* Data.Head.ARROW */:
-                    image.draw(g, 'path', {
+                    draw(g, 'path', {
                         d: `M ${adjust(x, 3)} ${adjust(y, 5)} L ${adjust(x, -2)} ${adjust(y, 0)} L ${adjust(x, 3)} ${adjust(y, -5)}`,
                         fill: 'none',
                         stroke, strokeLinecap, strokeWidth
@@ -193,8 +198,8 @@ define("image", ["require", "exports", "measure", "color"], function (require, e
             }
             return g;
         },
-        [2 /* Data.Obj.SHAPE */]: (image, x, y, data) => {
-            const g = image.draw(undefined, 'g', {
+        [2 /* Data.Obj.SHAPE */]: (x, y, data) => {
+            const g = draw(undefined, 'g', {
                 transform: `translate(${x * Measure.HALFCELL} ${y * Measure.HALFCELL})`
             });
             for (const spec of data) {
@@ -204,26 +209,26 @@ define("image", ["require", "exports", "measure", "color"], function (require, e
                 const stroke = spec.outline === undefined ? 'transparent' : Color.colors[spec.outline];
                 switch (spec.shape) {
                     case 0 /* Data.Shape.CIRCLE */:
-                        image.draw(g, 'circle', {
+                        draw(g, 'circle', {
                             cx: 0, cy: 0, r: r,
                             strokeWidth, fill, stroke
                         });
                         break;
                     case 1 /* Data.Shape.SQUARE */:
-                        image.draw(g, 'rect', {
+                        draw(g, 'rect', {
                             width: r * 2, height: r * 2, x: -r, y: -r,
                             strokeWidth, fill, stroke
                         });
                         break;
                     case 2 /* Data.Shape.FLAG */:
-                        image.draw(g, 'path', {
+                        draw(g, 'path', {
                             d: 'M -0.8 1 L -0.8 -1 L -0.6 -1 L 0.8 -0.5 L -0.6 0 L -0.6 1 Z',
                             transform: `scale(${r * 0.9})`,
                             strokeWidth: strokeWidth / (r * 0.9), fill, stroke
                         });
                         break;
                     case 3 /* Data.Shape.STAR */:
-                        image.draw(g, 'path', {
+                        draw(g, 'path', {
                             d: 'M' + [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(n => (r * (n % 2 === 0 ? 1 : 0.5) * Math.cos((n / 5 + 0.5) * Math.PI) + ' ' +
                                 -r * (n % 2 === 0 ? 1 : 0.5) * Math.sin((n / 5 + 0.5) * Math.PI))).join('L') + 'Z',
                             strokeWidth, fill, stroke
@@ -233,8 +238,8 @@ define("image", ["require", "exports", "measure", "color"], function (require, e
             }
             return g;
         },
-        [3 /* Data.Obj.TEXT */]: (image, x, y, data) => {
-            return image.draw(undefined, 'text', {
+        [3 /* Data.Obj.TEXT */]: (x, y, data) => {
+            return draw(undefined, 'text', {
                 x: Measure.HALFCELL * x,
                 y: Measure.HALFCELL * y,
                 textAnchor: 'middle',
@@ -247,37 +252,45 @@ define("image", ["require", "exports", "measure", "color"], function (require, e
             });
         },
     };
-    class Image {
-        constructor(document, svg) {
-            this.document = document;
-            this.root = this.draw(svg, 'g');
-            this.gridlines = this.draw(this.root, 'g', { stroke: Measure.GRIDCOLOR, strokeWidth: Measure.GRIDLINE });
-            this.surface = this.draw(this.root, 'g');
-            this.path = this.draw(this.root, 'g');
-            this.edge = this.draw(this.root, 'g');
-            this.shape = this.draw(this.root, 'g');
-            this.textInd = this.draw(this.root, 'g');
-            this.text = this.draw(this.root, 'g');
-            this.copypaste = this.draw(this.root, 'g');
-            this.stamps = this.draw(this.root, 'g', { opacity: 0.5 });
-        }
-        draw(parent, tagname, attrs = {}) {
-            const elt = this.document.createElementNS(svgNS, tagname);
-            for (let [k, v] of Object.entries(attrs)) {
-                if (k === 'children') {
-                    for (let child of v)
-                        elt.appendChild(child);
-                }
-                else if (k === 'textContent') {
-                    elt.textContent = v;
-                }
-                else {
-                    elt.setAttribute(k === 'viewBox' ? k : k.replace(/[A-Z]/g, m => '-' + m.toLowerCase()), v);
-                }
+    function draw(parent, tagname, attrs = {}) {
+        const elt = doc.createElementNS(svgNS, tagname);
+        for (let [k, v] of Object.entries(attrs)) {
+            if (k === 'children') {
+                for (let child of v)
+                    elt.appendChild(child);
             }
-            if (parent !== undefined)
-                parent.appendChild(elt);
-            return elt;
+            else if (k === 'textContent') {
+                elt.textContent = v;
+            }
+            else {
+                elt.setAttribute(k === 'viewBox' ? k : k.replace(/[A-Z]/g, m => '-' + m.toLowerCase()), v);
+            }
+        }
+        if (parent !== undefined)
+            parent.appendChild(elt);
+        return elt;
+    }
+    exports.draw = draw;
+    function objdraw(elt, x, y) {
+        return drawfns[elt.obj](x, y, elt.data);
+    }
+    exports.objdraw = objdraw;
+});
+define("image", ["require", "exports", "measure", "draw"], function (require, exports, Measure, Draw) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class Image {
+        constructor(svg) {
+            this.root = Draw.draw(svg, 'g');
+            this.gridlines = Draw.draw(this.root, 'g', { stroke: Measure.GRIDCOLOR, strokeWidth: Measure.GRIDLINE });
+            this.surface = Draw.draw(this.root, 'g');
+            this.path = Draw.draw(this.root, 'g');
+            this.edge = Draw.draw(this.root, 'g');
+            this.shape = Draw.draw(this.root, 'g');
+            this.textInd = Draw.draw(this.root, 'g');
+            this.text = Draw.draw(this.root, 'g');
+            this.copypaste = Draw.draw(this.root, 'g');
+            this.stamps = Draw.draw(this.root, 'g', { opacity: 0.5 });
         }
         obj(obj) {
             switch (obj) {
@@ -288,18 +301,15 @@ define("image", ["require", "exports", "measure", "color"], function (require, e
                 case 4 /* Data.Layer.TEXT */: return this.text;
             }
         }
-        objdraw(elt, x, y) {
-            return drawfns[elt.obj](this, x, y, elt.data);
-        }
         grid(xmin, xmax, ymin, ymax) {
             for (let x = Math.ceil(xmin / 2) * 2; x <= xmax; x += 2) {
-                this.draw(this.gridlines, 'line', {
+                Draw.draw(this.gridlines, 'line', {
                     x1: x * Measure.HALFCELL, x2: x * Measure.HALFCELL,
                     y1: ymin * Measure.HALFCELL, y2: ymax * Measure.HALFCELL
                 });
             }
             for (let y = Math.ceil(ymin / 2) * 2; y <= ymax; y += 2) {
-                this.draw(this.gridlines, 'line', {
+                Draw.draw(this.gridlines, 'line', {
                     x1: xmin * Measure.HALFCELL, x2: xmax * Measure.HALFCELL,
                     y1: y * Measure.HALFCELL, y2: y * Measure.HALFCELL
                 });
@@ -312,7 +322,7 @@ define("tools/tool", ["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
 });
-define("tools/copy", ["require", "exports", "data", "measure", "stamp"], function (require, exports, Data, Measure, Stamp) {
+define("tools/copy", ["require", "exports", "draw", "data", "measure"], function (require, exports, Draw, Data, Measure) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class CopyTool {
@@ -325,15 +335,15 @@ define("tools/copy", ["require", "exports", "data", "measure", "stamp"], functio
             this.ty = 0;
         }
         name() { return 'Copy'; }
-        icon(image) { }
+        icon() { }
         save() { return ''; }
         static load(_) { return new CopyTool(); }
-        ondown(x, y, image) {
+        ondown(x, y, g) {
             this.sx = x;
             this.sy = y;
             this.tx = x;
             this.ty = y;
-            this.elt = image.draw(image.copypaste, 'rect', {
+            this.elt = Draw.draw(g.image.copypaste, 'rect', {
                 x: x,
                 y: y,
                 width: 0,
@@ -356,15 +366,15 @@ define("tools/copy", ["require", "exports", "data", "measure", "stamp"], functio
                 this.elt.setAttribute('height', (ty - sy).toString());
             }
         }
-        onup(image) {
+        onup(g) {
             if (this.elt !== undefined)
-                image.copypaste.removeChild(this.elt);
+                g.image.copypaste.removeChild(this.elt);
             const sx = Measure.hc(Math.min(this.sx, this.tx));
             const sy = Measure.hc(Math.min(this.sy, this.ty));
             const tx = Measure.hc(Math.max(this.sx, this.tx));
             const ty = Measure.hc(Math.max(this.sy, this.ty));
             if (sx === tx && sy === ty) {
-                Stamp.deselect();
+                g.stamp.deselect();
                 return;
             }
             const xoff = Math.round(sx / 2) * 2;
@@ -373,7 +383,7 @@ define("tools/copy", ["require", "exports", "data", "measure", "stamp"], functio
             for (let x = sx; x <= tx; ++x) {
                 for (let y = sy; y <= ty; ++y) {
                     const n = Data.encode(x, y);
-                    const hc = Data.halfcells.get(n);
+                    const hc = g.data.halfcells.get(n);
                     if (hc !== undefined) {
                         stamp.push(...Array.from(hc.entries()).map(([k, v]) => {
                             return new Data.Item(n, k, v);
@@ -381,21 +391,21 @@ define("tools/copy", ["require", "exports", "data", "measure", "stamp"], functio
                     }
                 }
             }
-            Stamp.add(stamp);
+            g.stamp.add(stamp);
         }
     }
     exports.default = CopyTool;
 });
-define("tools/line", ["require", "exports", "data", "measure"], function (require, exports, Data, Measure) {
+define("tools/line", ["require", "exports", "draw", "data", "measure"], function (require, exports, Draw, Data, Measure) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class LineTool {
         name() { return 'Line'; }
-        icon(image) {
-            return image.draw(undefined, 'svg', {
+        icon() {
+            return Draw.draw(undefined, 'svg', {
                 viewBox: `-${Measure.HALFCELL} 0 ${Measure.CELL} ${Measure.CELL}`,
                 children: [
-                    image.objdraw(new Data.Element(1 /* Data.Obj.LINE */, [this.spec, false]), 0, 1)
+                    Draw.objdraw(new Data.Element(1 /* Data.Obj.LINE */, [this.spec, false]), 0, 1)
                 ]
             });
         }
@@ -430,7 +440,7 @@ define("tools/line", ["require", "exports", "data", "measure"], function (requir
             this.x = Measure.hc(x, this.HC_WEIGHT);
             this.y = Measure.hc(y, this.HC_WEIGHT);
         }
-        onmove(x, y) {
+        onmove(x, y, g) {
             var _a;
             x = Measure.hc(x, this.HC_WEIGHT);
             y = Measure.hc(y, this.HC_WEIGHT);
@@ -469,19 +479,19 @@ define("tools/line", ["require", "exports", "data", "measure"], function (requir
                 cy = y + dy;
             }
             const n = Data.encode(cx, cy);
-            const oldline = (_a = Data.halfcells.get(n)) === null || _a === void 0 ? void 0 : _a.get(this.LAYER);
+            const oldline = (_a = g.data.halfcells.get(n)) === null || _a === void 0 ? void 0 : _a.get(this.LAYER);
             const newline = new Data.Element(1 /* Data.Obj.LINE */, [this.spec, dir === -1]);
             if (this.isDrawing === undefined) {
                 this.isDrawing = oldline === undefined || !Data.lineeq(oldline.data, newline.data);
             }
             if (this.isDrawing) {
                 if (oldline === undefined || !Data.lineeq(oldline.data, newline.data)) {
-                    Data.add(new Data.Change(n, this.LAYER, oldline, newline));
+                    g.data.add(new Data.Change(n, this.LAYER, oldline, newline));
                 }
             }
             else {
                 if (oldline !== undefined) {
-                    Data.add(new Data.Change(n, this.LAYER, oldline, undefined));
+                    g.data.add(new Data.Change(n, this.LAYER, oldline, undefined));
                 }
             }
         }
@@ -489,33 +499,7 @@ define("tools/line", ["require", "exports", "data", "measure"], function (requir
     }
     exports.default = LineTool;
 });
-define("view", ["require", "exports", "measure"], function (require, exports, Measure) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.update = exports.zoom = exports.setZ = exports.setY = exports.setX = exports.initialize = exports.z = exports.y = exports.x = void 0;
-    exports.x = 0;
-    exports.y = 0;
-    exports.z = 0;
-    // TODO this is absolutely an extremely temporary bandaid lol
-    let img;
-    function initialize(image) {
-        img = image;
-    }
-    exports.initialize = initialize;
-    function setX(n) { exports.x = n; }
-    exports.setX = setX;
-    function setY(n) { exports.y = n; }
-    exports.setY = setY;
-    function setZ(n) { exports.z = n; }
-    exports.setZ = setZ;
-    function zoom(n) { return Math.pow(Measure.ZOOMTICK, n !== null && n !== void 0 ? n : exports.z); }
-    exports.zoom = zoom;
-    function update() {
-        img.root.setAttribute('transform', `scale(${zoom()}) translate(${exports.x} ${exports.y})`);
-    }
-    exports.update = update;
-});
-define("tools/pan", ["require", "exports", "view"], function (require, exports, View) {
+define("tools/pan", ["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class PanTool {
@@ -526,23 +510,23 @@ define("tools/pan", ["require", "exports", "view"], function (require, exports, 
             this.my = 0;
         }
         name() { return 'Pan'; }
-        icon(image) { }
+        icon() { }
         save() { return ''; }
         static load() { return new PanTool(); }
         ondown(x, y) {
             this.mx = x;
             this.my = y;
         }
-        onmove(x, y) {
-            View.setX(View.x - this.mx + x);
-            View.setY(View.y - this.my + y);
-            View.update();
+        onmove(x, y, g) {
+            g.view.x += x - this.mx;
+            g.view.y += y - this.my;
+            g.view.update();
         }
         onup() { }
     }
     exports.default = PanTool;
 });
-define("tools/paste", ["require", "exports", "stamp", "measure"], function (require, exports, Stamp, Measure) {
+define("tools/paste", ["require", "exports", "measure"], function (require, exports, Measure) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class PasteTool {
@@ -551,21 +535,21 @@ define("tools/paste", ["require", "exports", "stamp", "measure"], function (requ
             this.tid = 'paste';
         }
         name() { return 'Paste'; }
-        icon(image) { }
+        icon() { }
         save() { return ''; }
         static load() { return new PasteTool(); }
-        ondown(x, y) {
+        ondown(x, y, g) {
             var _a;
             const xoff = Math.round(x / Measure.CELL) * 2;
             const yoff = Math.round(y / Measure.CELL) * 2;
-            (_a = Stamp.current()) === null || _a === void 0 ? void 0 : _a.apply(xoff, yoff);
+            (_a = g.stamp.current()) === null || _a === void 0 ? void 0 : _a.apply(g.data, xoff, yoff);
         }
         onmove(x, y) { }
         onup() { }
     }
     exports.default = PasteTool;
 });
-define("tools/shape", ["require", "exports", "data", "measure"], function (require, exports, Data, Measure) {
+define("tools/shape", ["require", "exports", "draw", "data", "measure"], function (require, exports, Draw, Data, Measure) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     // lmao surely there is a better way
@@ -590,11 +574,11 @@ define("tools/shape", ["require", "exports", "data", "measure"], function (requi
     }
     class ShapeTool {
         name() { return 'Shape'; }
-        icon(image) {
-            return image.draw(undefined, 'svg', {
+        icon() {
+            return Draw.draw(undefined, 'svg', {
                 viewBox: `0 0 ${Measure.CELL} ${Measure.CELL}`,
                 children: [
-                    image.objdraw(new Data.Element(2 /* Data.Obj.SHAPE */, [this.spec]), 1, 1)
+                    Draw.objdraw(new Data.Element(2 /* Data.Obj.SHAPE */, [this.spec]), 1, 1)
                 ]
             });
         }
@@ -624,47 +608,47 @@ define("tools/shape", ["require", "exports", "data", "measure"], function (requi
             this.tid = 'shape';
             this.isDrawing = false;
         }
-        ondown(x, y) {
+        ondown(x, y, g) {
             var _a;
             [x, y] = atlocs(x, y, this.locs);
             const n = Data.encode(x, y);
-            const shape = (_a = Data.halfcells.get(n)) === null || _a === void 0 ? void 0 : _a.get(3 /* Data.Layer.SHAPE */);
+            const shape = (_a = g.data.halfcells.get(n)) === null || _a === void 0 ? void 0 : _a.get(3 /* Data.Layer.SHAPE */);
             const shapelst = shape === null || shape === void 0 ? void 0 : shape.data;
             if (shapelst === undefined) {
-                Data.add(new Data.Change(n, 3 /* Data.Layer.SHAPE */, shape, new Data.Element(2 /* Data.Obj.SHAPE */, [this.spec])));
+                g.data.add(new Data.Change(n, 3 /* Data.Layer.SHAPE */, shape, new Data.Element(2 /* Data.Obj.SHAPE */, [this.spec])));
                 this.isDrawing = true;
             }
             else if (!shapelst.some(sh => Data.sheq(sh, this.spec))) {
-                Data.add(new Data.Change(n, 3 /* Data.Layer.SHAPE */, shape, new Data.Element(2 /* Data.Obj.SHAPE */, shapelst.concat(this.spec))));
+                g.data.add(new Data.Change(n, 3 /* Data.Layer.SHAPE */, shape, new Data.Element(2 /* Data.Obj.SHAPE */, shapelst.concat(this.spec))));
                 this.isDrawing = true;
             }
             else {
                 const remaining = shapelst.filter(sh => !Data.sheq(sh, this.spec));
-                Data.add(new Data.Change(n, 3 /* Data.Layer.SHAPE */, shape, remaining.length === 0 ? undefined
+                g.data.add(new Data.Change(n, 3 /* Data.Layer.SHAPE */, shape, remaining.length === 0 ? undefined
                     : new Data.Element(2 /* Data.Obj.SHAPE */, remaining)));
                 this.isDrawing = false;
             }
         }
-        onmove(x, y) {
+        onmove(x, y, g) {
             var _a;
             [x, y] = atlocs(x, y, this.locs);
             const n = Data.encode(x, y);
-            const shape = (_a = Data.halfcells.get(n)) === null || _a === void 0 ? void 0 : _a.get(3 /* Data.Layer.SHAPE */);
+            const shape = (_a = g.data.halfcells.get(n)) === null || _a === void 0 ? void 0 : _a.get(3 /* Data.Layer.SHAPE */);
             const shapelst = shape === null || shape === void 0 ? void 0 : shape.data;
             if (shapelst === undefined) {
                 if (this.isDrawing) {
-                    Data.add(new Data.Change(n, 3 /* Data.Layer.SHAPE */, shape, new Data.Element(2 /* Data.Obj.SHAPE */, [this.spec])));
+                    g.data.add(new Data.Change(n, 3 /* Data.Layer.SHAPE */, shape, new Data.Element(2 /* Data.Obj.SHAPE */, [this.spec])));
                 }
             }
             else if (!shapelst.some(sh => Data.sheq(sh, this.spec))) {
                 if (this.isDrawing) {
-                    Data.add(new Data.Change(n, 3 /* Data.Layer.SHAPE */, shape, new Data.Element(2 /* Data.Obj.SHAPE */, shapelst.concat(this.spec))));
+                    g.data.add(new Data.Change(n, 3 /* Data.Layer.SHAPE */, shape, new Data.Element(2 /* Data.Obj.SHAPE */, shapelst.concat(this.spec))));
                 }
             }
             else {
                 if (!this.isDrawing) {
                     const remaining = shapelst.filter(sh => !Data.sheq(sh, this.spec));
-                    Data.add(new Data.Change(n, 3 /* Data.Layer.SHAPE */, shape, remaining.length === 0 ? undefined :
+                    g.data.add(new Data.Change(n, 3 /* Data.Layer.SHAPE */, shape, remaining.length === 0 ? undefined :
                         new Data.Element(2 /* Data.Obj.SHAPE */, remaining)));
                 }
             }
@@ -673,16 +657,16 @@ define("tools/shape", ["require", "exports", "data", "measure"], function (requi
     }
     exports.default = ShapeTool;
 });
-define("tools/surface", ["require", "exports", "data", "measure"], function (require, exports, Data, Measure) {
+define("tools/surface", ["require", "exports", "draw", "data", "measure"], function (require, exports, Draw, Data, Measure) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class SurfaceTool {
         name() { return 'Surface'; }
-        icon(image) {
-            return image.draw(undefined, 'svg', {
+        icon() {
+            return Draw.draw(undefined, 'svg', {
                 viewBox: `0 0 ${Measure.CELL} ${Measure.CELL}`,
                 children: [
-                    image.objdraw(this.element, 1, 1)
+                    Draw.objdraw(this.element, 1, 1)
                 ]
             });
         }
@@ -695,35 +679,35 @@ define("tools/surface", ["require", "exports", "data", "measure"], function (req
             this.isDrawing = false;
             this.element = new Data.Element(0 /* Data.Obj.SURFACE */, this.color);
         }
-        ondown(x, y) {
+        ondown(x, y, g) {
             var _a;
             x = Measure.cell(x);
             y = Measure.cell(y);
             const n = Data.encode(x * 2 + 1, y * 2 + 1);
-            const surface = (_a = Data.halfcells.get(n)) === null || _a === void 0 ? void 0 : _a.get(0 /* Data.Layer.SURFACE */);
+            const surface = (_a = g.data.halfcells.get(n)) === null || _a === void 0 ? void 0 : _a.get(0 /* Data.Layer.SURFACE */);
             if (surface === undefined) {
-                Data.add(new Data.Change(n, 0 /* Data.Layer.SURFACE */, surface, new Data.Element(0 /* Data.Obj.SURFACE */, this.color)));
+                g.data.add(new Data.Change(n, 0 /* Data.Layer.SURFACE */, surface, new Data.Element(0 /* Data.Obj.SURFACE */, this.color)));
                 this.isDrawing = true;
             }
             else {
-                Data.add(new Data.Change(n, 0 /* Data.Layer.SURFACE */, surface, undefined));
+                g.data.add(new Data.Change(n, 0 /* Data.Layer.SURFACE */, surface, undefined));
                 this.isDrawing = false;
             }
         }
-        onmove(x, y) {
+        onmove(x, y, g) {
             var _a;
             x = Measure.cell(x);
             y = Measure.cell(y);
             const n = Data.encode(x * 2 + 1, y * 2 + 1);
-            const surface = (_a = Data.halfcells.get(n)) === null || _a === void 0 ? void 0 : _a.get(0 /* Data.Layer.SURFACE */);
+            const surface = (_a = g.data.halfcells.get(n)) === null || _a === void 0 ? void 0 : _a.get(0 /* Data.Layer.SURFACE */);
             if (surface === undefined) {
                 if (this.isDrawing) {
-                    Data.add(new Data.Change(n, 0 /* Data.Layer.SURFACE */, surface, this.element));
+                    g.data.add(new Data.Change(n, 0 /* Data.Layer.SURFACE */, surface, this.element));
                 }
             }
             else {
                 if (!this.isDrawing) {
-                    Data.add(new Data.Change(n, 0 /* Data.Layer.SURFACE */, surface, undefined));
+                    g.data.add(new Data.Change(n, 0 /* Data.Layer.SURFACE */, surface, undefined));
                 }
             }
         }
@@ -731,12 +715,12 @@ define("tools/surface", ["require", "exports", "data", "measure"], function (req
     }
     exports.default = SurfaceTool;
 });
-define("tools/text", ["require", "exports", "data", "measure", "event"], function (require, exports, Data, Measure, Event) {
+define("tools/text", ["require", "exports", "draw", "data", "measure", "event"], function (require, exports, Draw, Data, Measure, Event) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class TextTool {
         name() { return 'Text'; }
-        icon(image) { }
+        icon() { }
         save() { return this.preset; }
         static load(s) { return new TextTool(s); }
         constructor(preset) {
@@ -747,17 +731,17 @@ define("tools/text", ["require", "exports", "data", "measure", "event"], functio
             this.elt = undefined;
             this.isDrawing = false;
         }
-        ondown(x, y, image) {
+        ondown(x, y, g) {
             var _a;
             if (this.preset !== '') {
                 const n = Data.encode(Measure.cell(x) * 2 + 1, Measure.cell(y) * 2 + 1);
-                const text = (_a = Data.halfcells.get(n)) === null || _a === void 0 ? void 0 : _a.get(4 /* Data.Layer.TEXT */);
+                const text = (_a = g.data.halfcells.get(n)) === null || _a === void 0 ? void 0 : _a.get(4 /* Data.Layer.TEXT */);
                 if (text && text.data === this.preset) {
-                    Data.add(new Data.Change(n, 4 /* Data.Layer.TEXT */, text, undefined));
+                    g.data.add(new Data.Change(n, 4 /* Data.Layer.TEXT */, text, undefined));
                     this.isDrawing = false;
                 }
                 else {
-                    Data.add(new Data.Change(n, 4 /* Data.Layer.TEXT */, text, new Data.Element(3 /* Data.Obj.TEXT */, this.preset)));
+                    g.data.add(new Data.Change(n, 4 /* Data.Layer.TEXT */, text, new Data.Element(3 /* Data.Obj.TEXT */, this.preset)));
                     this.isDrawing = true;
                 }
             }
@@ -765,47 +749,49 @@ define("tools/text", ["require", "exports", "data", "measure", "event"], functio
                 const cx = Measure.cell(x) * 2, cy = Measure.cell(y) * 2;
                 this.n = Data.encode(cx + 1, cy + 1);
                 // TODO some of this goes somewhere else
-                this.elt = image.draw(image.textInd, 'rect', {
+                this.elt = Draw.draw(g.image.textInd, 'rect', {
                     x: cx * Measure.HALFCELL, y: cy * Measure.HALFCELL, width: Measure.CELL, height: Measure.CELL,
                     fill: '#ccc',
                     stroke: '#f88',
                     strokeWidth: Measure.HALFCELL / 5
                 });
-                Event.keyeater.ref = this.onkey.bind(this);
+                Event.keyeater.ref = this.onkey(g).bind(this);
             }
         }
-        onkey(e) {
-            var _a, _b, _c, _d;
-            const text = (_a = Data.halfcells.get(this.n)) === null || _a === void 0 ? void 0 : _a.get(4 /* Data.Layer.TEXT */);
-            if (e.key === 'Enter' || e.key === 'Escape') {
-                this.deselect();
-            }
-            else if (e.key === 'Backspace') {
-                Data.add(new Data.Change(this.n, 4 /* Data.Layer.TEXT */, text, new Data.Element(3 /* Data.Obj.TEXT */, ((_b = text === null || text === void 0 ? void 0 : text.data) !== null && _b !== void 0 ? _b : '').slice(0, ((_c = text === null || text === void 0 ? void 0 : text.data) !== null && _c !== void 0 ? _c : '').length - 1))));
-            }
-            else if (e.key.length === 1) {
-                Data.add(new Data.Change(this.n, 4 /* Data.Layer.TEXT */, text, new Data.Element(3 /* Data.Obj.TEXT */, ((_d = text === null || text === void 0 ? void 0 : text.data) !== null && _d !== void 0 ? _d : '') + e.key)));
-            }
+        onkey(g) {
+            return (e) => {
+                var _a, _b, _c, _d;
+                const text = (_a = g.data.halfcells.get(this.n)) === null || _a === void 0 ? void 0 : _a.get(4 /* Data.Layer.TEXT */);
+                if (e.key === 'Enter' || e.key === 'Escape') {
+                    this.deselect();
+                }
+                else if (e.key === 'Backspace') {
+                    g.data.add(new Data.Change(this.n, 4 /* Data.Layer.TEXT */, text, new Data.Element(3 /* Data.Obj.TEXT */, ((_b = text === null || text === void 0 ? void 0 : text.data) !== null && _b !== void 0 ? _b : '').slice(0, ((_c = text === null || text === void 0 ? void 0 : text.data) !== null && _c !== void 0 ? _c : '').length - 1))));
+                }
+                else if (e.key.length === 1) {
+                    g.data.add(new Data.Change(this.n, 4 /* Data.Layer.TEXT */, text, new Data.Element(3 /* Data.Obj.TEXT */, ((_d = text === null || text === void 0 ? void 0 : text.data) !== null && _d !== void 0 ? _d : '') + e.key)));
+                }
+            };
         }
         deselect() {
             Event.keyeater.ref = undefined;
             if (this.elt !== undefined)
                 this.elt.parentNode.removeChild(this.elt);
         }
-        onmove(x, y) {
+        onmove(x, y, g) {
             var _a;
             if (this.preset === '')
                 return;
             const n = Data.encode(Measure.cell(x) * 2 + 1, Measure.cell(y) * 2 + 1);
-            const text = (_a = Data.halfcells.get(n)) === null || _a === void 0 ? void 0 : _a.get(4 /* Data.Layer.TEXT */);
+            const text = (_a = g.data.halfcells.get(n)) === null || _a === void 0 ? void 0 : _a.get(4 /* Data.Layer.TEXT */);
             if (text && text.data === this.preset) {
                 if (!this.isDrawing) {
-                    Data.add(new Data.Change(n, 4 /* Data.Layer.TEXT */, text, undefined));
+                    g.data.add(new Data.Change(n, 4 /* Data.Layer.TEXT */, text, undefined));
                 }
             }
             else {
                 if (this.isDrawing) {
-                    Data.add(new Data.Change(n, 4 /* Data.Layer.TEXT */, text, new Data.Element(3 /* Data.Obj.TEXT */, this.preset)));
+                    g.data.add(new Data.Change(n, 4 /* Data.Layer.TEXT */, text, new Data.Element(3 /* Data.Obj.TEXT */, this.preset)));
                 }
             }
         }
@@ -813,7 +799,7 @@ define("tools/text", ["require", "exports", "data", "measure", "event"], functio
     }
     exports.default = TextTool;
 });
-define("tools/undo", ["require", "exports", "data"], function (require, exports, Data) {
+define("tools/undo", ["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class UndoTool {
@@ -826,13 +812,13 @@ define("tools/undo", ["require", "exports", "data"], function (require, exports,
             this.repeat = true;
             this.tid = 'undo';
         }
-        ondown() { Data.undo(this.isUndo); }
+        ondown(x, y, g) { g.data.undo(this.isUndo); }
         onmove() { }
         onup() { }
     }
     exports.default = UndoTool;
 });
-define("tools/zoom", ["require", "exports", "view"], function (require, exports, View) {
+define("tools/zoom", ["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class ZoomTool {
@@ -845,11 +831,11 @@ define("tools/zoom", ["require", "exports", "view"], function (require, exports,
             this.repeat = false;
             this.tid = 'zoom';
         }
-        ondown(x, y) {
-            View.setX((x + View.x) * View.zoom(-this.amount) - x);
-            View.setY((y + View.y) * View.zoom(-this.amount) - y);
-            View.setZ(View.z + this.amount);
-            View.update();
+        ondown(x, y, g) {
+            g.view.x = (x + g.view.x) * g.view.zoom(-this.amount) - x;
+            g.view.y = (y + g.view.y) * g.view.zoom(-this.amount) - y;
+            g.view.z += this.amount;
+            g.view.update();
         }
         onmove(x, y) { }
         onup() { }
@@ -893,8 +879,7 @@ define("toolbox", ["require", "exports", "tools/alltools"], function (require, e
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Toolbox {
-        constructor(image, container) {
-            this.image = image;
+        constructor(container) {
             this.container = container;
             this.mouseTools = new Map();
             this.keyTools = new Map();
@@ -930,7 +915,7 @@ define("toolbox", ["require", "exports", "tools/alltools"], function (require, e
             name.textContent = tool.name();
             this.container.appendChild(name);
             const icon = document.createElement('div');
-            const maybeIcon = tool.icon(this.image);
+            const maybeIcon = tool.icon();
             if (maybeIcon !== undefined)
                 icon.appendChild(maybeIcon);
             this.container.appendChild(icon);
@@ -993,20 +978,37 @@ define("toolbox", ["require", "exports", "tools/alltools"], function (require, e
     }
     exports.default = Toolbox;
 });
-define("event", ["require", "exports", "view"], function (require, exports, View) {
+define("view", ["require", "exports", "measure"], function (require, exports, Measure) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class ViewManager {
+        constructor(image) {
+            this.image = image;
+            this.x = 0;
+            this.y = 0;
+            this.z = 0;
+        }
+        zoom(n) { return Math.pow(Measure.ZOOMTICK, n !== null && n !== void 0 ? n : this.z); }
+        update() {
+            this.image.root.setAttribute('transform', `scale(${this.zoom()}) translate(${this.x} ${this.y})`);
+        }
+    }
+    exports.default = ViewManager;
+});
+define("event", ["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.initialize = exports.keyeater = exports.onmove = void 0;
     exports.onmove = [];
     exports.keyeater = { ref: undefined };
-    function initialize(image, svg, page, toolbox, menu) {
+    function initialize(g, svg, page, toolbox, menu, view) {
         const activeTools = new Set();
         const rect = svg.getBoundingClientRect();
         let lastX = 0;
         let lastY = 0;
         let upd = (e) => {
-            lastX = (e.clientX - rect.left) / View.zoom() - View.x;
-            lastY = (e.clientY - rect.top) / View.zoom() - View.y;
+            lastX = (e.clientX - rect.left) / view.zoom() - view.x;
+            lastY = (e.clientY - rect.top) / view.zoom() - view.y;
         };
         svg.addEventListener('contextmenu', e => e.preventDefault());
         svg.addEventListener('pointermove', e => {
@@ -1014,7 +1016,7 @@ define("event", ["require", "exports", "view"], function (require, exports, View
                 return;
             upd(e);
             for (const t of activeTools)
-                t.onmove(lastX, lastY, image);
+                t.onmove(lastX, lastY, g);
             for (const f of exports.onmove)
                 f(lastX, lastY);
         });
@@ -1025,7 +1027,7 @@ define("event", ["require", "exports", "view"], function (require, exports, View
             const t = toolbox.mouseTools.get(e.button);
             if (t === undefined)
                 return;
-            t.ondown(lastX, lastY, image);
+            t.ondown(lastX, lastY, g);
             activeTools.add(t);
         });
         svg.addEventListener('pointerup', e => {
@@ -1034,12 +1036,12 @@ define("event", ["require", "exports", "view"], function (require, exports, View
             const t = toolbox.mouseTools.get(e.button);
             if (t === undefined)
                 return;
-            t.onup(image);
+            t.onup(g);
             activeTools.delete(t);
         });
         svg.addEventListener('pointerleave', e => {
             for (const t of activeTools)
-                t.onup(image);
+                t.onup(g);
             activeTools.clear();
         });
         page.addEventListener('keydown', e => {
@@ -1057,7 +1059,7 @@ define("event", ["require", "exports", "view"], function (require, exports, View
                 return;
             if (e.repeat && !t.repeat)
                 return;
-            t.ondown(lastX, lastY, image);
+            t.ondown(lastX, lastY, g);
             activeTools.add(t);
         });
         page.addEventListener('keyup', e => {
@@ -1066,7 +1068,7 @@ define("event", ["require", "exports", "view"], function (require, exports, View
             const t = toolbox.keyTools.get(e.key);
             if (t === undefined)
                 return;
-            t.onup(image);
+            t.onup(g);
             activeTools.delete(t);
         });
         page.addEventListener('wheel', e => {
@@ -1075,16 +1077,16 @@ define("event", ["require", "exports", "view"], function (require, exports, View
             const t = toolbox.wheelTools.get(e.deltaY < 0);
             if (t === undefined)
                 return;
-            t.ondown(lastX, lastY, image);
-            t.onup(image);
+            t.ondown(lastX, lastY, g);
+            t.onup(g);
         });
     }
     exports.initialize = initialize;
 });
-define("stamp", ["require", "exports", "data", "event", "measure"], function (require, exports, Data, Event, Measure) {
+define("stamp", ["require", "exports", "draw", "data", "event", "measure", "image"], function (require, exports, Draw, Data, Event, Measure, image_js_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.initialize = exports.deselect = exports.current = exports.add = exports.render = exports.stamps = void 0;
+    exports.StampManager = exports.render = exports.Stamp = void 0;
     class Stamp {
         constructor(cells, xoff, yoff, xmin, xmax, ymin, ymax) {
             this.cells = cells;
@@ -1095,23 +1097,45 @@ define("stamp", ["require", "exports", "data", "event", "measure"], function (re
             this.ymin = ymin;
             this.ymax = ymax;
         }
-        apply(xoff, yoff) {
+        apply(data, xoff, yoff, noUndo = false) {
             var _a;
             for (let i = 0; i < this.cells.length; ++i) {
                 const cell = this.cells[i];
                 const [x, y] = Data.decode(cell.n);
                 const newn = Data.encode(x - this.xoff + xoff, y - this.yoff + yoff);
-                const pre = (_a = Data.halfcells.get(newn)) === null || _a === void 0 ? void 0 : _a.get(cell.layer);
+                const pre = (_a = data.halfcells.get(newn)) === null || _a === void 0 ? void 0 : _a.get(cell.layer);
                 if (pre !== cell.elt.data) {
-                    Data.add(new Data.Change(newn, cell.layer, pre, cell.elt, i !== this.cells.length - 1));
+                    const ch = new Data.Change(newn, cell.layer, pre, cell.elt, i !== this.cells.length - 1);
+                    if (noUndo)
+                        data.perform(ch);
+                    else
+                        data.add(ch);
                 }
             }
         }
+        toSVG(svg, bgcolor = '#fff', imgpad = 1, gridpad = 0) {
+            const image = new image_js_1.default(svg);
+            const data = new Data.DataManager(image);
+            this.apply(data, 0, 0);
+            const xmin = Math.floor(this.xmin / 2) * 2;
+            const ymin = Math.floor(this.ymin / 2) * 2;
+            const xmax = Math.ceil(this.xmax / 2) * 2;
+            const ymax = Math.ceil(this.ymax / 2) * 2;
+            image.grid(xmin - gridpad, xmax + gridpad, ymin - gridpad, ymax + gridpad);
+            const vx = Measure.HALFCELL * (xmin - imgpad);
+            const vy = Measure.HALFCELL * (ymin - imgpad);
+            const vw = Measure.HALFCELL * (xmax - xmin + 2 * imgpad);
+            const vh = Measure.HALFCELL * (ymax - ymin + 2 * imgpad);
+            image.text.setAttribute('transform', 'translate(0 2.5)');
+            svg.setAttribute('viewBox', `${vx} ${vy} ${vw} ${vh}`);
+            svg.setAttribute('version', '1.1');
+            svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+            if (bgcolor !== undefined) {
+                image.root.prepend(Draw.draw(undefined, 'rect', { fill: bgcolor, x: vx, y: vy, w: vw, h: vh }));
+            }
+        }
     }
-    // TODO this is absolutely an extremely temporary bandaid lol
-    let img;
-    exports.stamps = new Array();
-    let stamppos = 0;
+    exports.Stamp = Stamp;
     function render(cells) {
         const [xtmp, ytmp] = Data.decode(cells[0].n);
         let xmin = xtmp, xmax = xtmp, ymin = ytmp, ymax = ytmp;
@@ -1132,57 +1156,83 @@ define("stamp", ["require", "exports", "data", "event", "measure"], function (re
         return stamp;
     }
     exports.render = render;
-    function add(cells) {
-        if (cells.length === 0)
-            return;
-        const stamp = render(cells);
-        exports.stamps.push(stamp);
-        stamppos = exports.stamps.length - 1;
-        img.stamps.replaceChildren(...cells.map(cell => {
-            const [x, y] = Data.decode(cell.n);
-            return img.objdraw(cell.elt, x - stamp.xoff, y - stamp.yoff);
-        }));
+    class StampManager {
+        constructor(image) {
+            this.image = image;
+            this.stamps = new Array();
+            this.stamppos = 0;
+            // TODO this definitely belongs somewhere else
+            Event.onmove.push((x, y) => {
+                // if (stamppos === -1) return;
+                this.image.stamps.setAttribute('transform', `translate(${Measure.round(x, Measure.CELL)} ${Measure.round(y, Measure.CELL)})`);
+            });
+        }
+        add(cells) {
+            if (cells.length === 0)
+                return;
+            const stamp = render(cells);
+            this.stamps.push(stamp);
+            this.stamppos = this.stamps.length - 1;
+            this.image.stamps.replaceChildren(...cells.map(cell => {
+                const [x, y] = Data.decode(cell.n);
+                return Draw.objdraw(cell.elt, x - stamp.xoff, y - stamp.yoff);
+            }));
+        }
+        current() {
+            return this.stamppos >= 0 && this.stamppos < this.stamps.length ? this.stamps[this.stamppos] : undefined;
+        }
+        deselect() {
+            this.stamppos = this.stamps.length;
+            this.image.stamps.replaceChildren();
+        }
     }
-    exports.add = add;
-    function current() {
-        return stamppos >= 0 && stamppos < exports.stamps.length ? exports.stamps[stamppos] : undefined;
-    }
-    exports.current = current;
-    function deselect() {
-        stamppos = exports.stamps.length;
-        img.stamps.replaceChildren();
-    }
-    exports.deselect = deselect;
-    function initialize(image) {
-        img = image;
-        Event.onmove.push((x, y) => {
-            // if (stamppos === -1) return;
-            img.stamps.setAttribute('transform', `translate(${Measure.round(x, Measure.CELL)} ${Measure.round(y, Measure.CELL)})`);
-        });
-    }
-    exports.initialize = initialize;
+    exports.StampManager = StampManager;
 });
-define("menu", ["require", "exports", "stamp", "data", "tools/alltools"], function (require, exports, Stamp, Data, Tools) {
+define("gratility", ["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    class Gratility {
+        constructor(image, data, stamp, view) {
+            this.image = image;
+            this.data = data;
+            this.stamp = stamp;
+            this.view = view;
+        }
+    }
+    exports.default = Gratility;
+});
+define("menu", ["require", "exports", "data", "draw", "tools/alltools"], function (require, exports, Data, Draw, Tools) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    function download(fname, data, contenttype) {
+        const blob = new Blob([data], { type: contenttype });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.setAttribute('href', url);
+        a.setAttribute('download', fname);
+        a.style.display = 'none';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(url), 10000);
+    }
     const menuactions = new Map([
         ['dark', () => {
                 document.body.classList.toggle('dark');
             }],
-        ['dlstamp', () => {
-                const stamp = Stamp.current();
+        ['dlstamp', (manager) => {
+                const stamp = manager.g.stamp.current();
                 if (stamp === undefined)
                     return;
-                const blob = new Blob([Data.serialize(stamp.cells)], { type: 'application/octet-stream' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.setAttribute('href', url);
-                a.setAttribute('download', 'gratility.stamp');
-                a.style.display = 'none';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                setTimeout(() => URL.revokeObjectURL(url), 10000);
+                download('gratility.stamp', Data.serializeStamp(stamp.cells), 'application/octet-stream');
+            }],
+        ['dlsvg', (manager) => {
+                const stamp = manager.g.stamp.current();
+                if (stamp === undefined)
+                    return;
+                const svg = Draw.draw(undefined, 'svg');
+                stamp.toSVG(svg);
+                download('gratility.svg', svg.outerHTML, 'image/svg+xml;charset=utf-8');
             }]
     ]);
     const menuevents = new Map();
@@ -1313,15 +1363,15 @@ define("menu", ["require", "exports", "stamp", "data", "tools/alltools"], functi
     menuevents.set('stamp-open', (manager, menu) => {
         // TODO this whole function is awful
         const elt = menu.inputs.get('value');
-        const stamp = Stamp.current();
+        const stamp = manager.g.stamp.current();
         elt.value = stamp === undefined ? '' :
-            btoa(String.fromCharCode.apply(null, Data.serialize(stamp.cells)));
+            btoa(String.fromCharCode.apply(null, Data.serializeStamp(stamp.cells)));
         elt.focus();
         elt.select();
     });
     menuevents.set('stamp-go', (manager, menu) => {
         const elt = menu.inputs.get('value');
-        Stamp.add(Data.deserialize(new Uint8Array(atob(elt.value).split('').map(c => c.charCodeAt(0)))));
+        manager.g.stamp.add(Data.deserializeStamp(new Uint8Array(atob(elt.value).split('').map(c => c.charCodeAt(0)))));
         manager.close();
     });
     menuevents.set('stamp-key', (manager, menu, e) => {
@@ -1409,9 +1459,9 @@ define("menu", ["require", "exports", "stamp", "data", "tools/alltools"], functi
             setTimeout(rm, Math.max(3000, 250 * msg.length));
             alerts.insertBefore(elt, alerts.firstChild);
         }
-        constructor(btns, popups, toolbox, image) {
+        constructor(btns, popups, g, toolbox) {
+            this.g = g;
             this.toolbox = toolbox;
-            this.image = image;
             this.activeMenu = undefined;
             this.menus = new Map();
             for (const btn of btns) {
@@ -1423,7 +1473,7 @@ define("menu", ["require", "exports", "stamp", "data", "tools/alltools"], functi
                     else {
                         const fn = menuactions.get(btn.dataset.menu);
                         if (fn !== undefined)
-                            fn();
+                            fn(this);
                     }
                 });
             }
@@ -1472,12 +1522,10 @@ define("menu", ["require", "exports", "stamp", "data", "tools/alltools"], functi
     }
     exports.default = MenuManager;
 });
-define("data", ["require", "exports", "menu", "bitstream"], function (require, exports, menu_js_1, bitstream_js_1) {
+define("data", ["require", "exports", "menu", "bitstream", "draw", "stamp"], function (require, exports, menu_js_1, bitstream_js_1, Draw, Stamp) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.initialize = exports.undo = exports.add = exports.halfcells = exports.deserialize = exports.serialize = exports.Change = exports.Item = exports.Element = exports.lineeq = exports.linedateq = exports.sheq = exports.headsymmetric = exports.decode = exports.encode = void 0;
-    // TODO this is absolutely an extremely temporary bandaid lol
-    let img;
+    exports.DataManager = exports.deserializeChanges = exports.serializeChanges = exports.deserializeStamp = exports.serializeStamp = exports.Change = exports.Item = exports.Element = exports.lineeq = exports.linedateq = exports.sheq = exports.headsymmetric = exports.decode = exports.encode = void 0;
     function encode(x, y) {
         return (x << 16) | (y & 0xffff);
     }
@@ -1534,6 +1582,7 @@ define("data", ["require", "exports", "menu", "bitstream"], function (require, e
             this.post = post;
             this.linked = linked;
         }
+        rev() { return new Change(this.n, this.layer, this.post, this.pre, this.linked); }
     }
     exports.Change = Change;
     const N_BITS = 32;
@@ -1597,8 +1646,9 @@ define("data", ["require", "exports", "menu", "bitstream"], function (require, e
             return [{ isEdge, color, thickness, head }, dir];
         },
         [2 /* Obj.SHAPE */]: (bs) => {
-            // TODO don't allow maliciously constructed encodings lol
-            const len = bs.readVLQ(VLQ_CHUNK);
+            // check to make sure this isn't unreasonably large
+            // (maybe should do something if it is?)
+            const len = Math.min(bs.readVLQ(VLQ_CHUNK), 16);
             const arr = [];
             for (let i = 0; i < len; ++i) {
                 const shape = bs.read(SHAPE_BITS);
@@ -1613,7 +1663,7 @@ define("data", ["require", "exports", "menu", "bitstream"], function (require, e
             return bs.readString();
         },
     };
-    function serialize(stamp) {
+    function serializeStamp(stamp) {
         const bs = bitstream_js_1.default.empty();
         bs.write(1, 0);
         for (const item of stamp) {
@@ -1624,8 +1674,8 @@ define("data", ["require", "exports", "menu", "bitstream"], function (require, e
         }
         return bs.cut();
     }
-    exports.serialize = serialize;
-    function deserialize(arr) {
+    exports.serializeStamp = serializeStamp;
+    function deserializeStamp(arr) {
         const stamp = new Array();
         const bs = bitstream_js_1.default.fromArr(arr);
         const version = bs.read(1);
@@ -1643,72 +1693,167 @@ define("data", ["require", "exports", "menu", "bitstream"], function (require, e
         }
         return stamp;
     }
-    exports.deserialize = deserialize;
-    exports.halfcells = new Map();
-    const drawn = new Map();
-    const history = new Array();
-    let histpos = 0;
-    function add(change) {
-        if (histpos < history.length)
-            history.splice(histpos, history.length);
-        history.push(change);
-        undo(false);
+    exports.deserializeStamp = deserializeStamp;
+    function serializeChanges(changes) {
+        const bs = bitstream_js_1.default.empty();
+        bs.write(1, 0);
+        for (const ch of changes) {
+            bs.write(N_BITS, ch.n);
+            bs.write(LAYER_BITS, ch.layer);
+            if (ch.pre === undefined) {
+                bs.write(OBJ_BITS, (1 << OBJ_BITS) - 1);
+            }
+            else {
+                bs.write(OBJ_BITS, ch.pre.obj);
+                serializefns[ch.pre.obj](bs, ch.pre.data);
+            }
+            if (ch.post === undefined) {
+                bs.write(OBJ_BITS, (1 << OBJ_BITS) - 1);
+            }
+            else {
+                bs.write(OBJ_BITS, ch.post.obj);
+                serializefns[ch.post.obj](bs, ch.post.data);
+            }
+        }
+        return bs.cut();
     }
-    exports.add = add;
-    function undo(isUndo) {
-        var _a, _b, _c;
-        do {
-            if (isUndo ? (histpos <= 0) : (histpos >= history.length))
-                return;
-            const change = history[isUndo ? --histpos : histpos++];
-            const pre = isUndo ? change.post : change.pre;
-            const post = isUndo ? change.pre : change.post;
-            if (pre !== undefined) {
+    exports.serializeChanges = serializeChanges;
+    function deserializeChanges(arr) {
+        const changes = [];
+        const bs = bitstream_js_1.default.fromArr(arr);
+        const version = bs.read(1);
+        if (version !== 0) {
+            menu_js_1.default.alert('deserialize: invalid version number');
+            return [];
+        }
+        while (1) {
+            const n = bs.read(N_BITS);
+            if (!bs.inbounds())
+                break;
+            const layer = bs.read(LAYER_BITS);
+            const preobj = bs.read(OBJ_BITS);
+            const pre = preobj === (1 << OBJ_BITS) - 1 ? undefined : new Element(preobj, deserializefns[preobj](bs));
+            const postobj = bs.read(OBJ_BITS);
+            const post = postobj === (1 << OBJ_BITS) - 1 ? undefined : new Element(postobj, deserializefns[postobj](bs));
+            changes.push(new Change(n, layer, pre, post));
+        }
+        return changes;
+    }
+    exports.deserializeChanges = deserializeChanges;
+    class DataManager {
+        constructor(image = undefined) {
+            this.image = image;
+            this.halfcells = new Map();
+            this.drawn = new Map();
+            this.history = new Array();
+            this.histpos = 0;
+            this.ws = undefined;
+            this.hasReceivedDocument = false;
+        }
+        connect(url) {
+            this.ws = new WebSocket(url);
+            this.ws.addEventListener('open', () => {
+                menu_js_1.default.alert('connected to server');
+            });
+            this.ws.addEventListener('error', () => {
+                menu_js_1.default.alert('server connection failed');
+            });
+            this.ws.addEventListener('message', this.message.bind(this));
+        }
+        message(msg) {
+            msg.data.arrayBuffer().then((buf) => {
+                if (this.hasReceivedDocument) {
+                    for (const ch of deserializeChanges(new Uint8Array(buf))) {
+                        this.perform(ch);
+                    }
+                }
+                else {
+                    // TODO kinda bad
+                    new Stamp.Stamp(deserializeStamp(new Uint8Array(buf)), 0, 0, 0, 0, 0, 0).apply(this, 0, 0);
+                    this.hasReceivedDocument = true;
+                }
+            });
+        }
+        add(change) {
+            if (this.histpos < this.history.length)
+                this.history.splice(this.histpos, this.history.length);
+            this.history.push(change);
+            this.undo(false);
+        }
+        undo(isUndo) {
+            var _a;
+            do {
+                if (isUndo ? (this.histpos <= 0) : (this.histpos >= this.history.length))
+                    return;
+                const change = this.history[isUndo ? --this.histpos : this.histpos++];
+                const real = isUndo ? change.rev() : change;
+                if (this.ws !== undefined && this.hasReceivedDocument) {
+                    this.ws.send(serializeChanges([real]));
+                }
+                this.perform(real);
+            } while ((_a = this.history[this.histpos - 1]) === null || _a === void 0 ? void 0 : _a.linked);
+        }
+        perform(change) {
+            var _a, _b;
+            if (change.pre !== undefined) {
                 // TODO undefined cases here should never happen
-                // delete the drawing
-                const elt = (_a = drawn.get(change.n)) === null || _a === void 0 ? void 0 : _a.get(change.layer);
-                if (elt !== undefined)
-                    img.obj(change.layer).removeChild(elt);
+                if (this.image !== undefined) {
+                    // delete the drawing
+                    const elt = (_a = this.drawn.get(change.n)) === null || _a === void 0 ? void 0 : _a.get(change.layer);
+                    if (elt !== undefined)
+                        this.image.obj(change.layer).removeChild(elt);
+                }
                 // delete item
-                const hc = exports.halfcells.get(change.n);
+                const hc = this.halfcells.get(change.n);
                 hc === null || hc === void 0 ? void 0 : hc.delete(change.layer);
                 if ((hc === null || hc === void 0 ? void 0 : hc.size) === 0)
-                    exports.halfcells.delete(change.n);
+                    this.halfcells.delete(change.n);
             }
-            if (post !== undefined) {
+            if (change.post !== undefined) {
                 // create item
-                if (!exports.halfcells.has(change.n))
-                    exports.halfcells.set(change.n, new Map());
-                exports.halfcells.get(change.n).set(change.layer, post);
-                // draw it
-                const [x, y] = decode(change.n);
-                const elt = img.objdraw(post, x, y);
-                img.obj(change.layer).appendChild(elt);
-                // save the element
-                if (!drawn.has(change.n))
-                    drawn.set(change.n, new Map());
-                (_b = drawn.get(change.n)) === null || _b === void 0 ? void 0 : _b.set(change.layer, elt);
+                if (!this.halfcells.has(change.n))
+                    this.halfcells.set(change.n, new Map());
+                this.halfcells.get(change.n).set(change.layer, change.post);
+                if (this.image !== undefined) {
+                    // draw it
+                    const [x, y] = decode(change.n);
+                    const elt = Draw.objdraw(change.post, x, y);
+                    this.image.obj(change.layer).appendChild(elt);
+                    // save the element
+                    if (!this.drawn.has(change.n))
+                        this.drawn.set(change.n, new Map());
+                    (_b = this.drawn.get(change.n)) === null || _b === void 0 ? void 0 : _b.set(change.layer, elt);
+                }
             }
-        } while ((_c = history[histpos - 1]) === null || _c === void 0 ? void 0 : _c.linked);
+        }
+        listcells() {
+            const cells = new Array();
+            for (const [n, hc] of this.halfcells) {
+                cells.push(...Array.from(hc.entries()).map(([k, v]) => {
+                    return new Item(n, k, v);
+                }));
+            }
+            return cells;
+        }
     }
-    exports.undo = undo;
-    function initialize(image) {
-        img = image;
-    }
-    exports.initialize = initialize;
+    exports.DataManager = DataManager;
 });
-define("main", ["require", "exports", "event", "view", "stamp", "color", "data", "menu", "toolbox", "image"], function (require, exports, Event, View, Stamp, Color, Data, menu_js_2, toolbox_js_1, image_js_1) {
+define("main", ["require", "exports", "event", "stamp", "color", "data", "draw", "menu", "view", "toolbox", "image", "gratility"], function (require, exports, Event, Stamp, Color, Data, Draw, menu_js_2, view_js_1, toolbox_js_1, image_js_2, gratility_js_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     // TODO make this better i guess
+    Draw.initialize(document);
     const svg = document.getElementById('grid');
-    const image = new image_js_1.default(document, svg);
-    const toolbox = new toolbox_js_1.default(image, document.getElementById('toolbox'));
-    const menu = new menu_js_2.default(Array.from(document.getElementsByClassName('menuaction')), Array.from(document.getElementById('menupopups').children), toolbox, image);
-    Event.initialize(image, svg, document.body, toolbox, menu);
-    View.initialize(image);
-    Stamp.initialize(image);
-    Data.initialize(image);
+    const image = new image_js_2.default(svg);
+    const data = new Data.DataManager(image);
+    const stamp = new Stamp.StampManager(image);
+    const view = new view_js_1.default(image);
+    const gratility = new gratility_js_1.default(image, data, stamp, view);
+    const toolbox = new toolbox_js_1.default(document.getElementById('toolbox'));
+    const menu = new menu_js_2.default(Array.from(document.getElementsByClassName('menuaction')), Array.from(document.getElementById('menupopups').children), gratility, toolbox);
+    Event.initialize(gratility, svg, document.body, toolbox, menu, view);
+    // TODO extraordinarily temporary
+    data.connect('wss://gratility.tck.mn/ws/');
     // TODO better
     image.grid(-500, 500, -500, 500);
     // TODO this stuff should really go somewhere else
