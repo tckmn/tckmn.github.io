@@ -57,6 +57,13 @@ div#menupopups > div {
     flex-direction: column;
 }
 
+div#menupopups > div.small {
+    width: 40vw;
+    height: 40vh;
+    left: 30vw;
+    top: 30vh;
+}
+
 div#menupopups > div .big {
     flex: 1;
 }

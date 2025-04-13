@@ -1423,6 +1423,11 @@ define("menu", ["require", "exports", "data", "draw", "tools/alltools"], functio
         if (e.key === 'Enter')
             manager.menuevent(menu, 'go');
     });
+    // ###### SERVER MENU ###### //
+    menuevents.set('server-go', (manager, menu) => {
+        manager.g.data.connect(localStorage.serverOverride || 'wss://gratility.tck.mn/ws/');
+        manager.close();
+    });
     class Menu {
         constructor(name, popup, inputs) {
             this.name = name;
@@ -1852,8 +1857,6 @@ define("main", ["require", "exports", "event", "stamp", "color", "data", "draw",
     const toolbox = new toolbox_js_1.default(document.getElementById('toolbox'));
     const menu = new menu_js_2.default(Array.from(document.getElementsByClassName('menuaction')), Array.from(document.getElementById('menupopups').children), gratility, toolbox);
     Event.initialize(gratility, svg, document.body, toolbox, menu, view);
-    // TODO extraordinarily temporary
-    data.connect('wss://gratility.tck.mn/ws/');
     // TODO better
     image.grid(-500, 500, -500, 500);
     // TODO this stuff should really go somewhere else
