@@ -4,7 +4,7 @@
         <meta charset='utf-8'>
         <meta name='viewport' content='width=device-width, initial-scale=1'>
         <title>A Slay the Spire puzzle - Andy Tockman</title>
-        <script src='/js/comments-db3d7755.js'></script><script src='/js/spire-60cdf687.js'></script><link rel='stylesheet' href='/css/global-5cf808f0.css'><link rel='stylesheet' href='/css/spire-8a8b422c.css'>
+        <script src='/js/collapsible-4052610d.js'></script><script src='/js/comments-db3d7755.js'></script><script src='/js/spire-60cdf687.js'></script><link rel='stylesheet' href='/css/global-7f77a9d0.css'><link rel='stylesheet' href='/css/blog_a-slay-the-spire-puzzle-0f2887bd.css'><link rel='stylesheet' href='/css/spire-8a8b422c.css'>
         <link rel='apple-touch-icon' sizes='180x180' href='/apple-touch-icon.png'>
         <link rel='icon' type='image/png' sizes='32x32' href='/favicon-32x32.png'>
         <link rel='icon' type='image/png' sizes='16x16' href='/favicon-16x16.png'>
@@ -84,11 +84,13 @@
         <div id='subheader-post'></div>
 
         <main>
-        <div class='hsup'><h1>A Slay the Spire puzzle</h1><span>2024-02-21</span></div><div class='hsub'><span class='len lenverylong'><span>very long</span> (3220 words)</span> <a class='tag' href='/blog/games'><span class='tag'>games</span></a><a class='tag' href='/blog/video-games'><span class='tag'>video games</span></a><a class='tag' href='/blog/slay-the-spire'><span class='tag'>slay the spire</span></a><a class='tag' href='/blog/puzzles'><span class='tag'>puzzles</span></a><a class='tag' href='/blog/math'><span class='tag'>math</span></a></div>
+        <div class='hsup'><h1>A Slay the Spire puzzle</h1><span>2024-02-21</span></div><div class='hsub'><span class='len lenverylong'><span>very long</span> (3180 words)</span> <a class='tag' href='/blog/games'><span class='tag'>games</span></a><a class='tag' href='/blog/video-games'><span class='tag'>video games</span></a><a class='tag' href='/blog/slay-the-spire'><span class='tag'>slay the spire</span></a><a class='tag' href='/blog/puzzles'><span class='tag'>puzzles</span></a><a class='tag' href='/blog/math'><span class='tag'>math</span></a></div>
 <p>You are peacefully going about your day
 when you are suddenly thrust into the following position
 in a game of Slay the Spire.
 What do you do?</p>
+
+
 
 <p>(This puzzle is probably not particularly accessible
 to readers who haven't played Slay the Spire,
@@ -465,10 +467,7 @@ or another <span class='sts stsru stscp stsgs' data-desc='Choose 1 of 3 Attacks 
 these probabilities are extremely obnoxious to compute.
 I've hidden the details for your sake,
 but you can still see them if you really want to.</p>
-<div id='obnexpand'>
-show/hide details
-</div>
-<div id='obnoxious' class='obhidden'>
+<div class='collapsible'><div>show/hide details</div><div>
 <p>Alright,
 so let's count how many ways there are to draw something good
 by casework again,
@@ -579,7 +578,7 @@ out (one+two+three)/total
 57536615629709323/31223557615332361125
 0.0018427309385608227
 </code></pre>
-</div>
+</div></div>
 <p>When all is said and done,
 it turns out the probability that you don't get an immediate infinite,
 but <span class='sts stsru stscp stsgs' data-desc='Choose 1 of 3 Attacks of any color to add into your hand. (It costs 0 this turn.) Exhaust./0'>Foreign Influence</span> saves you,
@@ -593,21 +592,6 @@ which is lower than if <span class='sts stsru stscp stsgs' data-desc='Choose 1 o
 but still just above half!</p>
 <h2>but why?</h2>
 <p>idk math is fun</p>
-<style>
-main li { margin: 0; }
-main li span.desc { color: #888; font-size: 12pt; }
-main #obnexpand { user-select: none; cursor: pointer; background-color: #383838; padding: 5px 20px; }
-main #obnoxious { background-color: #282828; padding: 10px 20px; }
-main #obnoxious ul { margin: 0; }
-main #obnoxious.obhidden { display: none; }
-</style>
-<script>
-window.addEventListener('load', () => {
-    const oe = document.getElementById('obnexpand');
-    const ob = document.getElementById('obnoxious');
-    oe.addEventListener('click', e => ob.classList.toggle('obhidden'));
-});
-</script>
 
 <h2 id='comments'>comments</h2>
 <p><i>There are no comments yet.</i></p>
