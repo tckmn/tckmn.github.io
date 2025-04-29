@@ -3,8 +3,8 @@
     <head>
         <meta charset='utf-8'>
         <meta name='viewport' content='width=device-width, initial-scale=1'>
-        <title>Posts tagged programming - Andy Tockman</title>
-        <link rel='stylesheet' href='/css/global-78d088e1.css'><link rel='stylesheet' href='/css/blogindex-49729e8f.css'>
+        <title>The SHA256 of this title starts with 1b0b029d - Andy Tockman</title>
+        <script src='/js/blog_sha256-starts-with-1b0b029d-c0d58249.js'></script><script src='/js/comments-db3d7755.js'></script><link rel='stylesheet' href='/css/global-78d088e1.css'>
         <link rel='apple-touch-icon' sizes='180x180' href='/apple-touch-icon.png'>
         <link rel='icon' type='image/png' sizes='32x32' href='/favicon-32x32.png'>
         <link rel='icon' type='image/png' sizes='16x16' href='/favicon-16x16.png'>
@@ -12,12 +12,12 @@
         <link rel='mask-icon' href='/safari-pinned-tab.svg' color='#5bbad5'>
         <meta name='msapplication-TileColor' content='#da532c'>
         <meta name='theme-color' content='#ffffff'>
-        <meta name='description' content='All blog posts with the programming tag.'>
-        <meta property='og:title' content='Posts tagged programming' />
+        <meta name='description' content='Here is a true sentence:  My name is Andy Tockman, and the SHA256 of this sentence starts with 10823817b8.'>
+        <meta property='og:title' content='The SHA256 of this title starts with 1b0b029d' />
         <meta property='og:type' content='website' />
-        <meta property='og:url' content='https://tck.mn/blog/programming' />
+        <meta property='og:url' content='https://tck.mn/blog/sha256-starts-with-1b0b029d' />
         <meta property='og:image' content='https://tck.mn/img/dp.png' />
-        <meta property='og:description' content='All blog posts with the programming tag.' />
+        <meta property='og:description' content='Here is a true sentence:  My name is Andy Tockman, and the SHA256 of this sentence starts with 10823817b8.' />
         <meta property='og:site_name' content='Andy Tockman' />
     </head>
     <body>
@@ -84,16 +84,109 @@
         <div id='subheader-post'></div>
 
         <main>
-        <h1>posts tagged <a class='tag' href='/blog/programming'><span class='tag'>programming</span></a><span class='all'><a href='/blog'>view all »</a></span></h1><hr class='c'><div class='hsup excerpt'><h2><a href='/blog/sha256-starts-with-1b0b029d'>The SHA256 of this title starts with 1b0b029d</a></h2><span>2025-04-29</span></div><div class='hsub excerpt'><span class='len lenshort'><span>short</span> (670 words)</span> <a class='tag' href='/blog/programming'><span class='tag'>programming</span></a></div><p>Here is a true sentence:</p>
+        <div class='hsup'><h1>The SHA256 of this title starts with 1b0b029d</h1><span>2025-04-29</span></div><div class='hsub'><span class='len lenshort'><span>short</span> (670 words)</span> <a class='tag' href='/blog/programming'><span class='tag'>programming</span></a></div>
+<p>Here is a true sentence:</p>
 <blockquote>
 <p>My name is Andy Tockman, and the SHA256 of this sentence starts with 10823817b8.</p>
 </blockquote>
-<div class='hsup excerpt'><h2><a href='/blog/splitting-hairs'>Splitting hairs</a></h2><span>2024-01-11</span></div><div class='hsub excerpt'><span class='len lenverylong'><span>very long</span> (3990 words)</span> <a class='tag' href='/blog/programming'><span class='tag'>programming</span></a></div><p>The <code>split</code> function,
-near-universal in modern programming languages,
-for separating a string into a list of strings on a delimiter:
-how hard could it be?</p>
-<div class='hsup excerpt'><h2><a href='/blog/mathematica-factorial'>Factorial in Mathematica</a></h2><span>2020-08-21</span></div><div class='hsub excerpt'><span class='len lenveryshort'><span>very short</span> (70 words)</span> <a class='tag' href='/blog/programming'><span class='tag'>programming</span></a><a class='tag' href='/blog/mathematica'><span class='tag'>mathematica</span></a></div><p>Here is a list of (mostly) increasingly stupid ways
-of calculating the factorial of <code>n</code> in Mathematica.</p>
+<p>You can check that it's true yourself:</p>
+<pre><code>tckmn@alpaca:~$ echo -n 'My name is Andy Tockman, and the SHA256 of this sentence starts with 10823817b8.' | sha256sum
+10823817b8e9c37ed42a4fe239d607d6128fe2f3f53ead2248b8667946d6cf08  -
+</code></pre>
+<p>I, uh, &quot;made&quot; this sentence
+when <a href="https://x.com/lauriewired/status/1700982575291142594">this tweet by @LaurieWired</a>
+was making the rounds on the internet:</p>
+<blockquote>
+<p>The SHA256 for this sentence begins with: one, eight, two, a, seven, c and nine.</p>
+</blockquote>
+<p>(Is &quot;made&quot; the right verb? Wrote? Discovered? Anyway...)
+I was further inspired by my friend
+making a 6-digit version with their name in it,
+and decided to try going further by writing the bruteforce in C.
+<a href="https://gist.github.com/tckmn/7f775104cf3c32acd3dd59210540a8dd">Here's the code</a>,
+which uses <a href="https://github.com/wangkui0508/sha256">this random SHA256 implementation off the internet</a>.</p>
+<p>In case you're not familiar with <a href="https://en.wikipedia.org/wiki/Cryptographic_hash_function">cryptographic hash functions</a>,
+of which <a href="https://en.wikipedia.org/wiki/SHA-2">SHA256</a> is one,
+the oversimplified description is that you stick in any string
+and it's supposed to spit out a number in some fixed range
+that &quot;looks random&quot; --
+i.e. you always get the same number for the same string,
+but it has no visible relation to the contents of the string.
+So in theory,
+it's intended to be impossible to find two strings that hash to the same thing,
+or find a string that results in some given hash,
+except by brute force.
+Similarly,
+if the hash function is cryptographically secure,
+the only way to find sentences like this is by trying a lot of them until they work.</p>
+<p>How likely is it that you find one?
+Let's say you're trying to find one with 4 hex digits.
+The first 4 digits of your hash
+will effectively be randomly chosen from the 2<sup>16</sup> possible 4-digit hex strings.
+so the chances that a random one works is 1 in 2<sup>16</sup>.
+But since there are also 2<sup>16</sup> possible sentences to try,
+the expected number of matches you find if you try all of them is exactly one!
+This goes for any number of digits:
+if you brute force all possibilities,
+you will find 1 working one in expectation.</p>
+<p>When I ran my code for 8 digits, I found all of these:</p>
+<blockquote>
+<p>My name is Andy Tockman and the SHA256 of this sentence starts with cfdf9b1e.<br />
+My name is Andy Tockman, and the SHA256 of this sentence starts with d93f0e7a.<br />
+My name is Andy Tockman, and the SHA256 of this sentence starts with e767eb5a<br />
+My name is Andy Tockman, and the SHA256 of this sentence starts with f00d7099</p>
+</blockquote>
+<p>Four of them!
+My favorite is the last one because it starts with &quot;food&quot;.
+Do I just have an extremely lucky name?
+No --
+as you can see from the differences in the above sentences,
+you can cheat a little by varying the punctuation.
+There are 4 versions here if you try both comma / no comma and period / no period,
+and so the expected number is indeed exactly 4.
+So if you have a very unlucky name,
+not all hope is lost.</p>
+<p>The amount of time it takes to try all of them
+increases exponentially with the number of digits;
+I think the projected runtime for the 10-digit version with my code
+was around 24 core-hours.
+But I got lucky and found one in around 2 --
+in fact,
+you can tell exactly how lucky I got because my code tries all the numbers in order,
+and the number that worked was <code>10823817b8</code>.</p>
+<p>Anyway,
+there's not much more I have to say about this.
+It's kind of funny that this process is basically the exact same thing as mining bitcoin,
+except instead of dollars you get sentences.
+But they are such great, personalized sentences!
+Clearly a much more valuable commodity.</p>
+<p>On an entirely unrelated note,
+I learned while writing this
+that apparently different web browsers will put different text in your clipboard
+if you copy/paste from a page with formatting??
+So you can <a id='copyclip' href='#'>click here to copy the text of this blog post to your clipboard</a>
+in a standardized way.
+And if you check,
+you will discover that <a href="https://emn178.github.io/online-tools/sha256.html">its SHA256</a> starts with <code>8c0735</code>.</p>
+<!--nowd-->
+
+
+<h2 id='comments'>comments</h2>
+<p><i>There are no comments yet.</i></p>
+<form id='commentform' method='post' action='https://dyn.tck.mn/comment'>
+    <p><label>name: <input name='name'></label></p>
+    <p><label>contact (private, optional): <input name='cont'></label></p>
+    <p id='commentinfo'>
+        <a href='/bloginfo' target='_blank'>formatting</a> is supported.
+        comments require manual approval.
+    </p>
+    <p><textarea name='comm' rows='5'></textarea></p>
+    <p>
+        <input type='hidden' name='post' value='blog/sha256-starts-with-1b0b029d'>
+        <input type='submit' id='commentsubmit' value='leave a comment'>
+        <span id='commentfeedback'></span>
+    </p>
+</form>
 
         </main>
 
