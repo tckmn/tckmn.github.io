@@ -189,6 +189,36 @@ but it's the same idea.</p>
 </ul>
 <p>Can you think of any other songs that do this?
 I would be interested to know!</p>
+<!--nowd-->
+<!-- .ly {{
+  \version "2.24.3"
+  \score {
+    \new Staff \relative {
+      \key f \major
+      \numericTimeSignature
+      \time 4/4
+      | r2 f'8 g a4 |
+      \time 2/4
+      | <<
+        { \voiceOne \hideNotes a4 \unHideNotes
+          \tweak color #grey
+          \tweak Stem.color #grey
+          c4
+        }
+        \new Voice { \voiceTwo
+          \tweak color #grey
+          \tweak Stem.color #grey
+          c2
+        }
+      >> \oneVoice |
+      \time 4/4
+      | c2. f,4 | e4 r d'4. d8( | c2) r |
+    }
+    \addlyrics {
+      Yu -- me de (ta) (ta) ta -- ka -- ku ton -- da __
+    }
+  }
+}} -->
 
 <h2 id='comments'>comments</h2>
 <div class='comm'>
@@ -196,7 +226,28 @@ I would be interested to know!</p>
         <strong class='commn'>Xavier P</strong>
         <em class='commd'>2025-04-28 23:24</em>
     </p>
-    <div class='commb'><p>There's an analysis of the Evangelion song made by a Spanish youtuber <a href='https://youtu.be/Qn1Ikv6emyw?si=L86gZ3VW3ktg92ST'>https://youtu.be/Qn1Ikv6emyw?si=L86gZ3VW3ktg92ST</a> in which he talks about it starting from minute 10, and he gives some other examples (the same Imagine Dragons one too).</p></div>
+    <div class='commb'><p>There's an analysis of the Evangelion song made by a Spanish youtuber <a href='https://youtu.be/Qn1Ikv6emyw?si=L86gZ3VW3ktg92ST'>https://youtu.be/Qn1Ikv6emyw</a> in which he talks about it starting from minute 10, and he gives some other examples (the same Imagine Dragons one too).</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn me'>tckmn</strong>
+        <em class='commd'>2025-04-30 20:39</em>
+    </p>
+    <div class='commb'>
+
+<p>woah! that's so cool that we independently came up with two of the same examples :D</p>
+<p>for reference for future readers, the video doesn't even talk about the exact same thing -- it more generally talks about songs that do something "unexpected" into the chorus. one of the two other songs cited is Despacito:</p>
+<p><audio controls><source src='despacito.ogg' type='audio/ogg'></audio></p>
+<p>this one lands neatly on beat 1, but the tempo slows way down for the two beats right before the chorus. (i'm sure many people reading already know this, but "despacito" is the diminutive of the Spanish word for "slowly", making this an example of <a href='https://en.wikipedia.org/wiki/Word_painting'>word painting</a>)</p>
+<p>the other song the video cites the opening to Sword Art Online, called Crossing Field by LiSA. here's the first chorus (the normal, expected one):</p>
+<p><audio controls><source src='crossing1.ogg' type='audio/ogg'></audio></p>
+<p>and the second chorus (the unexpected one):</p>
+<p><audio controls><source src='crossing2.ogg' type='audio/ogg'></audio></p>
+<p>here there's an entire extra bar of 2 before the chorus, and in that space they stick in not one, but <em>two</em> fake entrances:</p>
+<p><img src='/img/ly/5e65952a041c709b382e4d34adc28a83.svg' style='background-color:white;padding:5px'></p>
+<p>(sidenote: it's very funny to me that the video makes the joke of "shounen" in Japanese being cognate with "joven" in Spanish, as someone not exposed to much cross-linguistic Japanese-Spanish humor in my daily life)</p>
+
+</div>
 </div>
 
 <form id='commentform' method='post' action='https://dyn.tck.mn/comment'>
