@@ -107,7 +107,7 @@
         <div id='subheader-post'></div>
 
         <main>
-        <div class='hsup'><h1>Sudden phrase-initial beat-long cutoffs</h1><span>2025-01-02</span></div><div class='hsub'><span class='len lenshort'><span>short</span> (520 words)</span> <a class='tag' href='/blog/music'><span class='tag'>music</span></a></div>
+        <div class='hsup'><h1>Sudden phrase-initial beat-long cutoffs</h1><span>2025-01-02</span></div><div class='hsub'><span class='len lenshort'><span>short</span> (690 words)</span> <a class='tag' href='/blog/music'><span class='tag'>music</span></a></div>
 <p>I have literally no idea how to describe this in words,
 but here's a short list of a bunch of songs
 that do a cool musical thing.</p>
@@ -209,6 +209,31 @@ I dunno,
 you could count this song in 4 or 2 or 12,
 but it's the same idea.</p>
 </li>
+<li>
+<p><strong>Mor Ardain - Roaming the Wastes</strong> (from the Xenoblade Chronicles 2 OST)</p>
+<p>The first time this particular melody appears,
+followed by the one where it does the thing:</p>
+<p><audio controls>
+  <source src='xenoblade1.ogg' type='audio/ogg'>
+  <source src='xenoblade1.mp3' type='audio/mpeg'>
+</audio></p>
+<p><audio controls>
+  <source src='xenoblade2.ogg' type='audio/ogg'>
+  <source src='xenoblade2.mp3' type='audio/mpeg'>
+</audio></p>
+<p>While some of these examples have had all but one part doing the cutoff (The Middle, Believer)
+and some of these have had only one part doing the cutoff (Evangelion),
+this one is kind of in the middle --
+half of the band is playing the pickups and continues into the melody as normal,
+and the other half comes crashing in on beat 2 echoing the main melody's beat 1.
+There's also a nice piano gliss on the 1 of that measure to accentuate the whole effect.</p>
+<p>I've edited this example in 9 months after the original post
+because it actually came up &quot;in the wild&quot; --
+in the <a href='https://www.youtube.com/@mitvgo'>MIT Video Game Orchestra</a> we're playing an arrangement of this piece,
+and one of our conductors (who made the arrangement)
+specifically stopped to point this out
+(to which I was mentally screaming &quot;yes!!! it's the thing!!&quot;).</p>
+</li>
 </ul>
 <p>Can you think of any other songs that do this?
 I would be interested to know!</p>
@@ -242,6 +267,18 @@ I would be interested to know!</p>
     }
   }
 }} -->
+<!-- .ly {{
+  \version "2.24.3"
+  \score {
+    \new Staff \with { \omit Clef } \relative {
+      \numericTimeSignature
+      \time 4/4
+      \override NoteHead.style = #'cross
+      | b'4. b b4 | b4. b b4 | \section
+      | b4. b b4~ | b8 b4. b4 b |
+    }
+  }
+}} -->
 
 <h2 id='comments'>comments</h2>
 <div class='comm'>
@@ -262,13 +299,38 @@ I would be interested to know!</p>
 <p>for reference for future readers, the video doesn't even talk about the exact same thing -- it more generally talks about songs that do something "unexpected" into the chorus. one of the two other songs cited is Despacito:</p>
 <p><audio controls><source src='despacito.ogg' type='audio/ogg'><source src='despacito.mp3' type='audio/mpeg'></audio></p>
 <p>this one lands neatly on beat 1, but the tempo slows way down for the two beats right before the chorus. (i'm sure many people reading already know this, but "despacito" is the diminutive of the Spanish word for "slowly", making this an example of <a href='https://en.wikipedia.org/wiki/Word_painting'>word painting</a>)</p>
-<p>the other song the video cites the opening to Sword Art Online, called Crossing Field by LiSA. here's the first chorus (the normal, expected one):</p>
+<p>the other song the video cites is the opening to Sword Art Online, called Crossing Field by LiSA. here's the first chorus (the normal, expected one):</p>
 <p><audio controls><source src='crossing1.ogg' type='audio/ogg'><source src='crossing1.mp3' type='audio/mpeg'></audio></p>
 <p>and the last chorus (the unexpected one):</p>
 <p><audio controls><source src='crossing2.ogg' type='audio/ogg'><source src='crossing2.mp3' type='audio/mpeg'></audio></p>
 <p>here there's an entire extra bar of 2 before the chorus, and in that space they stick in not one, but <em>two</em> fake entrances:</p>
 <p><img src='/img/ly/5e65952a041c709b382e4d34adc28a83.svg' style='background-color:white;padding:5px'></p>
 <p>(sidenote: it's very funny to me that the video makes the joke of "shounen" in Japanese being cognate with "joven" in Spanish, as someone not exposed to much cross-linguistic Japanese-Spanish humor in my daily life)</p>
+
+</div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>Matthew G</strong>
+        <em class='commd'>2025-08-12 17:03</em>
+    </p>
+    <div class='commb'><p>Found another one: <a href="https://youtu.be/M-l3mNWB7W8">https://youtu.be/M-l3mNWB7W8</a></p><p>The apothecary diaries intro, live, at 3:33, totally cuts out for the first beat of the chorus. The intro that made it onto the actual anime, <a href="https://youtu.be/EQ-DKvLQlyQ">https://youtu.be/EQ-DKvLQlyQ</a> at around 1:00, does not do this!</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn me'>tckmn</strong>
+        <em class='commd'>2025-09-16 12:06</em>
+    </p>
+    <div class='commb'>
+
+<p>that one is also cool :o here is the normal chorus followed by the modified chorus (which also has an extra 2 bars of leadin):</p>
+<p><audio controls><source src='hana1.ogg' type='audio/ogg'><source src='hana1.mp3' type='audio/mpeg'></audio></p>
+<p><audio controls><source src='hana2.ogg' type='audio/ogg'><source src='hana2.mp3' type='audio/mpeg'></audio></p>
+<p>when i was listening to this one, i decided to just listen to the whole song in the background instead of jumping to the timestamp, and during the buildup my brain went "oh they're definitely about to do the thing" lol</p>
+<p>this song also does a bunch of other neat things btw, i really like how at 4:07 the piano plays a riff and then the erhu repeats it and it's slightly out of tune which makes it sound much cooler than the digital piano. there's also this thing they do in the chorus (2:06, 3:44, 3:54) and one of the verses (2:19), where the vocals are grouped in 3 eighths over the 4/4 instrumental, which is kind of reminiscent of the tresillo thing that's the most common rhythm in all of western pop music (left) or the extended one that's the second most common rhythm in all of western pop music (right):</p>
+<p><img src='/img/ly/d7f6bf06d7f2d20f68dda750820395bf.svg' style='background-color:white;padding:5px'></p>
+<p>...except the one in the chorus starts on the 3 (which makes it land on beat 1 a measure and a half later), and in that one verse at 2:19 it just <em>keeps going</em>, making the song briefly feel almost polymetric</p>
+<p>anyway, i think the reason the anime intro version doesn't have the thing is just that it's shortened and only includes the first chorus</p>
 
 </div>
 </div>
