@@ -1,0 +1,43 @@
+html,body {
+    background-color: #000;
+    color: #d8d8d8;
+}
+
+div#info { margin-bottom: 1rem; }
+
+div.chart {
+    display: flex;
+    align-items: stretch;
+}
+
+div.chart > div {
+    padding: 0 1px;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+}
+
+div.chart div.bar {
+    background-color: #bbb;
+}
+
+div.chart > div.hi div.bar {
+    background-color: #bbf;
+}
+
+div.chart div.lbl {
+    text-align: center;
+    font-size: 7pt;
+    width: 12px;
+    overflow: hidden;
+}
+
+div#hover {
+    display: none;
+    position: absolute;
+    margin-top: calc(-1em - 10px);
+    padding: 5px;
+    background-color: #282828;
+    border-radius: 3px;
+    pointer-events: none;
+}
