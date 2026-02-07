@@ -77,7 +77,7 @@ function getDistSub(path, idx, rare) {
 
     // keep rare as integer until the end to make sure 0 stays 0
     const pRare = Math.max(0, rare + (path[idx] ? 10 : 3)) * 0.01;
-    const pUncommon = path[idx] ? 0.4 : 0.37;
+    const pUncommon = Math.min(0, rare + (path[idx] ? 10 : 3)) * 0.01 + (path[idx] ? 0.4 : 0.37);
     const pCommon = 1 - pRare - pUncommon;
 
     const fRare = getDistSub(path, idx+1, BASE_RARE);
@@ -143,7 +143,7 @@ function dispOne(name, info, dist) {
     });
 
     const bigcont = document.createElement('div');
-    bigcont.appendChild(document.createTextNode(`${name} (EV: ${dist.reduce((acc, val, idx) => acc + val*idx)})`));
+    bigcont.appendChild(document.createTextNode(`${name} (EV: ${dist.reduce((acc, val, idx) => acc + val*idx, 0)})`));
     bigcont.appendChild(cont);
     return bigcont;
 }
