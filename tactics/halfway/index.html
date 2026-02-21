@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <meta charset='utf-8'>
+        <meta name='viewport' content='width=device-width'>
+        <title>puzzle</title>
+        <style>html, body { margin: 0; padding: 0; } img { width: 100%; } #clean { display: none; } .clean #dirty { display: none; } .clean #clean { display: inline; }</style>
+        <script>window.addEventListener('load', () => { for (const el of document.getElementsByClassName('click')) { el.addEventListener('click', () => document.body.classList.toggle('clean')); } });</script>
+    </head>
+    <body class='clean'>
+        <img class='click' id='clean' src='t1.1-clean.png'>
+        <img class='click' id='dirty' src='t1.1.png'>
+        <img src='t1.2.png'>
+    </body>
+</html>
