@@ -3,8 +3,8 @@
     <head>
         <meta charset='utf-8'>
         <meta name='viewport' content='width=device-width, initial-scale=1'>
-        <title>Posts tagged video games - Andy Tockman</title>
-        <link rel='stylesheet' href='/css/global-6e17f804.css'><link rel='stylesheet' href='/css/blogindex-49729e8f.css'>
+        <title>The Hellraiser "infinite" in Slay the Spire 2 - Andy Tockman</title>
+        <script src='/js/comments-db3d7755.js'></script><link rel='stylesheet' href='/css/global-6e17f804.css'><link rel='stylesheet' href='/css/blog_hellraiser-infinite-31e15a79.css'>
         <link rel='apple-touch-icon' sizes='180x180' href='/apple-touch-icon.png'>
         <link rel='icon' type='image/png' sizes='32x32' href='/favicon-32x32.png'>
         <link rel='icon' type='image/png' sizes='16x16' href='/favicon-16x16.png'>
@@ -12,12 +12,12 @@
         <link rel='mask-icon' href='/safari-pinned-tab.svg' color='#5bbad5'>
         <meta name='msapplication-TileColor' content='#da532c'>
         <meta name='theme-color' content='#ffffff'>
-        <meta name='description' content='All blog posts with the video games tag.'>
-        <meta property='og:title' content='Posts tagged video games' />
+        <meta name='description' content='Slay the Spire 2 was released 4 days ago! In my opinion it is a very fun game. This post is about a very unintuitive and mathematically interesting interaction between two Ironclad cards.'>
+        <meta property='og:title' content='The Hellraiser "infinite" in Slay the Spire 2' />
         <meta property='og:type' content='website' />
-        <meta property='og:url' content='https://tck.mn/blog/video-games' />
-        <meta property='og:image' content='https://tck.mn/img/dp.png' />
-        <meta property='og:description' content='All blog posts with the video games tag.' />
+        <meta property='og:url' content='https://tck.mn/blog/hellraiser-infinite' />
+        <meta property='og:image' content='https://tck.mn/blog/hellraiser-infinite/hellraiser-small.png' />
+        <meta property='og:description' content='Slay the Spire 2 was released 4 days ago! In my opinion it is a very fun game. This post is about a very unintuitive and mathematically interesting interaction between two Ironclad cards.' />
         <meta property='og:site_name' content='Andy Tockman' />
     </head>
     <body>
@@ -107,14 +107,185 @@
         <div id='subheader-post'></div>
 
         <main>
-        <h1>posts tagged <a class='tag' href='/blog/video-games'><span class='tag'>video games</span></a><span class='all'><a href='/blog'>view all »</a></span></h1><hr class='c'><div class='hsup excerpt'><h2><a href='/blog/hellraiser-infinite'>The Hellraiser "infinite" in Slay the Spire 2</a></h2><span>2026-03-09</span></div><div class='hsub excerpt'><span class='len lenmedium'><span>medium</span> (1160 words)</span> <a class='tag' href='/blog/math'><span class='tag'>math</span></a><a class='tag' href='/blog/video-games'><span class='tag'>video games</span></a><a class='tag' href='/blog/slay-the-spire'><span class='tag'>slay the spire</span></a></div><p>Slay the Spire 2 was released 4 days ago!
+        <div class='hsup'><h1>The Hellraiser "infinite" in Slay the Spire 2</h1><span>2026-03-09</span></div><div class='hsub'><span class='len lenmedium'><span>medium</span> (1160 words)</span> <a class='tag' href='/blog/math'><span class='tag'>math</span></a><a class='tag' href='/blog/video-games'><span class='tag'>video games</span></a><a class='tag' href='/blog/slay-the-spire'><span class='tag'>slay the spire</span></a></div>
+<p>Slay the Spire 2 was released 4 days ago!
 In my opinion it is a very fun game.
 This post is about a very unintuitive and mathematically interesting interaction
 between two Ironclad cards.</p>
-<div class='hsup excerpt'><h2><a href='/blog/a-slay-the-spire-puzzle'>A Slay the Spire puzzle</a></h2><span>2024-02-21</span></div><div class='hsub excerpt'><span class='len lenverylong'><span>very long</span> (3180 words)</span> <a class='tag' href='/blog/games'><span class='tag'>games</span></a><a class='tag' href='/blog/video-games'><span class='tag'>video games</span></a><a class='tag' href='/blog/slay-the-spire'><span class='tag'>slay the spire</span></a><a class='tag' href='/blog/puzzles'><span class='tag'>puzzles</span></a><a class='tag' href='/blog/math'><span class='tag'>math</span></a></div><p>You are peacefully going about your day
-when you are suddenly thrust into the following position
-in a game of Slay the Spire.
-What do you do?</p>
+
+<p><img src='hellraiser-small.png' class='half'><img src='pommel-small.png' class='half'></p>
+<p>Imagine you have Hellraiser in play,
+your entire deck is 3 copies of Pommel Strike+,
+and you end your turn.
+On the next turn,
+you might expect that they keep playing forever until the enemy dies.</p>
+<p>But there are some enemies that can prevent this,
+like the one that decreases your attack damage every time you play a card
+(so attacks eventually do nothing).
+What happens then?
+Do they play infinitely many times,
+softlocking your game?</p>
+<p>No,
+it turns out that the loop stops after playing <strong>exactly 35 cards</strong>.
+If you have 4 copies of Pommel Strike+ instead of 3,
+it instead stops after exactly 75 cards.</p>
+<p>What???</p>
+<p>There is actually a real reason for these numbers to be what they are,
+and figuring it out is maybe an interesting &quot;puzzle&quot;
+(albeit one that requires understanding subtle details about card play mechanics).
+If you want to try solving it yourself,
+stop reading now,
+since I will spoil the answer below this clip.</p>
+<p><video controls><source src='threepommel.mp4' type='video/mp4'></video></p>
+<h2>the numbers</h2>
+<p>When I first heard about this confusing behavior
+where people's &quot;infinites&quot; were randomly fizzling,
+I collected some data by using the debug console
+to set up this scenario with various numbers of Pommel Strike+.</p>
+<table class='pad'>
+<thead>
+<tr><th>pommels</th><th>cards played</th></tr>
+</thead>
+<tbody>
+<tr><td>2</td><td>15</td></tr>
+<tr><td>3</td><td>35</td></tr>
+<tr><td>4</td><td>75</td></tr>
+<tr><td>5</td><td>155</td></tr>
+<tr><td>6</td><td>315</td></tr>
+</tbody>
+</table>
+<p>The last row was mostly a sanity check
+to verify that the apparent pattern still holds:
+to go from one row to the next,
+double it and add 5.</p>
+<p>Why 5?
+Well,
+the number 5 happens to be the number of cards you draw at the start of your turn.
+So I tried giving myself a status effect
+that decreases your start of turn draw by 4,
+and discovered this indeed divides all the numbers by 5.</p>
+<p>Okay,
+that explains some of it --
+each start-of-turn draw accounts for the same number of card plays.
+But why is this number not infinite,
+and instead some function of the number of Pommel Strike+ in the deck?</p>
+<h2>card play mechanics</h2>
+<p>If your entire deck is a single Pommel Strike+ and you play it,
+you don't draw it back.
+This is because of a detail in how cards are played.</p>
+<p>When you play a card,
+it moves to an abstract &quot;currently-being-played&quot; zone,
+and then it resolves all of the effects on the card,
+and then it moves to your discard pile.
+So the &quot;draw 2&quot; effect occurs while the Pommel Strike+ is still trapped in the &quot;currently-being-played&quot; zone,
+and therefore sees that there are no cards to draw.
+(From now on,
+I will refer to the &quot;currently-being-played&quot; zone as &quot;limbo&quot;,
+since it's a bit of a mouthful.)</p>
+<p>So what if you have two copies of Pommel Strike+?
+Let's say you have Hellraiser in play and you draw one of them.
+It moves to limbo,
+and then begins to resolve its &quot;draw 2&quot; effect.</p>
+<img src='pic1.png'>
+<p>The first step of drawing 2 is to draw 1,
+which happens to be the second Pommel Strike+.
+Now this one also moves to limbo,
+and begins to resolve its own &quot;draw 2&quot; effect.</p>
+<img src='pic2.png'>
+<p>But both cards in your deck are now in limbo,
+and there is nothing to draw!
+So nothing happens,
+and the second Pommel Strike+ gets discarded.</p>
+<img src='pic3.png'>
+<p>The first Pommel Strike+ is not yet done resolving --
+it has only drawn 1 so far,
+and still has 1 more to draw.
+So the same thing happens again:
+the second Pommel Strike+ plays once,
+and is then discarded.</p>
+<img src='pic4.png'>
+<img src='pic5.png'>
+<p>Now the first Pommel Strike+ is done with its effect,
+and is also discarded.</p>
+<p>When all is said and done,
+exactly 3 cards have been played.
+The number in the table is 15, which agrees with this;
+since you draw 5 at the start of your turn,
+this entire process happens 5 times,
+and 3×5 = 15.</p>
+<p>Okay,
+so that works,
+but it was a bit of a pain to work out by hand.
+It's time for some math.</p>
+<h2>recurrence relations</h2>
+<p>The fundamental question we want to answer is:
+<strong>If your deck is <em>n</em> copies of Pommel Strike+,
+how many cards are played when you draw one?</strong></p>
+<p>Let's call this function <em>f</em>:
+if you have <em>n</em> copies of Pommel Strike+,
+then drawing one of them results in <em>f</em>(<em>n</em>) card plays.
+We've already worked out
+that <span class='nobr'><em>f</em>(1) = 1</span> and <span class='nobr'><em>f</em>(2) = 3</span>.</p>
+<p>How do we compute <em>f</em>(<em>n</em>) without a specific value for <em>n</em>?
+Well,
+imagine you draw a Pommel Strike+.
+It immediately moves to limbo,
+and then it stays there forever until its entire chain of effects is done resolving.
+So for this entire duration,
+your deck effectively contains <em>n</em>-1 copies of Pommel Strike+.</p>
+<p>Now we could go through the whole process of figuring out what happens
+as a result of the draw effect that is about to occur.
+But as I have just said,
+this is the exact same result as drawing a Pommel Strike+ from a deck of <em>n</em>-1 copies of Pommel Strike+,
+which is just <em>f</em>(<em>n</em>-1) card plays!
+Since the effect is draw 2,
+this happens twice,
+and adding the card play from the original Pommel Strike+ itself,
+we get <span class='nobr'><em>f</em>(<em>n</em>) = 2<em>f</em>(<em>n</em>-1) + 1</span>.</p>
+<img src='func.png'>
+<p>We have now expressed <em>f</em> in terms of itself,
+but how do we compute an actual numerical value for a particular <em>n</em>?
+This is a <a href="https://en.wikipedia.org/wiki/Recurrence_relation">recurrence relation</a>,
+which I will not attempt to explain the full theory of here,
+but the solution in this case is <span class='nobr'><em>f</em>(<em>n</em>) = 2^n - 1</span>.
+(You can check that this works:
+<em>f</em>(<em>n</em>) = <span class='nobr'>2<em>f</em>(<em>n</em>-1) + 1</span> = <span class='nobr'>2(2^(n-1) - 1) + 1</span> = <span class='nobr'>2^n - 2 + 1</span> = <span class='nobr'>2^n - 1</span>.)</p>
+<p>Finally,
+this gives a closed form for the numbers in the original table!
+Each of the 5 start-of-turn draws results in <em>f</em>(<em>n</em>) card plays,
+and so the total number of cards played is <span class='nobr'><strong>5 × (2^n - 1)</strong></span>.</p>
+<h2>conclusion</h2>
+<p>This was a surprisingly deep interaction
+between two seemingly very straightforward cards!
+Admittedly,
+most of the complexity comes from the somewhat unintuitive card play mechanics
+(thanks to @redstonerodent for figuring out where this 2^n was coming from!),
+but I still think it's very fun that these cards that absolutely do not say the number 315 on them
+can somehow produce the number 315 in actual gameplay
+(a claim I heard before investigating this was that 6 copies of Pommel Strike+ is actually infinite,
+which is understandable to believe).</p>
+<p>Anyway,
+in case you find yourself with 50 copies of Pommel Strike+
+against that one enemy who can only take 20 damage per turn
+and want to know when you get to play the game again,
+rest assured that you only need to wait for 5,629,499,534,213,115 card plays!</p>
+
+<h2 id='comments'>comments</h2>
+<p><i>There are no comments yet.</i></p>
+<form id='commentform' method='post' action='https://dyn.tck.mn/comment'>
+    <p><label>name: <input name='name'></label></p>
+    <p><label>contact (private, optional): <input name='cont'></label></p>
+    <p id='commentinfo'>
+        <a href='/bloginfo' target='_blank'>formatting</a> is supported.
+        comments require manual approval.
+    </p>
+    <p><textarea name='comm' rows='5'></textarea></p>
+    <p>
+        <input type='hidden' name='post' value='blog/hellraiser-infinite'>
+        <input type='submit' id='commentsubmit' value='leave a comment'>
+        <span id='commentfeedback'></span>
+    </p>
+</form>
 
         </main>
 
