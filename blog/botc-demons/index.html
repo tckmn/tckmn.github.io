@@ -866,6 +866,37 @@ but oh well.)</p>
     </p>
     <div class='commb'><p>Well this gives me a great idea for my next wizard wish</p></div>
 </div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>book</strong>
+        <em class='commd'>2026-01-26 23:24</em>
+    </p>
+    <div class='commb'>
+
+<p>The slayer case needs exactly [(d-1)(d-2)/2]+2 slayers.</p>
+
+<p>Proof: For our strategy, each player will shoot the first living nonconfirmed player to their left, starting at a randomly selected player and proceeding to the right. Clearly, with this strategy, every slayer will shoot, and every demon with a slayer to their right will be shot, so at least one demon will die. Additionally, however, if a line of n demons has m slayers shoot after them, then m of those n demons will die, since successful slayer shots confirm  the shooter, and kill the shot player, so the next shot will skip to the next demon in the chain.</p>
+
+<p>Lemma 1: This generalizes slightly, so if you have two lines of demons of length n1, n2, and m1&lt;n1 slayer shots between them, and m2 slayer shots after line 2, m1+m2 of those demons will die (even if m2>n2, and m1+m2&lt;n1+n2), and similarly for more than 2 lines.<br>
+As a corollary, any demon who, in sequence, takes a turn before the final d slayers in the order will die on day 1. (This does not end up being useful, but I left it in because it's interesting.)</p>
+
+<p>Lemma 2: If a slayer's shot fails, then every demon before them in shot order is dead.<br>
+Proof: Suppose for contradiction there is a demon before them in shot order. Consider the first slayer after that demon whose shot failed. To their left is a line of successful slayers, dead players, and then the living demon in question. By the strategy, they would have shot the living demon.</p>
+
+<p>Without loss of generality, assume the final player in the turn order is a slayer, as the shots of demons have no effect, so if the final player were a demon, it would be mechanically equivalent to assuming they were the first player, as all players would make the same shots. We can repeat this process until the final player is not a demon.</p>
+
+<p>Then, supposing the good team has successfully killed k&lt;d demons, the remaining demons must then be exactly the next d-k living unconfirmed players after the 2nd-to-last player who was a demon that got killed. To show this, suppose otherwise for the sake of contradiction. Then at least one of those d-k living unconfirmed players was a slayer whose shot failed. By lemma 2, we have that every demon before them in turn order is dead. After them in turn order is strictly less than d-k living unconfirmed players, who are the only unconfirmed players. but that means there are strictly less than d-k living demons, and there are k dead demons, so there are strictly less than d demons in total, a contradiction. Thus, after enacting this strategy, the good team knows exactly who the demons are, and will spend the next d-k days executing them. The only way for the evil team to win is to kill quickly enough that the good team cannot do this. Thus, the best case scenario for evil is that only 1 demon dies. The good team will then execute a second  demon, reducing their numbers to d-2. Each day/night cycle, they will kill a number of good players equal to the number of living demons, then lose a demon. Thus, the will kill d-2+d-3+d-4+...+2+1 good players before losing. For good to win, they need 2 living players on the final day. The triangular number formula gives that they thus need [(d-1)(d-2)/2]+2 good players to win.</p>
+
+<p>Here's the method of proof for showing that the result is optimal:</p>
+
+<p>Given a method of slayers shooting, you can always strategically choose players to be demons such that at most one of them is shot. In this case, the good team needs the stated number of players to even have a chance at winning.</p>
+
+<p>To make this rigorous, note that its clearly optimal for every slayer to shoot day 1, as any slayers who do not shoot on day 1 will be killed that night, potentially wasting shots of players who shot them, and otherwise reducing the situation to an equivalent one, but with a lower player count.</p>
+
+<p>Thus, any optimal strategy can be formulated as an order in which players make their shots, and a function from the potential results of previous shots to who you should choose next. The restriction of this function to the case where every prior shot has failed yields some function f acting on the set {1,2,3,...,n} for n the number of players, where f(i) is the player shot by person i in the order. The image of {1,2,3,...,n-1} must exclude at least 1 player, who we will pick to be our first demon d1. Then, the image of {1,2,3,...,d1-1,d1+1,...,n-1} must exclude at least two players, one of which is d1. We will take the other to be d2. We can continue this process inductively to choose n demons, none of which will be shot by a slayer in the first n-1 slayer shots. Thus, any strategy has a worst possible scenario where at most one demon dies to a slayer, in which case, even if they execute a demon, they will need [(d-1)(d-2)/2]+2 players to make it to a final 3 with at most 1 demon alive.</p>
+
+</div>
+</div>
 
 <form id='commentform' method='post' action='https://dyn.tck.mn/comment'>
     <p><label>name: <input name='name'></label></p>
