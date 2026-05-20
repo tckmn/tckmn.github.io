@@ -1,167 +1,365 @@
-html { font-family: sans-serif; }
-body.dark { filter: url(#invertFilter); background-color: #000; margin: 0; }
+html {
+  font-family: sans-serif; }
+
+body.dark {
+  filter: url(#invertFilter);
+  background-color: #000;
+  margin: 0; }
 
 main {
-    position: absolute;
-    width: 100vw;
-    height: 100vh;
-    top: 0;
-    left: 0;
-    display: flex;
-}
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  display: flex; }
 
 section#toolbar {
-    display: flex;
-    flex-direction: column;
-    width: 200px;
-}
-
-section#toolbar > button { width: 100%; }
-
-section#toolbar > div#toolbox {
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+  border-right: 1px dotted black;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1); }
+  section#toolbar > button {
+    width: 100%;
+    font-size: 10pt; }
+  section#toolbar > div#importexport {
+    padding: 1rem 0.2rem 0;
+    font-size: 10pt; }
+  section#toolbar > div#toolbox {
     overflow-y: scroll;
-    display: grid;
-    grid-template-columns: auto 1fr auto auto;
-    grid-column-gap: 0.5rem;
-    font-size: 11pt;
-}
-
-section#toolbar > div#toolbox svg { width: 1rem; height: 1rem; }
-section#toolbar > div#toolbox div.delbtn {
-    cursor: pointer;
-    width: 1em;
-    height: 1em;
-    background-color: #faa;
+    scrollbar-width: none; }
+    section#toolbar > div#toolbox > div {
+      margin-top: 1rem; }
+      section#toolbar > div#toolbox > div:first-child {
+        margin-top: 0; }
+      section#toolbar > div#toolbox > div.disabled {
+        filter: opacity(0.3); }
+        section#toolbar > div#toolbox > div.disabled > div.tbname:hover {
+          background-color: #ddd; }
+        section#toolbar > div#toolbox > div.disabled > div.tbtools > div:hover {
+          background-color: transparent; }
+      section#toolbar > div#toolbox > div > div.tbname {
+        font-size: 9pt;
+        text-align: center;
+        color: #555;
+        background-color: #ddd;
+        cursor: pointer; }
+        section#toolbar > div#toolbox > div > div.tbname:hover {
+          background-color: #ccc; }
+      section#toolbar > div#toolbox > div > div.tbtools {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        grid-column-gap: 0.5rem;
+        font-size: 11pt; }
+        section#toolbar > div#toolbox > div > div.tbtools > div {
+          display: grid;
+          grid-column: 1 / 4;
+          grid-template-columns: subgrid;
+          cursor: pointer;
+          margin: 0 2px; }
+          section#toolbar > div#toolbox > div > div.tbtools > div:hover {
+            background-color: #eee; }
+          section#toolbar > div#toolbox > div > div.tbtools > div.activerow {
+            background-color: #dfd; }
+          section#toolbar > div#toolbox > div > div.tbtools > div span.pic {
+            font-size: 8pt;
+            margin: 1px 0;
+            vertical-align: middle;
+            display: flex;
+            align-items: center;
+            justify-content: center; }
+            section#toolbar > div#toolbox > div > div.tbtools > div span.pic.key {
+              background-color: #e8e8e8;
+              border: 1px solid #bbb;
+              border-radius: 3px;
+              padding: 0 3px;
+              box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2), 0 2px 0 0 rgba(255, 255, 255, 0.7) inset; }
+            section#toolbar > div#toolbox > div > div.tbtools > div span.pic.mouse {
+              background: url(data:image/svg+xml;charset=utf-8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIHdpZHRoPSI2MG1tIiBoZWlnaHQ9IjYwbW0iIHZlcnNpb249IjEuMSIgdmlld0JveD0iMCAwIDYwIDYwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxnIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzRhNGE0YSIgc3Ryb2tlLXdpZHRoPSIyLjE2NSI+PHJlY3QgeD0iMTIuODUyIiB5PSIzLjMwNTQiIHdpZHRoPSIzNC4yOTYiIGhlaWdodD0iNTMuMzg5IiByeD0iMTIuNTAxIiByeT0iOS41MDA1Ii8+PHBhdGggZD0ibTEyLjgwOCAyNS40NjloMzQuMzg1Ii8+PHBhdGggZD0ibTMwIDkuMTUzMXYtNS43NTkzIi8+PHBhdGggZD0ibTMwIDI1LjE5OHYtNS43MTUxIi8+PHJlY3QgeD0iMjcuMTM2IiB5PSI5LjA3MjYiIHdpZHRoPSI1LjcyNzEiIGhlaWdodD0iMTAuNjAzIiByeD0iMi4xNTQiIHJ5PSIzLjY0MTYiLz48L2c+PC9zdmc+) center/contain; }
+    section#toolbar > div#toolbox svg {
+      width: 1rem;
+      height: 1rem; }
+  section#toolbar div#filecont {
+    margin-top: 0.5rem;
+    display: flex; }
+    section#toolbar div#filecont > div {
+      background-color: #eee;
+      padding: 0.5rem;
+      cursor: pointer; }
+      section#toolbar div#filecont > div:hover {
+        background-color: #ddd; }
+    section#toolbar div#filecont > div#file {
+      flex: 1;
+      text-wrap: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      font-family: monospace; }
+    section#toolbar div#filecont > div#filesetting {
+      display: none;
+      border-left: 1px dashed #888; }
+    section#toolbar div#filecont.setting > div#filesetting {
+      display: block; }
+  section#toolbar div#server {
     display: flex;
     align-items: center;
-    justify-content: center;
-    padding: 1px;
-    margin: 1px;
-}
+    justify-content: space-between;
+    font-size: 10pt;
+    cursor: pointer;
+    padding: 0 0.5rem 0.1rem; }
+    section#toolbar div#server:hover {
+      background-color: #ddd; }
+    section#toolbar div#server > span > span {
+      display: none; }
+    section#toolbar div#server > div {
+      width: 0.5rem;
+      height: 0.5rem;
+      border-radius: 0.5rem; }
+    section#toolbar div#server.nc > span > span.nc {
+      display: inline; }
+    section#toolbar div#server.nc > div {
+      background-color: #888; }
+    section#toolbar div#server.c > span > span.c {
+      display: inline; }
+    section#toolbar div#server.c > div {
+      background-color: #8f8; }
+    section#toolbar div#server.dc > span > span.dc {
+      display: inline; }
+    section#toolbar div#server.dc > div {
+      background-color: #f00; }
+
+div.contextmenu {
+  position: absolute;
+  background-color: #eef;
+  border: 1px solid #dde;
+  border-radius: 10px;
+  padding: 10px;
+  z-index: 99; }
+  div.contextmenu > div.menulbl {
+    font-size: 10pt;
+    color: #999;
+    text-align: center; }
+  div.contextmenu > div.menubtn {
+    cursor: pointer;
+    padding: 2px 3px; }
+    div.contextmenu > div.menubtn:hover {
+      background-color: #dde; }
+  div.contextmenu > div.spacer {
+    padding-top: 11px; }
 
 svg#grid {
-    flex: 1;
-}
+  flex: 1; }
 
 div#menupopups > div {
-    display: none;
-    position: fixed;
-    width: 80vw;
-    height: 80vh;
-    left: 10vw;
-    top: 10vh;
-    background-color: #f8f8f8;
-    border-radius: 10px;
-    box-sizing: border-box;
-    padding: 15px;
-    flex-direction: column;
-}
-
-div#menupopups > div.small {
+  display: none;
+  position: fixed;
+  width: 80vw;
+  height: 80vh;
+  left: 10vw;
+  top: 10vh;
+  background-color: #f8f8f8;
+  border: 1px solid #888;
+  border-radius: 10px;
+  box-sizing: border-box;
+  padding: 15px;
+  flex-direction: column; }
+  div#menupopups > div.small {
     width: 40vw;
     height: 40vh;
     left: 30vw;
-    top: 30vh;
-}
-
-div#menupopups > div .big {
-    flex: 1;
-}
+    top: 30vh; }
+  div#menupopups > div .big {
+    flex: 1; }
+  div#menupopups > div > div.scroll {
+    overflow-y: auto; }
+  div#menupopups > div > div.page {
+    min-height: 0;
+    display: none;
+    flex-direction: column; }
+    div#menupopups > div > div.page:first-child {
+      display: flex; }
 
 div.menuclose {
-    position: absolute;
-    right: 10px;
-    top: 10px;
-    width: 2rem;
-    height: 2rem;
-    border-radius: 2rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    background-color: #f00;
-    font-weight: bold;
-}
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background-color: #e77;
+  color: #fff;
+  font-weight: bold; }
+  div.menuclose:hover {
+    background-color: #d66; }
 
 div#alerts {
-    position: fixed;
-    right: 10px;
-    top: 10px;
-    width: 30vw;
-}
-
-div#alerts > div {
-    background-color: rgba(200,200,255,0.8);
+  position: fixed;
+  right: 10px;
+  top: 10px;
+  width: 30vw; }
+  div#alerts > div {
+    background-color: rgba(200, 200, 255, 0.8);
     border-radius: 5px;
     padding: 10px;
-    cursor: pointer;
-}
+    cursor: pointer; }
 
-.multisel button { border: 1px solid #444; border-radius: 5px; }
-.multisel button.left, .multisel button.mid { border-right: none; border-top-right-radius: 0; border-bottom-right-radius: 0; }
-.multisel button.right, .multisel button.mid { border-top-left-radius: 0; border-bottom-left-radius: 0; }
-.multisel button.active { background-color: #161; color: #eee; }
-.multisel button.active:hover { background-color: #040; }
+div.overlay {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+  z-index: 98; }
+
+.multisel button {
+  border: 1px solid #444;
+  border-right: none; }
+  .multisel button:first-child {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px; }
+  .multisel button:last-child {
+    border-right: 1px solid #444;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px; }
+  .multisel button.active {
+    background-color: #161;
+    color: #eee; }
+  .multisel button.active:hover {
+    background-color: #040; }
+
+.multisel.nobot button {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0; }
 
 .colorpicker span {
-    display: inline-block;
-    width: 1rem;
-    height: 1rem;
-    cursor: pointer;
-    vertical-align: middle;
-    margin: 0 2px;
-    border: 1px solid black;
-}
-
-.colorpicker span.active {
-    box-shadow: 0 0 2px 2px #f80;
-}
-
-.colorpicker span.transparent {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  cursor: pointer;
+  vertical-align: middle;
+  margin: 0 2px;
+  border: 1px solid black; }
+  .colorpicker span.active {
+    box-shadow: 0 0 2px 2px #f80; }
+  .colorpicker span.transparent {
     position: relative;
-    background: linear-gradient(to bottom right,
-        transparent, transparent 46%,
-        #f00 46%, #f00 54%,
-        transparent 54%, transparent
-    );
-}
-
-.colorpicker span.transparent:after {
+    background: linear-gradient(to bottom right, transparent, transparent 46%, #f00 46%, #f00 54%, transparent 54%, transparent); }
+  .colorpicker span.transparent:after {
     content: '';
     position: absolute;
     width: 100%;
     height: 100%;
-    background: linear-gradient(to bottom left,
-        transparent, transparent 46%,
-        #f00 46%, #f00 54%,
-        transparent 54%, transparent
-    );
-}
+    background: linear-gradient(to bottom left, transparent, transparent 46%, #f00 46%, #f00 54%, transparent 54%, transparent); }
 
-input.conflict { box-shadow: 0 0 5px 2px #f00; }
+.positionpicker {
+  display: inline-flex;
+  height: 50px;
+  align-items: stretch;
+  vertical-align: middle;
+  gap: 2px; }
+  .positionpicker > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: stretch; }
+  .positionpicker > div:first-child {
+    width: 50px;
+    border: 1px dotted black; }
+    .positionpicker > div:first-child > div {
+      display: flex;
+      justify-content: space-around; }
+      .positionpicker > div:first-child > div > div {
+        width: 12px;
+        height: 12px;
+        box-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        background-color: #ccc; }
+        .positionpicker > div:first-child > div > div:hover {
+          background-color: #bbb; }
+        .positionpicker > div:first-child > div > div.on {
+          background-color: #8fd37c; }
+        .positionpicker > div:first-child > div > div.on:hover {
+          background-color: #7fc36c; }
+  .positionpicker.s0 > div:first-child > div > div.ctr {
+    transform: scale(260%); }
+  .positionpicker.s1 > div:first-child > div > div.ctr {
+    transform: scale(220%); }
+  .positionpicker.s2 > div:first-child > div > div.ctr {
+    transform: scale(180%); }
+  .positionpicker.s3 > div:first-child > div > div.ctr {
+    transform: scale(140%); }
+  .positionpicker > div:nth-child(2) {
+    width: 15px; }
+    .positionpicker > div:nth-child(2) > div {
+      height: 8px;
+      cursor: pointer;
+      background-color: #8fd37c; }
+      .positionpicker > div:nth-child(2) > div:hover {
+        background-color: #7fc36c; }
+  .positionpicker.s1 > div:nth-child(2) > div.b0 {
+    background-color: #ccc; }
+    .positionpicker.s1 > div:nth-child(2) > div.b0:hover {
+      background-color: #bbb; }
+  .positionpicker.s2 > div:nth-child(2) > div.b0, .positionpicker.s2 > div:nth-child(2) > div.b1 {
+    background-color: #ccc; }
+    .positionpicker.s2 > div:nth-child(2) > div.b0:hover, .positionpicker.s2 > div:nth-child(2) > div.b1:hover {
+      background-color: #bbb; }
+  .positionpicker.s3 > div:nth-child(2) > div.b0, .positionpicker.s3 > div:nth-child(2) > div.b1, .positionpicker.s3 > div:nth-child(2) > div.b2 {
+    background-color: #ccc; }
+    .positionpicker.s3 > div:nth-child(2) > div.b0:hover, .positionpicker.s3 > div:nth-child(2) > div.b1:hover, .positionpicker.s3 > div:nth-child(2) > div.b2:hover {
+      background-color: #bbb; }
+  .positionpicker.s4 > div:nth-child(2) > div.b0, .positionpicker.s4 > div:nth-child(2) > div.b1, .positionpicker.s4 > div:nth-child(2) > div.b2, .positionpicker.s4 > div:nth-child(2) > div.b3 {
+    background-color: #ccc; }
+    .positionpicker.s4 > div:nth-child(2) > div.b0:hover, .positionpicker.s4 > div:nth-child(2) > div.b1:hover, .positionpicker.s4 > div:nth-child(2) > div.b2:hover, .positionpicker.s4 > div:nth-child(2) > div.b3:hover {
+      background-color: #bbb; }
+  .positionpicker > div:last-child {
+    font-family: monospace; }
+    .positionpicker > div:last-child > div {
+      background-color: #cce;
+      padding: 3px;
+      cursor: pointer;
+      user-select: none; }
+      .positionpicker > div:last-child > div:hover {
+        background-color: #bbd; }
+
+.transformpicker {
+  display: inline-flex;
+  vertical-align: middle; }
+  .transformpicker > svg {
+    width: 50px;
+    height: 50px; }
+    .transformpicker > svg > g {
+      fill: #8fd37c; }
+
+input.conflict {
+  box-shadow: 0 0 5px 2px #f00; }
 
 section.group {
-    position: relative;
-    border: 1px dashed #666;
-    border-radius: 10px;
-    margin-top: 30px;
-    padding: 10px 10px;
-}
-
-section.group.first { margin-top: 10px; }
-
-section.group > span:first-child {
+  position: relative;
+  border: 1px dashed #666;
+  border-radius: 10px;
+  margin-top: 30px;
+  padding: 10px 10px; }
+  section.group:first-child {
+    margin-top: 10px; }
+  section.group:last-child {
+    margin-bottom: 10px; }
+  section.group > span:first-child {
     position: absolute;
     top: -10px;
     left: 15px;
     background-color: #f8f8f8;
     font-size: 10pt;
-    color: #666;
-}
+    color: #666; }
 
-div#actions { overflow-y: scroll; }
-
-div#actions div.settool {
+div.actions {
+  overflow-y: scroll; }
+  div.actions div.settool {
     cursor: pointer;
     display: inline-flex;
     width: 10em;
@@ -169,25 +367,38 @@ div#actions div.settool {
     padding: 5px 10px;
     min-height: 30px;
     margin: 10px 5px;
-    border: 1px dotted #666;
-}
+    border: 1px dotted #666; }
+    div.actions div.settool.natwidth.addtool-active {
+      width: auto; }
+    div.actions div.settool.full.addtool-active {
+      display: flex;
+      flex-wrap: wrap;
+      width: auto; }
+    div.actions div.settool:hover {
+      background-color: #eee; }
+    div.actions div.settool.addtool-active {
+      background-color: #9f9; }
+    div.actions div.settool > label, div.actions div.settool > span {
+      background-color: #ddf;
+      padding: 5px 10px;
+      margin-left: 20px;
+      display: none; }
+      div.actions div.settool > label span.subtool, div.actions div.settool > span span.subtool {
+        margin: 0 0.5rem;
+        padding: 0.2rem;
+        background-color: #ddd;
+        box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1); }
+        div.actions div.settool > label span.subtool svg, div.actions div.settool > span span.subtool svg {
+          width: 1rem;
+          height: 1rem;
+          vertical-align: middle; }
+    div.actions div.settool.addtool-active > label, div.actions div.settool.addtool-active > span {
+      display: inline; }
 
-div#actions div.settool.full {
-    display: flex;
-    flex-wrap: wrap;
-    width: auto;
-}
-
-div#actions div.settool:hover {
-    background-color: #eee;
-}
-
-div#actions div.settool.addtool-active {
-    background-color: #9f9;
-}
-
-div#actions div.settool > label, div#actions div.settool > span {
-    background-color: #ddf;
-    padding: 5px 10px;
-    margin-left: 20px;
-}
+div.filelist > div {
+  padding: 1px 8px;
+  margin: 5px 2px;
+  background-color: #f4f4f4;
+  cursor: pointer; }
+  div.filelist > div:hover {
+    background-color: #eee; }

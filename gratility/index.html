@@ -16,14 +16,31 @@
                 <div id='toolbox'>
                 </div>
                 <div style='flex:1'></div>
-                <button class='menuaction' data-menu='addtool'>+ add tool...</button>
-                <button class='menuaction' data-menu='toolbox'>save/load toolbox</button>
-                <button class='menuaction' data-menu='stamp'>save/load stamp</button>
-                <button class='menuaction' data-menu='colors'>save/load colors</button>
-                <button class='menuaction' data-menu='dark'>toggle dark mode</button>
-                <button class='menuaction' data-menu='dlstamp'>download stamp</button>
-                <button class='menuaction' data-menu='dlsvg'>download svg</button>
-                <button class='menuaction' data-menu='server'>connect to server</button>
+                <div id='importexport'>
+                    <span class='menustate multisel' data-menu='iesel'><!--
+                        --><button data-multisel='stamp'>current stamp</button><!--
+                        --><button data-multisel='full'>full page</button><!--
+                    --></span>
+                    <br>
+                    import:
+                    <button class='menuaction' data-menu='ultxt'>text</button>
+                    <button class='menuaction' data-menu='ulstamp'>file</button>
+                    <input type='file' id='fileinput' style='display:none'>
+                    <br>
+                    export:
+                    <button class='menuaction' data-menu='dltxt'>text</button>
+                    <button class='menuaction' data-menu='dlstamp'>file</button>
+                    <button class='menuaction' data-menu='dlsvg'>.svg</button>
+                </div>
+                <div id='filecont'>
+                    <div class='menuaction' data-menu='file' id='file'>❗ not saving changes</div>
+                    <div class='menuaction' data-menu='filesetting' id='filesetting'>⚙︎</div>
+                </div>
+                <div class='menuaction nc' data-menu='server' id='server'><span>server:
+                    <span class='nc'>not connected</span>
+                    <span class='c'>connected</span>
+                    <span class='dc'>disconnected</span>
+                </span><div></div></div>
             </section>
             <svg id='grid'>
                 <!-- Filter+ from Dark Reader, https://github.com/darkreader/darkreader/blob/7f047b20909b09b8cdb3e45550d0c586abeb98a4/src/generators/utils/matrix.ts#L42 -->
@@ -36,105 +53,53 @@
         <div id='menupopups'>
 
             <div data-menu='addtool'>
-                <p><strong>binding</strong></p>
-                <div>
-                    click, type, or scroll here:
-                    <input class='menuinput' data-menu='binding' data-event='pointerdown=bindmouse;keydown=bindkey;wheel=bindwheel;paste=nop;contextmenu=nop'>
+                <div class='page'>
+                    <p><strong>binding</strong></p>
+                    <div>
+                        click, type, or scroll here:
+                        <input class='menuinput' data-menu='binding' data-event='pointerdown=bindmouse;keydown=bindkey;wheel=bindwheel;paste=nop;contextmenu=nop'>
+                    </div>
+                    <p><strong>action</strong></p>
+                    <div id='actions' class='actions menuinput big' data-menu='actions'></div>
+                    <button class='menuinput' data-menu='go' data-event='click=go'>add</button>
                 </div>
-                <p><strong>action</strong></p>
-                <div id='actions' class='menuinput big' data-menu='actions' data-events='div.settool@click=settool'>
-                    <section class='group first'>
-                        <span>drawing</span>
-                        <div class='settool full' data-tool='surface'>Surface
-                            <label>color: <span class='arg colorpicker'></span></label>
-                        </div>
-                        <div class='settool full' data-tool='line'>Line
-                            <span>type:
-                                <span class='arg menuinput multisel'><!--
-                                    --><button class='left' data-multisel='0'>path</button><!--
-                                    --><button class='right' data-multisel='1'>edge</button><!--
-                                --></span>
-                            </span>
-                            <label>color: <span class='arg colorpicker'></span></label>
-                            <span>thickness:
-                                <span class='arg menuinput multisel'><!--
-                                    --><button class='left' data-multisel='1'>thin</button><!--
-                                    --><button class='mid' data-multisel='2'>normal</button><!--
-                                    --><button class='right' data-multisel='3'>thick</button><!--
-                                --></span>
-                            </span>
-                            <span>head:
-                                <span class='arg menuinput multisel'><!--
-                                    --><button class='left' data-multisel='0'>none</button><!--
-                                    --><button class='right' data-multisel='1'>arrow</button><!--
-                                --></span>
-                            </span>
-                        </div>
-                        <div class='settool full' data-tool='shape'>Shape
-                            <span>shape:
-                                <span class='arg menuinput multisel'><!--
-                                    --><button class='left' data-multisel='0'>circle</button><!--
-                                    --><button class='mid' data-multisel='1'>square</button><!--
-                                    --><button class='mid' data-multisel='2'>flag</button><!--
-                                    --><button class='right' data-multisel='3'>star</button><!--
-                                --></span>
-                            </span>
-                            <label>size: <input class='arg' type='number' size=3 min=1 max=5></label>
-                            <span>location:
-                                <span class='arg menuinput multisel any'><!--
-                                    --><button class='left' data-multisel='4'>center</button><!--
-                                    --><button class='mid' data-multisel='2'>edge</button><!--
-                                    --><button class='right' data-multisel='1'>corner</button><!--
-                                --></span>
-                            </span>
-                            <label>fill: <span class='arg colorpicker optional'></span></label>
-                            <label>outline: <span class='arg colorpicker optional'></span></label>
-                        </div>
-                        <div class='settool full' data-tool='text'>Text
-                            <label>preset: <input class='arg'></label>
-                        </div>
-                    </section>
-
-                    <section class='group'>
-                        <span>movement</span>
-                        <div class='settool' data-tool='pan'>Pan</div>
-                        <div class='settool' data-tool='zoomin'>Zoom in</div>
-                        <div class='settool' data-tool='zoomout'>Zoom out</div>
-                    </section>
-
-                    <section class='group'>
-                        <span>stamps</span>
-                        <div class='settool' data-tool='copy'>Copy</div>
-                        <div class='settool' data-tool='paste'>Paste</div>
-                    </section>
-
-                    <section class='group'>
-                        <span>misc</span>
-                        <div class='settool' data-tool='undo'>Undo</div>
-                        <div class='settool' data-tool='redo'>Redo</div>
-                    </section>
-                </div>
-                <button class='menuinput' data-menu='go' data-event='click=go'>add</button>
             </div>
 
-            <div data-menu='toolbox'>
-                <textarea class='menuinput big' data-menu='value' data-event='keypress=key'></textarea>
-                <button class='menuinput' data-menu='go' data-event='click=go'>load</button>
-            </div>
-
-            <div data-menu='stamp'>
-                <textarea class='menuinput big' data-menu='value' data-event='keypress=key'></textarea>
-                <button class='menuinput' data-menu='go' data-event='click=go'>load</button>
+            <div data-menu='ietool'>
+                <textarea class='menuinput big' data-menu='value'></textarea>
+                <button class='menuinput' data-menu='go' data-event='click=go'>import</button>
             </div>
 
             <div data-menu='server' class='small'>
-                <button class='menuinput' data-menu='go' data-event='click=go'>connect</button>
+                <label>username: <input class='menuinput' data-menu='username'></label>
+                <label>password: <input class='menuinput' data-menu='password' type='password'></label>
+                <div>
+                    <button class='menuinput' data-menu='login' data-event='click=login'>login</button>
+                    <button class='menuinput' data-menu='register' data-event='click=register'>register</button>
+                </div>
+            </div>
+
+            <div data-menu='file' class='small'><div class='scroll'>
+                <p>local files:</p>
+                <label><input class='menuinput' data-menu='newlocaltitle' placeholder='enter title...'> <button class='menuinput' data-menu='newlocal' data-event='click=newlocal'>new local file</button></label>
+                <div id='localfilelist' class='filelist'></div>
+                <p>your server files:</p>
+                <label><input class='menuinput' data-menu='newservertitle' placeholder='enter title...'> <button class='menuinput' data-menu='newserver' data-event='click=newserver'>new server file</button></label>
+                <div id='serverfilelist' class='filelist'></div>
+            </div></div>
+
+            <div data-menu='filesetting' class='small'>
+                <div></div>
+            </div>
+
+            <div data-menu='confirm' class='small'>
+                <div id='confmsg'></div>
+                <div id='confbtn'></div>
             </div>
 
         </div>
 
-        <div id='alerts'>
-        </div>
+        <div id='alerts'></div>
 
     </body>
 </html>
