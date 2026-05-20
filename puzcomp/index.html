@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <meta charset='utf-8'>
+        <meta name='viewport' content='width=device-width'>
+        <title>Logic Puzzle Hardness</title>
+        <script type='text/javascript' src='lib/require.js'></script>
+        <script type='text/javascript' src='lib/gratility.js'></script>
+        <script type='text/javascript'>requirejs(['lib'], g => (window.Gratility = g))</script>
+        <script type='text/javascript' src='data.js'></script>
+        <script type='text/javascript' src='puzcomp.js'></script>
+        <link rel='stylesheet' type='text/css' href='puzcomp.css'></link>
+        <base target='_blank'>
+    </head>
+    <body>
+        <div id='page'>
+            <header>
+                <div id='help'>
+                    <svg viewBox="0 0 8.220687 8.220687"><path d="M 4.110343,0 A 4.1102681,4.1102681 0 0 0 0,4.110343 4.1102681,4.1102681 0 0 0 4.110343,8.220687 4.1102681,4.1102681 0 0 0 8.220686,4.110343 4.1102681,4.1102681 0 0 0 4.110343,0 Z M 3.943945,1.164787 C 4.574397,1.164787 5.054988,1.293978 5.385717,1.55236 5.716446,1.808158 5.881811,2.182812 5.881811,2.676322 5.881811,2.929537 5.831168,3.156913 5.730399,3.358451 5.62963,3.557406 5.458064,3.771863 5.215185,4.001823 L 4.967138,4.222481 C 4.791438,4.382678 4.6762,4.511869 4.62194,4.610055 4.56768,4.705656 4.540808,4.811593 4.540808,4.927865 V 5.102531 H 3.14141 V 4.912362 C 3.14141,4.700488 3.184301,4.51342 3.269567,4.350639 3.354833,4.185274 3.53415,3.975985 3.808036,3.72277 L 4.056083,3.497978 C 4.20336,3.363619 4.310848,3.237012 4.378027,3.118156 4.44779,2.9993 4.482413,2.880445 4.482413,2.761589 4.482413,2.580721 4.420401,2.439644 4.296378,2.338875 4.172355,2.235522 3.999239,2.183846 3.77703,2.183846 3.56774,2.183846 3.341914,2.227771 3.099035,2.315621 2.856156,2.400887 2.602942,2.529044 2.339392,2.699577 V 1.482597 C 2.652034,1.374076 2.937288,1.293978 3.19567,1.242301 3.454052,1.190625 3.703649,1.164787 3.943945,1.164787 Z M 3.14141,5.676139 H 4.540808 V 7.0559 H 3.14141 Z" /></svg>
+                </div>
+                <div>
+                    <a id='genre' class='novisit' href='#'>filter puzzles...</a>
+                    <div id='genresub' class='hide'>
+                        <label><input type='checkbox' data-filt='pzv' checked> pzv</label>
+                        <label><input type='checkbox' data-filt='tatham' checked> tatham</label>
+                        <label><input type='checkbox' data-filt='crossa' checked> cross+a</label>
+                        <label><input type='checkbox' data-filt='janko' checked> janko</label>
+                        <label><input type='checkbox' data-filt='other' checked> other</label>
+                    </div>
+                </div>
+                <div>
+                    <label><input type='checkbox' data-filt='asp' checked> ASP</label>
+                    <label><input type='checkbox' data-filt='np' checked> NP</label>
+                    <label><input type='checkbox' data-filt='poly' checked> poly</label>
+                    <label><input type='checkbox' data-filt='open' checked> open</label>
+                </div>
+                <div>
+                    results:
+                    <label><input type='radio' data-filt='best' name='results'> best</label>
+                    <label><input type='radio' data-filt='all' name='results' checked> all</label>
+                    <label><input type='radio' data-filt='interactive' name='results'> interactive</label>
+                </div>
+                <div id='counts'>
+                    <div>showing <span id='countp'>0</span> puzzles</div>
+                    <div>(<span id='countr'>0</span> results, <span id='counto'>0</span> open)</div>
+                </div>
+            </header>
+            <main id='cont'></main>
+        </div>
+        <div id='helppopup' class='hide'>
+            <p>
+                This is a database of all currently known published results
+                (to my knowledge)
+                about the computational complexity
+                of grid-based pencil-and-paper <a href='https://www.nikoli.co.jp/en/'>Nikoli</a>-style logic puzzles.
+            </p>
+            <p>
+                If you know of any papers missing from this collection,
+                <a href='/contact'>please let me know</a>!
+            </p>
+            <p>
+                Here is a brief explanation of this website's iconography.
+            </p>
+            <ul>
+                <li>
+                    The <img src='img/interactive.svg' class='interactive' alt='interactive' title='interactive'> icon
+                    marks reductions for which I have embedded interactive copies
+                    of the gadgets used in the reduction!
+                    Click on the row to see them.
+                    You can draw on the gadgets with your mouse to see how they work,
+                    or click on the states in the parentheses above them
+                    to view the partially- or fully-solved states.
+                </li>
+                <li>
+                    Many logic puzzle genres have been invented,
+                    and there are many online sources that catalog them.
+                    Hovering over a puzzle name will also show the set of sources that use that name,
+                    and clicking the icons to the right of a puzzle name
+                    will take you to that puzzle in the corresponding source.
+                    <ul>
+                        <li><img src='img/puzzlink.png' class='icon' alt='pzv' title='pzv'> pzv: <a href='https://pzprxs.vercel.app/'>pzprxs</a>, a fork of <a href='https://puzz.link/'>puzz.link</a>, itself a fork of <a href='http://pzv.jp/'>PUZ-PRE</a>; together the primary online interfaces used to solve Nikoli-style puzzles</li>
+                        <li><img src='img/tatham.png' class='icon' alt='tatham' title='tatham'> tatham: <a href='https://www.chiark.greenend.org.uk/~sgtatham/puzzles/'>Simon Tatham's Portable Puzzle Collection</a></li>
+                        <li><img src='img/crossa.png' class='icon' alt='crossa' title='crossa'> cross+a: <a href='https://www.cross-plus-a.com/puzzles.htm'>Cross+A</a>, a proprietary desktop application</li>
+                        <li><img src='img/janko.png' class='icon' alt='janko' title='janko'> janko: <a href='https://www.janko.at/Raetsel/Uebersicht.htm'>the Rätselübersicht</a>, a collection by German puzzlers Angela and Otto Janko</li>
+                        <li>other: any puzzle type not catalogued in the above</li>
+                    </ul>
+                </li>
+                <li>
+                    Click on the <svg class='cite' viewBox='-0.5 0 16 16'><path d='M6.5 3.5H1.5V8.5H3.75L1.75 12.5H4.75L6.5 9V3.5zM13.5 3.5H8.5V8.5H10.75L8.75 12.5H11.75L13.5 9V3.5z'></svg> icon
+                    to copy a BibTeX citation for the paper
+                    to your clipboard.
+                </li>
+            </ul>
+            <p>
+                To filter the table,
+                you can click on the controls at the top of the screen.
+                Here is a brief explanation of each control:
+            </p>
+            <ul>
+                <li>
+                    The "filter puzzles" dropdown allows you to select
+                    which sources of puzzle genres to draw from
+                    (among those mentioned above).
+                </li>
+                <li>
+                    The following set of four checkboxes
+                    filters puzzles and results by whether they show ASP-completeness,
+                    NP-completeness,
+                    polynomial time solvability,
+                    or if the puzzle's complexity is open.
+                </li>
+                <li>
+                    The "results" filter
+                    has three options.
+                    With the "best" setting,
+                    at most one result is shown,
+                    with ASP-completeness results prioritized over NP-completeness results
+                    (and otherwise tiebreaking by earliest year).
+                    With the "all" setting,
+                    all results are shown.
+                    With the "interactive" setting,
+                    only results for which I have embedded interactive versions of the gadgets
+                    are included.
+                </li>
+                <li>
+                    In the top right,
+                    you will see some basic summary statistics
+                    about how many entries there are in the database
+                    matching the filters you have selected.
+                </li>
+            </ul>
+        </div>
+        <div id='tooltip'></div>
+        <div id='shade'></div>
+        <div id='alerts'></div>
+    </body>
+</html>
