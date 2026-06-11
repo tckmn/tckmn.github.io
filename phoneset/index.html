@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <meta charset='utf-8'>
+        <meta name='viewport' content='width=device-width'>
+        <title>phoneset</title>
+        <script type='text/javascript' src='phoneset.js'></script>
+<style>
+main { display: grid; grid-template-columns: repeat(4, 80px); gap: 50px; }
+div.card { width: 80px; height: 80px; background-color: gray; }
+div.card:hover { background-color: lightgrey; }
+div.card.active { background-color: green; }
+div.card.active:hover { background-color: lightgreen; }
+</style>
+    </head>
+    <body>
+        <main id='main'></main>
+        <p>
+            <button id='exhibit'>exhibit set</button>
+            <button id='count'>count sets</button>
+        </p>
+    </body>
+</html>
