@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang='en' prefix='og: http://ogp.me/ns#'>
+    <head>
+        <meta charset='utf-8'>
+        <meta name='viewport' content='width=device-width, initial-scale=1'>
+        <title>Correlated randomness in Slay the Spire 2 - Andy Tockman</title>
+        <script src='/js/blog_correlated-randomness-sts2-eb2fd133.js'></script><script src='/js/charts-4d9b8dce.js'></script><script src='/js/comments-db3d7755.js'></script><script src='/js/footnotes-370279b7.js'></script><link rel='stylesheet' href='/css/global-5ee50410.css'><link rel='stylesheet' href='/css/charts-f3d7a806.css'>
+        <link rel='apple-touch-icon' sizes='180x180' href='/apple-touch-icon.png'>
+        <link rel='icon' type='image/png' sizes='32x32' href='/favicon-32x32.png'>
+        <link rel='icon' type='image/png' sizes='16x16' href='/favicon-16x16.png'>
+        <link rel='manifest' href='/site.webmanifest'>
+        <link rel='mask-icon' href='/safari-pinned-tab.svg' color='#5bbad5'>
+        <meta name='msapplication-TileColor' content='#da532c'>
+        <meta name='theme-color' content='#ffffff'>
+        <meta name='description' content='Here are three true statements about the game of Slay the Spire 2 (in single player):   If you pick Neow&#39;s Bones in the Underdocks, the random curse is ~54% likely to be Debt.*   It is impossible to receive Rebound from the Trash Heap event.   Your first fight is 76% likely to drop a potion in Underdocks, and 4% likely to drop a potion in Overgrowth.**'>
+        <meta property='og:title' content='Correlated randomness in Slay the Spire 2' />
+        <meta property='og:type' content='website' />
+        <meta property='og:url' content='https://tck.mn/blog/correlated-randomness-sts2' />
+        <meta property='og:image' content='https://tck.mn/img/dp.png' />
+        <meta property='og:description' content='Here are three true statements about the game of Slay the Spire 2 (in single player):   If you pick Neow&#39;s Bones in the Underdocks, the random curse is ~54% likely to be Debt.*   It is impossible to receive Rebound from the Trash Heap event.   Your first fight is 76% likely to drop a potion in Underdocks, and 4% likely to drop a potion in Overgrowth.**' />
+        <meta property='og:site_name' content='Andy Tockman' />
+    </head>
+    <body>
+
+        <header>
+            <div><a href='/'>home</a></div><!--
+            --><div><a href='/about'>about</a></div><!--
+            --><div><a href='/'><img src='/img/dp.png' alt='logo' width=48 height=48></a></div><!--
+            --><div><a href='/blog' class='active '>blog</a></div><!--
+            --><div><a href='/contact'>contact</a></div>
+        </header>
+
+        <div id='subheader'>
+            <span>
+                <a href='/portfolio' class='secicon'>
+<svg viewBox='-1 -1 2 2'><path class='secfill' d='m -0.17029317,0.7133394 v 0.1807002 h -0.14191098 q -0.23557252,0 -0.31598867,-0.070009 -0.0794702,-0.070009 -0.0794702,-0.2790918 V 0.3415326 q 0,-0.1428573 -0.051088,-0.1967834 -0.0501419,-0.054872 -0.18259222,-0.054872 h -0.0586566 v -0.1807004 h 0.0586566 q 0.13245033,0 0.18259222,-0.053926 0.051088,-0.053926 0.051088,-0.1977294 v -0.203406 q 0,-0.2090822 0.0794702,-0.2781456 0.0804162,-0.070009 0.31598867,-0.070009 h 0.14191098 v 0.179754 h -0.11636702 q -0.0983917,0 -0.13150418,0.039735 -0.0331127,0.039735 -0.0331127,0.1750236 v 0.1977294 q 0,0.1561021 -0.0463575,0.2194891 -0.0463577,0.063387 -0.165563,0.081362 0.11920529,0.019868 0.165563,0.084201 0.0463575,0.064333 0.0463575,0.219489 v 0.1939452 q 0,0.1362347 0.0331127,0.1759698 0.0331125,0.040681 0.13150418,0.040681 z' /><path class='secfill' d='m 0.17029347,0.7133394 h 0.114475 q 0.098392,0 0.1324503,-0.040681 0.034059,-0.040681 0.034059,-0.1759698 V 0.3027434 q 0,-0.155156 0.046357,-0.219489 0.0463578,-0.064333 0.164617,-0.084201 -0.1192053,-0.017976 -0.1655628,-0.081362 -0.0454116,-0.063387 -0.0454116,-0.2194891 v -0.1977294 q 0,-0.1333964 -0.034059,-0.1740775 -0.033113,-0.040681 -0.1324503,-0.040681 h -0.114475 v -0.179754 h 0.141911 q 0.2346264,0 0.3131504,0.070009 0.07947,0.069063 0.07947,0.2781456 v 0.203406 q 0,0.1428571 0.051088,0.1977294 0.052034,0.053926 0.1854304,0.053926 h 0.058657 v 0.1807002 h -0.058657 q -0.1333965,0 -0.1854304,0.054872 -0.051088,0.054872 -0.051088,0.1967834 v 0.2034058 q 0,0.2090823 -0.07947,0.2790918 -0.078524,0.070009 -0.3131504,0.070009 h -0.141911 z' />
+</svg>
+                    portfolio
+                </a>
+            </span><!--
+            --><span>
+                <a href='/music' class='secicon'>
+<svg viewBox='-1 -1 2 2'><g transform='translate(0.0844448 0)'><path class='secfill' d='m 0.03158503,-0.980217 v 0.4945598 h -0.0316518 V -0.980217 Z m 0,0 c 0,0.3897131 0.40949543,0.6646883 0.40949543,1.0544014 0,0.1404549 -0.0296736,0.2789316 -0.0811078,0.4094954 -0.009891,0.015826 -0.0257171,0.023739 -0.0395648,0.023739 -0.0257171,0 -0.0514342,-0.021761 -0.0454995,-0.053412 0.0514342,-0.1206726 0.083086,-0.2492581 0.083086,-0.3798218 0,-0.2037586 -0.18595445,-0.4114737 -0.3264094,-0.5598416 z' /><rect class='secfill' rx='0.02' ry='0.02' height='1.6389214' width='0.064292759' y='-1' x='-0.032707691' /><path class='secfill' d='m -0.18216374,0.4619192 c 0.1088031,0 0.21364981,0.055391 0.21364981,0.1760632 0,0.140455 -0.10880311,0.2393669 -0.20178041,0.2947576 C -0.23953274,0.974283 -0.31866224,1 -0.39976994,1 c -0.1088031,0 -0.2136498,-0.055391 -0.2136498,-0.1760633 0,-0.1404549 0.1088031,-0.2393668 0.2017803,-0.2947575 0.069238,-0.041543 0.1483679,-0.06726 0.2294757,-0.06726 z' /></g>
+</svg>
+                    music
+                </a>
+            </span><!--
+            --><span>
+                <a href='/conlang' class='secicon'>
+<svg viewBox='-1 -1 2 2'><path class='secfill' d='m -0.19972877,-0.25197233 c -0.00634,8.9377e-4 -0.0022,2.8711e-4 -5.323e-4,4.993e-5 -0.00335,0.001313 -0.0067,0.002694 -0.010012,0.004135 -0.00649,0.002975 -0.012767,0.00638 -0.018826,0.0101507 -0.00809,0.005161 -0.015234,0.011586 -0.022292,0.0180369 -0.011071,0.0101427 -0.020669,0.0216936 -0.029984,0.0334244 -0.012603,0.0159982 -0.023776,0.0330312 -0.034478,0.0503361 -0.012392,0.0201455 -0.023129,0.0412214 -0.033347,0.062531 -0.011099,0.0233783 -0.020774,0.0473859 -0.029989,0.0715565 -0.00919,0.0240703 -0.017138,0.0485792 -0.024634,0.073221 -0.00722,0.023065 -0.012524,0.046626 -0.016803,0.070391 -0.0043,0.023942 -0.00593,0.048204 -0.00663,0.07248 -7.203e-4,0.02679 0.00117,0.05352 0.00407,0.080131 0.0031,0.028019 0.00906,0.055568 0.016092,0.082827 0.00698,0.026958 0.016953,0.05294 0.028283,0.07833 0.010975,0.02447 0.025081,0.047266 0.040174,0.069362 0.015686,0.022643 0.03354,0.043626 0.052065,0.063966 0.018813,0.020423 0.039178,0.039308 0.060024,0.057619 0.021261,0.018569 0.043803,0.035571 0.066595,0.052195 0.022642,0.016522 0.046241,0.031649 0.070118,0.046306 0.022597,0.013884 0.045898,0.026547 0.069575,0.038478 0.02162,0.011034 0.044171,0.019953 0.067212,0.027502 0.022864,0.00733 0.04649,0.011556 0.070254,0.014584 0.025076,0.00307 0.050339,0.00309 0.075536,0.0021 0.025918,-0.00106 0.051532,-0.00504 0.076888,-0.01031 0.02654,-0.00581 0.052399,-0.014205 0.077946,-0.023359 0.024553,-0.00883 0.048236,-0.019772 0.07135,-0.031823 0.021024,-0.010997 0.040662,-0.024299 0.05958,-0.038555 0.018173,-0.013675 0.034296,-0.029673 0.049425,-0.046582 0.016184,-0.018461 0.029838,-0.038878 0.042679,-0.059742 0.013613,-0.022063 0.024457,-0.045572 0.033924,-0.069654 0.00983,-0.025467 0.016126,-0.052024 0.021304,-0.078761 0.00534,-0.028744 0.00749,-0.057911 0.00875,-0.087076 0.00125,-0.032344 -3.997e-4,-0.064676 -0.00312,-0.096897 -0.00274,-0.03194 -0.0088,-0.063404 -0.016162,-0.094557 -0.007,-0.029067 -0.016539,-0.057391 -0.027294,-0.085255 -0.00994,-0.02544 -0.021993,-0.049952 -0.035071,-0.073904 -0.011783,-0.021638 -0.02573,-0.0419381 -0.040567,-0.061567 -0.013803,-0.0182034 -0.029538,-0.0347561 -0.045888,-0.0506599 -0.016437,-0.0157368 -0.034147,-0.0300343 -0.052264,-0.0437704 -0.018558,-0.0138963 -0.038037,-0.0264884 -0.05767,-0.0387952 -0.019093,-0.0120122 -0.038856,-0.0228802 -0.058863,-0.0332768 -0.019125,-0.009894 -0.038699,-0.018867 -0.058431,-0.0274689 -0.018282,-0.007914 -0.036822,-0.015217 -0.055561,-0.0219737 -0.016976,-0.005942 -0.03422,-0.0110767 -0.051527,-0.0159585 -0.014369,-0.004179 -0.029052,-0.007017 -0.043805,-0.009411 -0.014938,-0.002302 -0.029985,-0.003771 -0.045026,-0.005206 -0.014707,-0.001333 -0.029431,-0.002467 -0.0441600017,-0.003531 -0.0122529983,-9.0126e-4 -0.0245129983,-0.00168 -0.0367889983,-0.002179 -0.010345,-3.8198e-4 -0.020695,-5.3177e-4 -0.031046,-3.8947e-4 -0.00836,1.2483e-4 -0.016703,5.6672e-4 -0.025011,0.001473 -0.00742,8.6631e-4 -0.014755,0.002362 -0.022026,0.004074 -0.00936,0.002292 -0.018611,0.005022 -0.02787,0.007694 -0.00981,0.002836 -0.019622,0.00566 -0.029432,0.008495 -0.00443,0.001311 -0.00886,0.002591 -0.013234,0.004084 -0.1152399,0.0383118 -0.1694232,-0.12465934 -0.0541853,-0.16297273 v 0 c 0.00654,-0.002152 0.013108,-0.004205 0.019727,-0.006101 0.00984,-0.002844 0.019679,-0.005675 0.029516,-0.008519 0.012252,-0.003535 0.024501,-0.007106 0.036914,-0.0100384 0.014161,-0.003226 0.028431,-0.006023 0.042889,-0.007545 0.01348,-0.001361 0.027,-0.002234 0.040553,-0.002374 0.01343,-1.498e-4 0.02686,-1.75e-6 0.040282,5.2178e-4 0.014051,5.8669e-4 0.028088,0.001438 0.042113,0.002482 0.016041,0.001163 0.032078,0.002399 0.048095,0.003861 0.018872,0.001805 0.037744,0.00372 0.056475,0.006691 0.021126,0.00349 0.04214,0.007671 0.062729,0.0136222 0.02125,0.006016 0.04242,0.012353 0.063243,0.0197285 0.022193,0.008051 0.044184,0.0166555 0.065838,0.0260705 0.02331,0.0101862 0.046431,0.020814 0.06902,0.0325284 0.02408,0.0125507 0.047866,0.0256708 0.070855,0.0401454 0.023973,0.015057 0.04772,0.0305166 0.070342,0.0475631 0.023707,0.0180698 0.046867,0.0368899 0.06832,0.0576248 0.02251,0.0220596 0.044126,0.0450538 0.063118,0.0702645 0.019806,0.0264203 0.038451,0.0537144 0.054208,0.0827818 0.016578,0.0305935 0.031925,0.0618604 0.044503,0.0943393 0.013466,0.035179 0.02545,0.070922 0.034176,0.1076046 0.0092,0.039399 0.01673,0.079194 0.020115,0.1195657 0.00325,0.039498 0.00518,0.079128 0.00354,0.1187652 -0.00172,0.037692 -0.0047,0.075374 -0.011786,0.112492 -0.00734,0.037074 -0.01638,0.07385 -0.030222,0.109107 -0.013356,0.03339 -0.028501,0.066043 -0.047507,0.096651 -0.018375,0.029564 -0.038015,0.058403 -0.061232,0.084437 -0.022707,0.025003 -0.046826,0.048711 -0.073953,0.068962 -0.026536,0.019786 -0.054038,0.038285 -0.083468,0.053551 -0.030064,0.015527 -0.060807,0.029734 -0.092707,0.041119 -0.033154,0.011786 -0.066726,0.022518 -0.1011844,0.029849 -0.034644,0.00702 -0.069628,0.012355 -0.1050092,0.013687 -0.034763,0.00123 -0.069609,9.8112e-4 -0.1041752,-0.00344 -0.034521,-0.0046 -0.068823,-0.010979 -0.1019902,-0.021851 -0.031013,-0.01036 -0.061465,-0.022309 -0.090608,-0.037224 -0.027912,-0.014123 -0.055413,-0.02905 -0.082063,-0.045453 -0.027745,-0.017064 -0.055153,-0.034695 -0.081467,-0.053918 -0.026987,-0.019717 -0.053636,-0.039936 -0.078789,-0.061978 -0.025619,-0.02258 -0.050626,-0.045886 -0.073708,-0.07109 -0.023877,-0.026352 -0.046841,-0.05357 -0.066991,-0.082924 -0.020761,-0.030688 -0.040076,-0.062383 -0.055139,-0.09632 -0.01504,-0.03415 -0.028359,-0.069053 -0.037623,-0.105263 -0.00898,-0.035262 -0.016572,-0.070894 -0.020482,-0.107119 -0.00365,-0.034462 -0.006,-0.069076 -0.00497,-0.1037563 0.00107,-0.032805 0.00343,-0.065584 0.00933,-0.097923 0.00555,-0.030263 0.012301,-0.060294 0.021482,-0.089688 0.00867,-0.0284176 0.017865,-0.0566783 0.028479,-0.084438 0.010942,-0.0286163 0.022449,-0.0570301 0.035643,-0.0846956 0.01292,-0.0268245 0.026535,-0.0533322 0.042203,-0.0786775 0.014329,-0.0230357 0.029318,-0.045684 0.046204,-0.0669496 0.015128,-0.0188742 0.030907,-0.0372726 0.048879,-0.0535349 0.015202,-0.0137016 0.030927,-0.0268979 0.048464,-0.0375607 0.012928,-0.007771 0.026154,-0.0150517 0.040001,-0.0210747 0.010341,-0.004433 0.020792,-0.008668 0.03162,-0.0117803 0.0066,-0.00179 0.016792,-0.004191 0.021753,-0.004574 0.1201324,-0.0177737 0.1452683,0.15211912 0.025136,0.16989285 z' /><path class='secfill' d='m -0.61882497,-0.46597257 c 1.623e-4,2.896e-4 6.823e-4,0.001133 4.843e-4,8.688e-4 -0.00392,-0.005261 -0.00708,-0.0113134 -0.010502,-0.0168954 -0.00702,-0.0118394 -0.014622,-0.0233096 -0.022635,-0.0344984 -0.00932,-0.0128822 -0.019696,-0.0249371 -0.030186,-0.0368666 -0.010581,-0.0119612 -0.021715,-0.0234142 -0.032845,-0.0348616 -0.01006,-0.010321 -0.020184,-0.0205791 -0.030329,-0.0308157 -0.00819,-0.008268 -0.016417,-0.0165072 -0.024716,-0.0246707 -0.00695,-0.006791 -0.013874,-0.0136112 -0.020829,-0.0203989 -0.00464,-0.004395 -0.00906,-0.009048 -0.013951,-0.0131713 0.003,0.003021 0.00713,0.004892 0.010955,0.006738 -0.1127064,-0.0452201 -0.0487556,-0.20461165 0.0639513,-0.15939154 v 0 c 0.013699,0.005983 0.026775,0.0131097 0.037951,0.0231982 0.00722,0.006354 0.014209,0.0129614 0.021052,0.0197228 0.00712,0.006952 0.014214,0.0139343 0.021331,0.0208909 0.00881,0.008669 0.017542,0.0174085 0.026238,0.0261874 0.010535,0.0106298 0.021047,0.0212819 0.031492,0.0320001 0.013148,0.0135271 0.026268,0.0270929 0.038746,0.0412478 0.014304,0.016305 0.02835,0.0328662 0.040994,0.0505113 0.010277,0.014467 0.020154,0.0292075 0.029228,0.0444652 0.00429,0.007011 0.00873,0.013931 0.012946,0.0209913 0.059926,0.10562452 -0.089449,0.19037335 -0.1493756,0.0847483 z' /><path class='secfill' d='m -0.03608317,-0.57182178 c -0.00603,-0.0111541 -0.010134,-0.0231558 -0.013855,-0.0352334 -0.00548,-0.0195615 -0.00872,-0.0396516 -0.012177,-0.0596427 -0.00339,-0.0198296 -0.00696,-0.0396291 -0.010494,-0.0594337 -0.00304,-0.0170028 -0.00606,-0.0340103 -0.00899,-0.0510326 -0.00255,-0.0148969 -0.00495,-0.0298181 -0.00732,-0.0447438 -0.00206,-0.0129694 -0.0041,-0.0259435 -0.00612,-0.0389188 -0.0015,-0.009599 -0.00293,-0.019209 -0.00471,-0.0287618 -2.497e-4,-0.001391 -4.993e-4,-0.002781 -7.492e-4,-0.004172 -0.021445,-0.11953162 0.1475975,-0.14986002 0.169043,-0.0303286 v 0 c 2.048e-4,0.001146 4.102e-4,0.002292 6.157e-4,0.003436 0.00203,0.0110845 0.00378,0.0222134 0.00549,0.033352 0.002,0.0128193 0.00401,0.0256374 0.00605,0.0384507 0.00225,0.0141934 0.00454,0.0283828 0.00696,0.0425493 0.00287,0.0166742 0.00582,0.0333335 0.0088,0.0499885 0.00359,0.0201143 0.00721,0.0402233 0.010657,0.060363 0.00229,0.013246 0.00443,0.0265359 0.00747,0.0396361 3.211e-4,0.001238 8.111e-4,0.002771 0.00102,0.003966 0.05694,0.10726376 -0.094754,0.18778915 -0.1516938,0.0805254 z' /><path class='secfill' d='m 0.54965303,-0.45405452 c 0.00487,-0.009711 0.011342,-0.0184675 0.017508,-0.027369 0.010473,-0.0152709 0.020298,-0.0309723 0.030148,-0.0466484 0.013986,-0.0223279 0.027806,-0.0447595 0.041596,-0.0672093 0.011759,-0.0191728 0.023532,-0.0383366 0.035262,-0.0575269 0.00463,-0.007454 0.00886,-0.0151369 0.012492,-0.0231258 0.051848,-0.10981549 0.2071509,-0.0364909 0.1553026,0.0733246 v 0 c -0.00645,0.0134612 -0.013313,0.0267141 -0.021259,0.0393704 -0.011795,0.0192966 -0.023633,0.038567 -0.035457,0.0578459 -0.014096,0.0229488 -0.028224,0.045878 -0.042523,0.0687015 -0.011218,0.0178481 -0.022433,0.0357092 -0.034391,0.053075 -0.00165,0.002387 -0.011091,0.0167611 -0.00469,0.005604 -0.05377,0.10888777 -0.20776,0.0328462 -0.1539905,-0.0760416 z' />
+</svg>
+                    conlangs
+                </a>
+            </span><!--
+            --><span>
+                <a href='/videogame' class='secicon'>
+<svg viewBox='-1 -1 2 2'><mask id='videogame_m'><rect x='-2' y='-2' width='4' height='4' fill='white' /><circle cx='-0.1' cy='-0.55' r='0.13' fill='black' /></mask><path stroke-width='0.2' stroke-linejoin='round' mask='url(#videogame_m)' d='M -0.2713570810121777 0 L 0.6270360384124488 0.6456204818095705 A 0.9 0.9 0 1 1 0.6270360384124488 -0.6456204818095705 z' class='secfill secstroke' />
+</svg>
+                    video&nbsp;games
+                </a>
+            </span><!--
+            --><span>
+                <a href='/boardgame' class='secicon'>
+<svg viewBox='-1 -1 2 2'><g><path class='secstroke' fill='none' stroke-width='0.07' stroke-linecap='round' stroke-linejoin='round' d='m 0.10160887,-0.28088748 c 0.0109293,0.13880258 -0.0754125,0.30492851 -0.37596924,0.39782787 -0.22623728,0.10601457 -0.28962743,0.39782783 -0.40657133,0.41094303 -0.0156924,-0.022154 -0.13141155,-0.010379 0.005249,-0.17625267 -0.13495021,0.16388467 -0.31959061,0.0190874 -0.28503991,-0.12539699 0.0174869,-0.19235633 0.24044541,-0.36394692 0.25793235,-0.50712124 -0.0699477,-0.18689167 0.15738245,-0.34536705 0.15738245,-0.34536705 l 0.004372,-0.30602144 0.27979103,0.15738245 0.14863899,-0.17486939 0.11366518,0.24044541 c 0.8743466,-0.16612592 0.9257145,1.24813032 0.9639672,1.65688752 l -1.38802583,0.00219 c -0.0765055,-0.3169549 0.46121791,-0.5005678 0.41094296,-0.96397167 M -0.26124517,-0.77489352 -0.52792099,-0.634998' /><path class='secfill' d='m -0.54350868,-0.44572025 c 0.0266004,-0.0244088 0.049374,-0.0153341 0.0512182,0.0204093 0.001844,0.0357432 -0.0179195,0.0850009 -0.0444491,0.11078168 -0.0265297,0.0257808 -0.0500619,0.0185968 -0.0529245,-0.0161569 -0.002863,-0.0347536 0.0159979,-0.0842871 0.0424177,-0.11140187' /><path class='secfill' d='m -0.8232998,0.21003998 c 0.0266005,-0.0244088 0.049374,-0.0153341 0.0512182,0.0204093 0.001844,0.0357432 -0.0179195,0.0850009 -0.0444491,0.11078168 -0.0265297,0.0257808 -0.0500619,0.0185968 -0.0529245,-0.0161569 -0.002863,-0.0347536 0.0159979,-0.0842871 0.0424177,-0.11140187' /></g>
+</svg>
+                    board&nbsp;games
+                </a>
+            </span><!--
+            --><span>
+                <a href='/puzzle' class='secicon'>
+<svg viewBox='-1 -1 2 2'><path class='secstroke' fill='none' stroke-width='0.07' stroke-linejoin='round' d='m 0.96398403,0.96569854 c 0,0 -6.861e-4,-0.532007 -6.861e-4,-0.5320069 0,0 -0.00592,-0.1245042 -0.1130214,-0.1037603 -0.087018,0.016855 -0.056159,0.1365343 -0.1245123,0.1418343 -0.015774,0.00122 -0.036852,-0.00371 -0.065858,-0.017322 -0.059871,-0.049915 -0.087827,-0.1434837 -0.090897,-0.2269004 -0.00113,-0.030794 0.00155,-0.059755 0.00686,-0.085066 1.361e-4,-0.00112 3.694e-4,-0.00231 5.142e-4,-0.00343 0.0093,-0.071974 0.03711,-0.14498473 0.087639,-0.18711144 0.1546984,-0.0726041 0.083271,0.10376824 0.19037,0.12451224 0.078032,0.015114 0.1021368,-0.04653 0.1095914,-0.0812931 V -0.5696096 h -0.5575609 c -0.0340332,-0.006686 -0.1001097,-0.0301248 -0.0845517,-0.11044889 0.020744,-0.10709892 0.1969448,-0.0356716 0.1243407,-0.19036998 -0.0421266,-0.0505291 -0.1151376,-0.0783424 -0.1871114,-0.0876388 -0.001124,-1.4543e-4 -0.002307,-3.7813e-4 -0.00343,-5.1424e-4 -0.0253115,-0.005305 -0.0542725,-0.007994 -0.0850662,-0.00686 -0.0834167,0.003071 -0.1769851,0.0310262 -0.2269004,0.0908974 -0.0726041,0.15469825 0.1037682,0.0832711 0.1245122,0.19036998 0.0207441,0.10709876 -0.1037602,0.11302146 -0.1037602,0.11302146 l -0.53337894,0.001544 v 0.56030437 c -0.007609,0.0348613 -0.0318462,0.0958039 -0.10941987,0.0807786 -0.10709882,-0.020744 -0.0356716,-0.19711641 -0.19036998,-0.12451227 -0.050529,0.0421267 -0.0783424,0.11530917 -0.0876388,0.18728287 -1.4489e-4,0.00112 -3.7813e-4,0.00214 -5.1424e-4,0.00326 -0.005305,0.025312 -0.007994,0.054272 -0.00686,0.085066 0.003071,0.083417 0.0310261,0.1769852 0.0908974,0.2269005 0.15469836,0.072604 0.0832711,-0.1037683 0.19036998,-0.1245123 0.10709887,-0.020744 0.11302146,0.1037602 0.11302146,0.1037602 l 5.1424e-4,0.5369806 c 0,0 0.53423644,-0.00394 0.53423644,-0.00394 0,0 0.1245043,-0.00592 0.1037602,-0.1130215 -0.0207442,-0.1071046 -0.1971165,-0.035677 -0.1245124,-0.1903757 0.049915,-0.059871 0.1434837,-0.087827 0.2269004,-0.090897 0.030794,-0.00113 0.059755,0.00155 0.085066,0.00686 0.00112,1.361e-4 0.00231,3.693e-4 0.00343,5.142e-4 0.071974,0.0093 0.1449848,0.03711 0.1871114,0.087639 0.072604,0.1546984 -0.1035967,0.083271 -0.1243407,0.19037 -0.020417,0.1054086 0.098592,0.1126426 0.1023882,0.1128499 z' />
+</svg>
+                    puzzles
+                </a>
+            </span><!--
+            --><span>
+                <a href='/squares' class='secicon'>
+<svg viewBox='-1 -1 2 2'><g transform='scale(0.3)'><path fill='none' stroke-width='0.3' stroke-linejoin='round' d='M -1 -3 h 4 v 4 h -4 z' class='secstroke' /><path fill='none' stroke-width='0.3' stroke-linejoin='round' d='M -3 -1 h 4 v 4 h -4 z' class='secstroke' /></g>
+</svg>
+                    square dancing
+                </a>
+            </span><!--
+            --><span>
+                <a href='/food' class='secicon'>
+<svg viewBox='-1 -1 2 2'><g transform='translate(-1 -1)'>
+<path class='secstroke' fill='none' stroke-width='0.05' d='M 1.349685,1.9483641 C 1.5640089,1.8233862 1.7168631,1.6399442 1.7168631,1.3225107 H 0.28313688 c 0,0.3174335 0.15285411,0.5008755 0.36717807,0.6258534 z' />
+<mask id='foodmask' mask-type='luminance'>
+<rect x='-10' y='-10' width='20' height='20' fill='white' />
+<path fill='black' stroke='none' d='M 1.349685,1.9483641 C 1.5640089,1.8233862 1.7168631,1.6399442 1.7168631,1.3225107 H 0.28313688 c 0,0.3174335 0.15285411,0.5008755 0.36717807,0.6258534 z' />
+</mask>
+<g mask='url(#foodmask)'>
+<g transform='translate(0.1 0)'>
+<g transform='translate(1 1) rotate(35) translate(-1 -1)'>
+<path class='secstroke' fill='none' stroke-width='0.05' d="M 1.1208653,0.72935362 V 0.010478 c 0.039732,-0.06757484 0.072992,-0.06757484 0.1127241,0 v 0.71887562" />
+<path class='secstroke' fill='none' stroke-width='0.05' d="m 1.1517357,0.72051045 c -0.082275,0.28428055 -0.08691,0.57058665 0,0.85928105" />
+<path class='secstroke' fill='none' stroke-width='0.05' d="m 1.202719,0.72051045 c 0.082276,0.28428055 0.08691,0.57058665 0,0.85928105" />
+<path class='secstroke' fill='none' stroke-width='0.05' d="m 1.2572554,0.74084048 c 0.076662,0.0942392 0.1296441,0.32102802 0.1346462,0.41038112 0.01621,0.2895446 -0.096113,0.4374929 -0.2146744,0.4374929 -0.1185614,0 -0.23088367,-0.1479483 -0.2146744,-0.4374929 0.004999,-0.089353 0.0579836,-0.31614191 0.1346462,-0.41038112 0.024602,-0.0302434 0.051223,-0.0271119 0.080028,-0.0271119 0.028804,0 0.055425,-0.003132 0.080028,0.0271119 z" />
+</g>
+</g>
+</g>
+</g>
+</svg>
+                    food
+                </a>
+            </span>
+        </div>
+        <div id='subheader-post'></div>
+
+        <main>
+        <div class='hsup'><h1>Correlated randomness in Slay the Spire 2</h1><span>2026-06-13</span></div><div class='hsub'><span class='len lenverylong'><span>very long</span> (4910 words)</span> <a class='tag' href='/blog/draft'><span class='tag'>draft</span></a><a class='tag' href='/blog/games'><span class='tag'>games</span></a><a class='tag' href='/blog/video-games'><span class='tag'>video games</span></a><a class='tag' href='/blog/slay-the-spire'><span class='tag'>slay the spire</span></a><a class='tag' href='/blog/math'><span class='tag'>math</span></a></div>
+<p>Here are three true statements about the game of Slay the Spire 2
+(in single player):</p>
+<ol>
+<li>
+<p>If you pick Neow's Bones in the Underdocks,
+the random curse is ~54% likely to be Debt.*</p>
+</li>
+<li>
+<p>It is impossible to receive Rebound from the Trash Heap event.</p>
+</li>
+<li>
+<p>Your first fight is 76% likely to drop a potion in Underdocks,
+and 4% likely to drop a potion in Overgrowth.**</p>
+</li>
+</ol>
+
+<p style='font-size:11pt;color:#b8b8b8'>
+(* assuming neither of the relics from Neow's Bones is New Leaf or Kaleidoscope)<br>
+(** assuming your Neow relic doesn't give cards or other relics)<br>
+(*** all on the current beta patch, v0.107.0)
+</p>
+<p>What?!</p>
+<p>Why? The culprit is unexpected correlation between different random number generators --
+knowing the first output of one of the game's RNGs
+gives information that helps predict the first output of all of the others.</p>
+<!-- This phenomenon is known as "correlated RNG" (or "CRNG") -->
+<!-- in the Slay the Spire community. -->
+<!-- It has a name because Slay the Spire 1 had a similar issue, -->
+<!-- [described in detail in Forgotten Arbiter's blog post](https://forgottenarbiter.github.io/Correlated-Randomness/). -->
+<!-- However, -->
+<!-- Spire 2's CRNG is somehow both much more subtle, -->
+<!-- and has far more significant impact on gameplay, -->
+<!-- even to casual players who are unaware of it. -->
+<h2>The random number generators of Slay the Spire 2</h2>
+<p>For now,
+I will give an extremely simplified explanation of this correlation.
+If you want more details,
+I will go into much greater depth at the end of this post.
+If you don't care,
+you can skip this section to see all the funny examples below.</p>
+<p>The phenomenon of &quot;correlated RNG&quot; (or &quot;CRNG&quot;)
+is already known in the Slay the Spire community,
+because Slay the Spire 1 had a similar issue,
+<a href="https://forgottenarbiter.github.io/Correlated-Randomness/">described in detail in Forgotten Arbiter's blog post</a>.<sup id='footref1'><a class='footnote' href='#footnote1'>[1]</a></sup></p>
+<p>Briefly,
+in Spire 1,
+the game used several distinct pseudorandom number generators,
+to prevent e.g. randomness within a combat
+from influencing future card rewards.
+However,
+they were all initialized to the same starting state,
+which meant they produced the same sequence of numbers.
+A crafty player could therefore pay attention to the results of past random events
+and gain information about future random events.</p>
+<p>In an attempt to avoid the same problem,
+Spire 2 initializes its pseudorandom number generators
+to different states.
+The code looks something like this
+(highly simplified for didactic purposes):</p>
+<pre><code>Rng UpFront = new Rng(seed + hash(&quot;up_front&quot;));
+Rng Shuffle = new Rng(seed + hash(&quot;shuffle&quot;));
+Rng UnknownMapPoint = new Rng(seed + hash(&quot;unknown_map_point&quot;));
+Rng CombatCardGeneration = new Rng(seed + hash(&quot;combat_card_generation&quot;));
+Rng CombatPotionGeneration = new Rng(seed + hash(&quot;combat_potion_generation&quot;));
+Rng CombatCardSelection = new Rng(seed + hash(&quot;combat_card_selection&quot;));
+Rng CombatEnergyCosts = new Rng(seed + hash(&quot;combat_energy_costs&quot;));
+Rng CombatTargets = new Rng(seed + hash(&quot;combat_targets&quot;));
+Rng MonsterAi = new Rng(seed + hash(&quot;monster_ai&quot;));
+Rng Niche = new Rng(seed + hash(&quot;niche&quot;));
+Rng CombatOrbGeneration = new Rng(seed + hash(&quot;combat_orbs&quot;));
+Rng TreasureRoomRelics = new Rng(seed + hash(&quot;treasure_room_relics&quot;));
+// ...
+</code></pre>
+<p>There are many more random number generators in the game
+that I have not listed for brevity;
+notably,
+every event has its own RNG.</p>
+<p>The <code>hash</code> function essentially produces a &quot;random-looking&quot; number
+from the input string,
+but the number is always the same for the same input.
+So the idea is that the RNG states are shuffled around,
+but the same seed still always results in the same run.</p>
+<p>The problem comes when these seeds are passed
+to the stock <code>System.Random</code> class in C#.
+Unfortunately,
+the pseudorandom number generation algorithm
+used in C#
+is almost entirely &quot;linear&quot; in the starting seed.</p>
+<p>What this means exactly is a bit complicated --
+again, I will go into greater detail later in this post.
+But the consequence is that two RNGs
+whose seeds differ by a known fixed amount
+have their outputs differ by a fuzzier but still-exploitable amount.</p>
+<p>How exploitable,
+you might ask?
+Well...</p>
+<p>Here is a big pile of consequences of CRNG,
+ranging from amusing-but-unimportant
+to legitimately impactful on gameplay
+(some of them even to casual players unaware of it!).</p>
+
+<h2>Neow's Bones</h2>
+<p>I'll start with the first example from the intro.
+If you pick Neow's Bones in Underdocks,
+the &quot;random&quot; curse you receive
+actually has the following approximate distribution:</p>
+<div class='barchart'>
+        <div class='key'>Clumsy</div><div class='bar'><div style='width:0.13235728873688293%' class='bc0'><span>0.10%</span></div></div><div class='key'>Debt</div><div class='bar'><div style='width:73.56773411373506%' class='bc0'><span>54.25%</span></div></div><div class='key'>Decay</div><div class='bar'><div style='width:54.68444449266204%' class='bc0'><span>40.32%</span></div></div><div class='key'>Doubt</div><div class='bar'><div style='width:2.040689017328498%' class='bc0'><span>1.50%</span></div></div><div class='key'>Guilty</div><div class='bar'><div style='width:0.0%' class='bc0'><span>0%</span></div></div><div class='key'>Injury</div><div class='bar'><div style='width:0.0%' class='bc0'><span>0%</span></div></div><div class='key'>Normality</div><div class='bar'><div style='width:0.0%' class='bc0'><span>0%</span></div></div><div class='key'>Regret</div><div class='bar'><div style='width:0.0%' class='bc0'><span>0%</span></div></div><div class='key'>Shame</div><div class='bar'><div style='width:0.0%' class='bc0'><span>0%</span></div></div><div class='key'>Writhe</div><div class='bar'><div style='width:5.1867512523766%' class='bc0'><span>3.82%</span></div></div>
+        
+    </div>
+<p>However,
+if you pick Neow's Bones in Overgrowth,
+you instead get a curse from this distribution:</p>
+<div class='barchart'>
+        <div class='key'>Clumsy</div><div class='bar'><div style='width:0.6939264820354815%' class='bc0'><span>0.51%</span></div></div><div class='key'>Debt</div><div class='bar'><div style='width:0.0%' class='bc0'><span>0%</span></div></div><div class='key'>Decay</div><div class='bar'><div style='width:0.0%' class='bc0'><span>0%</span></div></div><div class='key'>Doubt</div><div class='bar'><div style='width:0.0%' class='bc0'><span>0%</span></div></div><div class='key'>Guilty</div><div class='bar'><div style='width:0.25779836668935907%' class='bc0'><span>0.19%</span></div></div><div class='key'>Injury</div><div class='bar'><div style='width:7.493782190892842%' class='bc0'><span>5.53%</span></div></div><div class='key'>Normality</div><div class='bar'><div style='width:1.606052633720189%' class='bc0'><span>1.18%</span></div></div><div class='key'>Regret</div><div class='bar'><div style='width:0.0%' class='bc0'><span>0%</span></div></div><div class='key'>Shame</div><div class='bar'><div style='width:25.560416491501197%' class='bc0'><span>18.85%</span></div></div><div class='key'>Writhe</div><div class='bar'><div style='width:100.0%' class='bc0'><span>73.74%</span></div></div>
+        
+    </div>
+<p>This one is quite funny to me --
+<a href='bones_debt.png' target='_blank'>people all over Reddit and Discord have been lamenting their terrible luck</a>
+that they keep rolling Debt from Neow's Bones.<sup id='footref2'><a class='footnote' href='#footnote2'>[2]</a></sup>
+Even before discovering CRNG,
+I saw some of these posts insisting that it seemed more frequent than random.
+It is hard to express how <em>instantaneously</em> my brain automatically dismissed them
+as textbook confirmation bias.
+And yet...</p>
+<p>To understand this one,
+we need to correlate three sources of randomness:</p>
+<ul>
+<li>
+<p><strong>The &quot;curse relic&quot; available from Neow</strong>
+comes from a call to Neow's event-specific RNG,
+which is seeded with <code>seed + 1 + hash(&quot;NEOW&quot;)</code>.</p>
+<p>The Neow options always have exactly one relic from the &quot;curse pool&quot;,
+<a href="https://slaythespire.wiki.gg/wiki/Slay_the_Spire_2:Neow">as described on the wiki</a>.
+The choice of which of the 8 curse relics to offer
+is the first call to Neow's RNG.</p>
+</li>
+<li>
+<p><strong>The random curse from Neow's Bones</strong>
+comes from a call to <code>RunState.Rng.Niche</code>,
+which is seeded with <code>seed + hash(&quot;niche&quot;)</code>.</p>
+<p>Since New Leaf or Kaleidoscope also call <code>Niche</code> for their randomness,
+rolling either of these relics from Neow's Bones will destroy the correlation.
+But otherwise,
+this will be the first call to <code>Niche</code>.</p>
+</li>
+<li>
+<p><strong>The Act 1 variant</strong>
+(Underdocks or Overgrowth)
+comes from a call to an unnamed RNG created in <code>StartRunLobby#BeginRunLocally</code>,
+which is seeded with the base seed.</p>
+</li>
+</ul>
+<p>Since Neow's Bones comes from Neow's &quot;curse pool&quot;,
+you will only ever see it when the first call to the Neow RNG
+rolls in a particular range,
+which imposes a strong constraint on the possible range for the first call to <code>Niche</code>
+(stronger when combined with which Act 1 you are in).</p>
+<p>It is clear that this correlation is very impactful on gameplay,
+even for players unaware of it.
+It makes Neow's Bones a much worse relic,
+giving less harmful curses like Clumsy, Guilty, and Injury extremely rarely
+and more crippling ones like Debt much more often.</p>
+<p>At this point,
+you might be thinking
+&quot;wait,
+doesn't that mean we can predict the randomness
+of <em>every</em> Neow relic?&quot;
+Indeed we can!
+Let's do some more of them.</p>
+<h2>Large Capsule</h2>
+<!--
+  10074 0	1
+  16822 0	2
+ 260952 1	1
+ 112152 1	2
+-->
+<p>The first relic from Large Capsule is <em>never</em> common.</p>
+<p>What a buff!</p>
+<p>More specifically,
+in Overgrowth,
+it's about 70% to be uncommon and 30% to be rare.
+In Underdocks,
+it's about 37% to be uncommon and 63% to be rare --
+but there's a caveat:</p>
+<p>Large Capsule will only appear about 1.65% of the time
+in an Underdocks act,
+because everything is correlated with everything.
+(Nobody seems to have noticed this one;
+here was <a href='large_capsule.png' target='_blank'>someone's very funny reaction to this information</a>
+as I was first investigating all of this.)</p>
+<p>Here is the specific distribution of the &quot;curse pool&quot; option at Neow in Underdocks:</p>
+<div class='barchart'>
+        <div class='key'>CursedPearl</div><div class='bar'><div style='width:50.33220772877702%' class='bc0'><span>11.95%</span></div></div><div class='key'>HeftyTablet</div><div class='bar'><div style='width:5.576374093691842%' class='bc0'><span>1.32%</span></div></div><div class='key'>LargeCapsule</div><div class='bar'><div style='width:6.932152150297681%' class='bc0'><span>1.65%</span></div></div><div class='key'>LeafyPoultice</div><div class='bar'><div style='width:53.57007519936674%' class='bc0'><span>12.72%</span></div></div><div class='key'>NeowsBones</div><div class='bar'><div style='width:54.779328174078536%' class='bc0'><span>13.01%</span></div></div><div class='key'>PrecariousShears</div><div class='bar'><div style='width:100.0%' class='bc0'><span>23.75%</span></div></div><div class='key'>SilkenTress</div><div class='bar'><div style='width:97.751597881281%' class='bc0'><span>23.22%</span></div></div><div class='key'>SilverCrucible</div><div class='bar'><div style='width:52.09724549688003%' class='bc0'><span>12.37%</span></div></div>
+        
+    </div>
+<p>And in Overgrowth:</p>
+<div class='barchart'>
+        <div class='key'>CursedPearl</div><div class='bar'><div style='width:54.58633849464535%' class='bc0'><span>12.99%</span></div></div><div class='key'>HeftyTablet</div><div class='bar'><div style='width:100.0%' class='bc0'><span>23.79%</span></div></div><div class='key'>LargeCapsule</div><div class='bar'><div style='width:97.6933810796725%' class='bc0'><span>23.24%</span></div></div><div class='key'>LeafyPoultice</div><div class='bar'><div style='width:52.05948117886384%' class='bc0'><span>12.39%</span></div></div><div class='key'>NeowsBones</div><div class='bar'><div style='width:50.03446478707487%' class='bc0'><span>11.90%</span></div></div><div class='key'>PrecariousShears</div><div class='bar'><div style='width:5.6547468939661405%' class='bc0'><span>1.35%</span></div></div><div class='key'>SilkenTress</div><div class='bar'><div style='width:6.918175551856896%' class='bc0'><span>1.65%</span></div></div><div class='key'>SilverCrucible</div><div class='bar'><div style='width:53.36578066945747%' class='bc0'><span>12.70%</span></div></div>
+        
+    </div>
+<p>Getting back to Large Capsule in particular,
+much like Neow's Bones,
+the correlation has a legitimate gameplay impact.
+The relic is better than it &quot;should be&quot; on average.</p>
+<p>What about Small Capsule?</p>
+<h2>Small Capsule</h2>
+<p>Since Small Capsule is not a curse pool relic,
+it does not have an intrinsic bias the way Neow's Bones and Large Capsule do.</p>
+<p>However,
+this means we can use the presence of another curse pool relic
+to predict the rarity of the Small Capsule relic:</p>
+<div class="barchartlgnd"><div><div class='bc0'></div>common</div><div><div class='bc1'></div>uncommon</div><div><div class='bc2'></div>rare</div></div><div class='barchart'>
+        <div class='key'>CursedPearl[U]</div><div class='bar'><div style='width:33.738080335775564%' class='bc0'><span>4.58%</span></div><div style='width:6.751592356687898%' class='bc1'><span>0.92%</span></div><div style='width:9.764736202643496%' class='bc2'><span>1.33%</span></div></div><div class='key'>HeftyTablet[U]</div><div class='bar'><div style='width:4.122086815654799%' class='bc1'><span>0.56%</span></div><div style='width:1.4638636279960238%' class='bc2'><span>0.20%</span></div></div><div class='key'>LeafyPoultice[U]</div><div class='bar'><div style='width:42.76646662494017%' class='bc0'><span>5.81%</span></div><div style='width:3.5411067339199587%' class='bc1'><span>0.48%</span></div><div style='width:7.030668973896396%' class='bc2'><span>0.95%</span></div></div><div class='key'>NeowsBones[U]</div><div class='bar'><div style='width:54.637163580133276%' class='bc0'><span>7.42%</span></div></div><div class='key'>PrecariousShears[U]</div><div class='bar'><div style='width:99.81296712197636%' class='bc0'><span>13.56%</span></div></div><div class='key'>SilkenTress[U]</div><div class='bar'><div style='width:97.79536835904422%' class='bc0'><span>13.28%</span></div></div><div class='key'>SilverCrucible[U]</div><div class='bar'><div style='width:52.1431464231803%' class='bc0'><span>7.08%</span></div></div><div class='key'>CursedPearl[O]</div><div class='bar'><div style='width:41.99182651596038%' class='bc1'><span>5.70%</span></div><div style='width:12.640918964692021%' class='bc2'><span>1.72%</span></div></div><div class='key'>HeftyTablet[O]</div><div class='bar'><div style='width:80.69805971797798%' class='bc1'><span>10.96%</span></div><div style='width:19.301940282022017%' class='bc2'><span>2.62%</span></div></div><div class='key'>LeafyPoultice[O]</div><div class='bar'><div style='width:33.91701336475093%' class='bc1'><span>4.61%</span></div><div style='width:18.241596406612423%' class='bc2'><span>2.48%</span></div></div><div class='key'>NeowsBones[O]</div><div class='bar'><div style='width:16.436066418762195%' class='bc0'><span>2.23%</span></div><div style='width:8.378925665476235%' class='bc1'><span>1.14%</span></div><div style='width:25.38934501675196%' class='bc2'><span>3.45%</span></div></div><div class='key'>PrecariousShears[O]</div><div class='bar'><div style='width:5.6662125842200215%' class='bc0'><span>0.77%</span></div></div><div class='key'>SilkenTress[O]</div><div class='bar'><div style='width:6.94157063436545%' class='bc0'><span>0.94%</span></div></div><div class='key'>SilverCrucible[O]</div><div class='bar'><div style='width:10.492986267074114%' class='bc0'><span>1.42%</span></div><div style='width:26.90033503921063%' class='bc1'><span>3.65%</span></div><div style='width:15.78586944516034%' class='bc2'><span>2.14%</span></div></div>
+        
+    </div>
+<p>(Here,
+[U] means Underdocks and [O] means Overgrowth.
+Large Capsule is never present because there is a hardcoded restriction
+that both Capsules can't appear simultaneously.)</p>
+<p>I've kept the scaling on the bars the same as the two charts in the previous section --
+the total width of each row is proportional to how often that curse pool relic actually appears in the act.
+This is to demonstrate a concise heuristic:
+<strong>Small Capsule will <em>usually</em> give a common relic in Underdocks,
+and <em>usually</em> give an uncommon or rare relic in Overgrowth</strong>.</p>
+<p>Okay,
+there's a lot more Neows with randomness,
+so I'll sort of speed through a few more
+and then get to some different stuff.</p>
+<h2>Leafy Poultice and Hefty Tablet</h2>
+<p>(These are &quot;transform 2&quot; and &quot;choose a rare&quot;.)</p>
+<p>Since these are both curse pool relics,
+they have an intrinsic bias.
+But they both generate multiple cards,
+so we can only predict the first one.</p>
+<p>It turns out that
+<strong>the first transform from Leafy Poultice only has 22 possibilities</strong>
+(out of each character's 80-card pool),
+with some significantly more likely than others.</p>
+<p>(These charts are pretty big,
+so I've hidden them away here.
+You can click through each character
+to see the available options,
+and have fun deciding which act is better.)</p>
+<details><summary>Leafy Poultice</summary><div>
+<p>Underdocks:</p>
+<div class="barchartbtns"><button class='clad active' data-btn='poultice' data-idx='0'>clad</button><button class='silent' data-btn='poultice' data-idx='1'>silent</button><button class='regent' data-btn='poultice' data-idx='2'>regent</button><button class='necro' data-btn='poultice' data-idx='3'>necro</button><button class='defect' data-btn='poultice' data-idx='4'>defect</button></div><div class='barchart'>
+        <div class='key' data-btn='poultice' data-keys='Aggression|Abrasive|Alignment|Afterlife|AdaptiveStrike'>Aggression</div><div class='bar'><div style='width:48.16539298547497%' class='bc0'><span>3.78%</span></div></div><div class='key' data-btn='poultice' data-keys='Anger|Accelerant|Arsenal|BansheesCry|AllForOne'>Anger</div><div class='bar'><div style='width:99.84310946910269%' class='bc0'><span>7.84%</span></div></div><div class='key' data-btn='poultice' data-keys='Armaments|Accuracy|AstralPulse|BlightStrike|BallLightning'>Armaments</div><div class='bar'><div style='width:99.66597499873475%' class='bc0'><span>7.82%</span></div></div><div class='key' data-btn='poultice' data-keys='AshenStrike|Acrobatics|BeatIntoShape|BoneShards|Barrage'>AshenStrike</div><div class='bar'><div style='width:99.65332253656561%' class='bc0'><span>7.82%</span></div></div><div class='key' data-btn='poultice' data-keys='Barricade|Adrenaline|Begone|BorrowedTime|BeamCell'>Barricade</div><div class='bar'><div style='width:99.87600587074245%' class='bc0'><span>7.84%</span></div></div><div class='key' data-btn='poultice' data-keys='BattleTrance|Afterimage|BigBang|Bury|BoostAway'>BattleTrance</div><div class='bar'><div style='width:99.62548711979352%' class='bc0'><span>7.82%</span></div></div><div class='key' data-btn='poultice' data-keys='BloodWall|Anticipate|BlackHole|Calcify|BootSequence'>BloodWall</div><div class='bar'><div style='width:99.69127992307303%' class='bc0'><span>7.83%</span></div></div><div class='key' data-btn='poultice' data-keys='Bloodletting|Assassinate|Bombardment|CallOfTheVoid|Buffer'>Bloodletting</div><div class='bar'><div style='width:99.59259071815376%' class='bc0'><span>7.82%</span></div></div><div class='key' data-btn='poultice' data-keys='Bludgeon|Backflip|Bulwark|CaptureSpirit|BulkUp'>Bludgeon</div><div class='bar'><div style='width:99.73682878688193%' class='bc0'><span>7.83%</span></div></div><div class='key' data-btn='poultice' data-keys='BodySlam|Backstab|BundleOfJoy|Cleanse|Capacitor'>BodySlam</div><div class='bar'><div style='width:100.0%' class='bc0'><span>7.85%</span></div></div><div class='key' data-btn='poultice' data-keys='Brand|BladeOfInk|CelestialMight|Countdown|Chaos'>Brand</div><div class='bar'><div style='width:51.217166860671085%' class='bc0'><span>4.02%</span></div></div><div class='key' data-btn='poultice' data-keys='FiendFire|Expertise|Genesis|Fetch|Ftl'>FiendFire</div><div class='bar'><div style='width:20.254061440356292%' class='bc0'><span>1.59%</span></div></div><div class='key' data-btn='poultice' data-keys='FightMe|Expose|Glimmer|Flatten|Fusion'>FightMe</div><div class='bar'><div style='width:27.4001720734855%' class='bc0'><span>2.15%</span></div></div><div class='key' data-btn='poultice' data-keys='FlameBarrier|FanOfKnives|Glitterstream|Friendship|GeneticAlgorithm'>FlameBarrier</div><div class='bar'><div style='width:27.66840427147123%' class='bc0'><span>2.17%</span></div></div><div class='key' data-btn='poultice' data-keys='ForgottenRitual|Finisher|Glow|GraveWarden|Glacier'>ForgottenRitual</div><div class='bar'><div style='width:27.65322131686826%' class='bc0'><span>2.17%</span></div></div><div class='key' data-btn='poultice' data-keys='Havoc|Flechettes|Guards|Graveblast|Glasswork'>Havoc</div><div class='bar'><div style='width:27.6380383622653%' class='bc0'><span>2.17%</span></div></div><div class='key' data-btn='poultice' data-keys='Headbutt|FlickFlack|GuidingStar|Hang|GoForTheEyes'>Headbutt</div><div class='bar'><div style='width:27.673465256338883%' class='bc0'><span>2.17%</span></div></div><div class='key' data-btn='poultice' data-keys='Hellraiser|FollowThrough|HeavenlyDrill|Haunt|GunkUp'>Hellraiser</div><div class='bar'><div style='width:27.69623968824333%' class='bc0'><span>2.17%</span></div></div><div class='key' data-btn='poultice' data-keys='Hemokinesis|Footwork|Hegemony|HighFive|Hailstorm'>Hemokinesis</div><div class='bar'><div style='width:27.76203249152285%' class='bc0'><span>2.18%</span></div></div><div class='key' data-btn='poultice' data-keys='HowlFromBeyond|GrandFinale|HeirloomHammer|Invoke|HelixDrill'>HowlFromBeyond</div><div class='bar'><div style='width:27.67599574877271%' class='bc0'><span>2.17%</span></div></div><div class='key' data-btn='poultice' data-keys='Impervious|HandTrick|HiddenCache|Lethality|Hologram'>Impervious</div><div class='bar'><div style='width:27.678526241206537%' class='bc0'><span>2.17%</span></div></div><div class='key' data-btn='poultice' data-keys='InfernalBlade|Haze|IAmInvincible|Melancholy|Hotfix'>InfernalBlade</div><div class='bar'><div style='width:7.601599271218179%' class='bc0'><span>0.60%</span></div></div>
+        <div class='key phantom'>HeirloomHammer</div>
+    </div>
+<p>Overgrowth:</p>
+<div class="barchartbtns"><button class='clad active' data-btn='poultice' data-idx='0'>clad</button><button class='silent' data-btn='poultice' data-idx='1'>silent</button><button class='regent' data-btn='poultice' data-idx='2'>regent</button><button class='necro' data-btn='poultice' data-idx='3'>necro</button><button class='defect' data-btn='poultice' data-idx='4'>defect</button></div><div class='barchart'>
+        <div class='key' data-btn='poultice' data-keys='MoltenFist|MasterPlanner|ManifestAuthority|Pagestorm|MachineLearning'>MoltenFist</div><div class='bar'><div style='width:8.114362112408083%' class='bc0'><span>0.64%</span></div></div><div class='key' data-btn='poultice' data-keys='NotYet|MementoMori|MonarchsGaze|Parse|MeteorStrike'>NotYet</div><div class='bar'><div style='width:28.13287396513601%' class='bc0'><span>2.20%</span></div></div><div class='key' data-btn='poultice' data-keys='Offering|Mirage|Monologue|Poke|Modded'>Offering</div><div class='bar'><div style='width:28.14058723710598%' class='bc0'><span>2.20%</span></div></div><div class='key' data-btn='poultice' data-keys='OneTwoPunch|Murder|NeutronAegis|PullAggro|MomentumStrike'>OneTwoPunch</div><div class='bar'><div style='width:28.09687869594282%' class='bc0'><span>2.20%</span></div></div><div class='key' data-btn='poultice' data-keys='PactsEnd|Nightmare|Orbit|PullFromBelow|MultiCast'>PactsEnd</div><div class='bar'><div style='width:28.256286316655526%' class='bc0'><span>2.21%</span></div></div><div class='key' data-btn='poultice' data-keys='PerfectedStrike|NoxiousFumes|PaleBlueDot|Putrefy|Null'>PerfectedStrike</div><div class='bar'><div style='width:28.197151231552425%' class='bc0'><span>2.21%</span></div></div><div class='key' data-btn='poultice' data-keys='Pillage|Outbreak|Parry|Rattle|Overclock'>Pillage</div><div class='bar'><div style='width:28.16115596235923%' class='bc0'><span>2.21%</span></div></div><div class='key' data-btn='poultice' data-keys='PommelStrike|PhantomBlades|ParticleWall|Reanimate|Rainbow'>PommelStrike</div><div class='bar'><div style='width:28.19200905023911%' class='bc0'><span>2.21%</span></div></div><div class='key' data-btn='poultice' data-keys='PrimalForce|PiercingWail|Patter|Reap|Reboot'>PrimalForce</div><div class='bar'><div style='width:28.179153596955828%' class='bc0'><span>2.21%</span></div></div><div class='key' data-btn='poultice' data-keys='Pyre|Pinpoint|PhotonCut|ReaperForm|Refract'>Pyre</div><div class='bar'><div style='width:28.143158327762638%' class='bc0'><span>2.20%</span></div></div><div class='key' data-btn='poultice' data-keys='Rage|PoisonedStab|PillarOfCreation|Reave|RocketPunch'>Rage</div><div class='bar'><div style='width:20.21648583329048%' class='bc0'><span>1.58%</span></div></div><div class='key' data-btn='poultice' data-keys='SecondWind|Predator|Radiate|Scourge|ShadowShield'>SecondWind</div><div class='bar'><div style='width:50.951303542962926%' class='bc0'><span>3.99%</span></div></div><div class='key' data-btn='poultice' data-keys='SetupStrike|Prepared|RefineBlade|SculptingStrike|Shatter'>SetupStrike</div><div class='bar'><div style='width:99.4677842340721%' class='bc0'><span>7.79%</span></div></div><div class='key' data-btn='poultice' data-keys='ShrugItOff|Reflex|Reflect|Seance|SignalBoost'>ShrugItOff</div><div class='bar'><div style='width:99.75574638761763%' class='bc0'><span>7.81%</span></div></div><div class='key' data-btn='poultice' data-keys='Spite|Ricochet|Resonance|SentryMode|Skim'>Spite</div><div class='bar'><div style='width:99.5680567696817%' class='bc0'><span>7.80%</span></div></div><div class='key' data-btn='poultice' data-keys='Stampede|SerpentForm|RoyalGamble|Severance|Smokestack'>Stampede</div><div class='bar'><div style='width:99.65804494266467%' class='bc0'><span>7.80%</span></div></div><div class='key' data-btn='poultice' data-keys='Stoke|ShadowStep|Royalties|SharedFate|Spinner'>Stoke</div><div class='bar'><div style='width:99.39322260502905%' class='bc0'><span>7.78%</span></div></div><div class='key' data-btn='poultice' data-keys='Stomp|Shadowmeld|SeekingEdge|Shroud|Storm'>Stomp</div><div class='bar'><div style='width:99.34437188255258%' class='bc0'><span>7.78%</span></div></div><div class='key' data-btn='poultice' data-keys='StoneArmor|Skewer|SevenStars|SicEm|Subroutine'>StoneArmor</div><div class='bar'><div style='width:100.0%' class='bc0'><span>7.83%</span></div></div><div class='key' data-btn='poultice' data-keys='SwordBoomerang|Slice|ShiningStrike|SleightOfFlesh|Sunder'>SwordBoomerang</div><div class='bar'><div style='width:99.11554481411015%' class='bc0'><span>7.76%</span></div></div><div class='key' data-btn='poultice' data-keys='Taunt|Snakebite|SolarStrike|Snap|Supercritical'>Taunt</div><div class='bar'><div style='width:99.49349514063866%' class='bc0'><span>7.79%</span></div></div><div class='key' data-btn='poultice' data-keys='TearAsunder|Speedster|SpectrumShift|SoulStorm|SweepingBeam'>TearAsunder</div><div class='bar'><div style='width:48.30822234791999%' class='bc0'><span>3.78%</span></div></div>
+        <div class='key phantom'>HeirloomHammer</div>
+    </div>
+</div></details>
+<p>Similarly,
+<strong>the first option from Hefty Tablet only has 11 possibilities in Overgrowth,
+and 3 possibilities in Underdocks</strong>!
+This is because as shown above,
+Hefty Tablet only appears in about 1.3% of Underdocks in the first place,
+so seeing it is very strong information.</p>
+<p>Underdocks:</p>
+<div class="barchartbtns"><button class='clad active' data-btn='tablet' data-idx='0'>clad</button><button class='silent' data-btn='tablet' data-idx='1'>silent</button><button class='regent' data-btn='tablet' data-idx='2'>regent</button><button class='necro' data-btn='tablet' data-idx='3'>necro</button><button class='defect' data-btn='tablet' data-idx='4'>defect</button></div><div class='barchart'>
+        <div class='key' data-btn='tablet' data-keys='Juggernaut|KnifeTrap|HeirloomHammer|ReaperForm|MachineLearning'>Juggernaut</div><div class='bar'><div style='width:100.0%' class='bc0'><span>72.52%</span></div></div><div class='key' data-btn='tablet' data-keys='TearAsunder|TheHunt|TheSmith|TimesUp|Supercritical'>TearAsunder</div><div class='bar'><div style='width:23.126201153106983%' class='bc0'><span>16.77%</span></div></div><div class='key' data-btn='tablet' data-keys='Thrash|ToolsOfTheTrade|Tyranny|Transfigure|TrashToTreasure'>Thrash</div><div class='bar'><div style='width:14.772581678411274%' class='bc0'><span>10.71%</span></div></div>
+        <div class='key phantom'>HeirloomHammer</div>
+    </div>
+<p>Overgrowth:</p>
+<div class="barchartbtns"><button class='clad active' data-btn='tablet' data-idx='0'>clad</button><button class='silent' data-btn='tablet' data-idx='1'>silent</button><button class='regent' data-btn='tablet' data-idx='2'>regent</button><button class='necro' data-btn='tablet' data-idx='3'>necro</button><button class='defect' data-btn='tablet' data-idx='4'>defect</button></div><div class='barchart'>
+        <div class='key' data-btn='tablet' data-keys='Juggernaut|KnifeTrap|HeirloomHammer|ReaperForm|MachineLearning'>Juggernaut</div><div class='bar'><div style='width:26.14622814525003%' class='bc0'><span>4.52%</span></div></div><div class='key' data-btn='tablet' data-keys='Mangle|Malaise|IAmInvincible|Sacrifice|MeteorStrike'>Mangle</div><div class='bar'><div style='width:58.818315197456904%' class='bc0'><span>10.17%</span></div></div><div class='key' data-btn='tablet' data-keys='NotYet|MasterPlanner|MakeItSo|Seance|Modded'>NotYet</div><div class='bar'><div style='width:58.848881281330236%' class='bc0'><span>10.17%</span></div></div><div class='key' data-btn='tablet' data-keys='Offering|Murder|MonarchsGaze|SentryMode|MultiCast'>Offering</div><div class='bar'><div style='width:44.238293189876515%' class='bc0'><span>7.65%</span></div></div><div class='key' data-btn='tablet' data-keys='OneTwoPunch|Nightmare|NeutronAegis|SharedFate|Rainbow'>OneTwoPunch</div><div class='bar'><div style='width:35.40316664628928%' class='bc0'><span>6.12%</span></div></div><div class='key' data-btn='tablet' data-keys='PactsEnd|SerpentForm|Royalties|SoulStorm|Reboot'>PactsEnd</div><div class='bar'><div style='width:92.4853282797408%' class='bc0'><span>15.99%</span></div></div><div class='key' data-btn='tablet' data-keys='PrimalForce|ShadowStep|SeekingEdge|SpiritOfAsh|Shatter'>PrimalForce</div><div class='bar'><div style='width:75.13907568162367%' class='bc0'><span>12.99%</span></div></div><div class='key' data-btn='tablet' data-keys='Pyre|Shadowmeld|SevenStars|Squeeze|SignalBoost'>Pyre</div><div class='bar'><div style='width:100.0%' class='bc0'><span>17.29%</span></div></div><div class='key' data-btn='tablet' data-keys='Stoke|StormOfSteel|SwordSage|TheScythe|Spinner'>Stoke</div><div class='bar'><div style='width:52.280229856950726%' class='bc0'><span>9.04%</span></div></div><div class='key' data-btn='tablet' data-keys='TearAsunder|TheHunt|TheSmith|TimesUp|Supercritical'>TearAsunder</div><div class='bar'><div style='width:32.4734075070302%' class='bc0'><span>5.61%</span></div></div><div class='key' data-btn='tablet' data-keys='Thrash|ToolsOfTheTrade|Tyranny|Transfigure|TrashToTreasure'>Thrash</div><div class='bar'><div style='width:2.590475608265069%' class='bc0'><span>0.45%</span></div></div>
+        <div class='key phantom'>HeirloomHammer</div>
+    </div>
+<h2>New Leaf and Arcane Scroll</h2>
+<p>(These are &quot;transform 1&quot; and &quot;random rare&quot;.)</p>
+<p>As with Small Capsule,
+both the act and the curse pool option
+influence these relics.</p>
+<p>Including an entire list of cards
+for all 14 combinations of act and curse pool relic
+would take up way too much space,
+so I'll just say:
+you can narrow the possible transforms from New Leaf
+down to anywhere from <strong>4 to 39 options</strong> (out of 80),
+and the possible cards from Arcane Scroll
+down to anywhere from <strong>3 to 12 options</strong> (out of 25),
+depending on your act and Neow.</p>
+<p>Here's one fun tidbit, though:
+if you see Precarious Shears on Overgrowth
+(which is quite rare),
+then New Leaf is ~70% likely to give your character's alphabetically first card,
+and Arcane Scroll is ~65% likely to give your character's alphabetically first rare card.</p>
+<p>Okay, but let's be real,
+at this point most of this isn't actually going to change the way you play.
+How about something else that does?</p>
+<h2>Lightning orbs and random targeting</h2>
+<p>The Underdocks easy pool has two multi-enemy fights:
+the Corpse Slugs and the Toadpoles.
+If you are the Defect,
+you might want to know where your first lightning orb will hit,
+especially if you drew Dualcast turn 1.</p>
+<p>In the first fight of Underdocks specifically,
+<strong>your first orb is 75% to hit the enemy on the left</strong>.
+(This applies to the evoke if you play Dualcast, or the passive if you don't.)
+If you remember what curse pool you saw,
+you can do better:</p>
+<div class="barchartlgnd"><div><div class='bc0'></div>left</div><div><div class='bc1'></div>right</div></div><div class='barchart'>
+        <div class='key'>CursedPearl</div><div class='bar'><div style='width:50.322327176870175%' class='bc0'><span>11.91%</span></div></div><div class='key'>HeftyTablet</div><div class='bar'><div style='width:5.666706095067507%' class='bc0'><span>1.34%</span></div></div><div class='key'>LargeCapsule</div><div class='bar'><div style='width:7.073032663613782%' class='bc0'><span>1.67%</span></div></div><div class='key'>LeafyPoultice</div><div class='bar'><div style='width:53.33817739400801%' class='bc0'><span>12.63%</span></div></div><div class='key'>NeowsBones</div><div class='bar'><div style='width:53.145119045607395%' class='bc0'><span>12.58%</span></div><div style='width:2.1840517751229322%' class='bc1'><span>0.52%</span></div></div><div class='key'>PrecariousShears</div><div class='bar'><div style='width:35.59075009716285%' class='bc0'><span>8.42%</span></div><div style='width:64.40924990283716%' class='bc1'><span>15.25%</span></div></div><div class='key'>SilkenTress</div><div class='bar'><div style='width:46.53551090758546%' class='bc0'><span>11.02%</span></div><div style='width:51.80638402135893%' class='bc1'><span>12.26%</span></div></div><div class='key'>SilverCrucible</div><div class='bar'><div style='width:52.37584278206796%' class='bc0'><span>12.40%</span></div></div>
+        
+    </div>
+<p>You can do <em>even better</em> in the Corpse Slugs fight,
+which has a randomized starting attack pattern.
+I'm not going to list the whole table here,
+but for example:
+if you saw Precarious Shears
+<em>and</em> the Corpse Slug on the right is debuffing,
+then your orb is actually &gt;95% to hit the one on the right.</p>
+<p>(By the way,
+floor 2 Corpse Slugs will both be attacking on turn 1
+less than 3% of the time.
+How nice of them!)</p>
+<p>This applies to the first random combat target of the entire run --
+for example,
+you might predict your first Countdown proc on Necrobinder,
+or your first Parrying Shield proc on anyone.</p>
+<p>Speaking of early Act 1,
+let's finally get to the two other examples from the intro.</p>
+<h2>Trash Heap</h2>
+<p>Since the Trash Heap is Underdocks-exclusive,
+it is intrinsically biased.
+Here is the output of the Trash Heap RNG
+conditioned on the act RNG rolling Underdocks:</p>
+<div class='barchart'>
+        <div class='key'>Caltrops</div><div class='bar'><div style='width:50.76823686134677%' class='bc0'><span>10.14%</span></div></div><div class='key'>Clash</div><div class='bar'><div style='width:74.37173849898336%' class='bc0'><span>14.85%</span></div></div><div class='key'>Distraction</div><div class='bar'><div style='width:100.0%' class='bc0'><span>19.97%</span></div></div><div class='key'>DualWield</div><div class='bar'><div style='width:69.00710143330762%' class='bc0'><span>13.78%</span></div></div><div class='key'>Entrench</div><div class='bar'><div style='width:49.28935586293933%' class='bc0'><span>9.84%</span></div></div><div class='key'>HelloWorld</div><div class='bar'><div style='width:49.515720309698615%' class='bc0'><span>9.89%</span></div></div><div class='key'>Outmaneuver</div><div class='bar'><div style='width:25.903204158695498%' class='bc0'><span>5.17%</span></div></div><div class='key'>Rebound</div><div class='bar'><div style='width:0.0%' class='bc0'><span>0%</span></div></div><div class='key'>RipAndTear</div><div class='bar'><div style='width:31.009925980829134%' class='bc0'><span>6.19%</span></div></div><div class='key'>Stack</div><div class='bar'><div style='width:50.94101503420507%' class='bc0'><span>10.17%</span></div></div>
+        
+    </div>
+<p>As you can see,
+it is literally impossible to obtain the card Rebound
+in a single player game.<sup id='footref3'><a class='footnote' href='#footnote3'>[3]</a></sup></p>
+<p>In case you care about predicting the relic,
+the pairs of consecutive cards
+correspond to Darkstone Periapt, Dream Catcher, Hand Drill, Maw Bank, and The Boot respectively
+(e.g. if the card is Entrench or Hello World, the relic is Hand Drill).</p>
+<p>In case you want to predict the Trash Heap more precisely,
+here is the output further conditioned on the curse pool relic you saw
+(bars are hoverable):</p>
+<div class="barchartlgnd"><div><div class='bc0'></div>Caltrops</div><div><div class='bc1'></div>Clash</div><div><div class='bc2'></div>Distraction</div><div><div class='bc3'></div>DualWield</div><div><div class='bc4'></div>Entrench</div><div><div class='bc5'></div>HelloWorld</div><div><div class='bc6'></div>Outmaneuver</div><div><div class='bc7'></div>Rebound</div><div><div class='bc8'></div>RipAndTear</div><div><div class='bc9'></div>Stack</div></div><div class='barchart'>
+        <div class='key'>CursedPearl</div><div class='bar'><div style='width:66.62888995223345%' class='bc5 hover'><span>HelloWorld (66.63%)</span></div><div style='width:32.25543774817203%' class='bc6 hover'><span>Outmaneuver (32.26%)</span></div><div style='width:0.42645713182394374%' class='bc8 ral hover'><span>RipAndTear (0.43%)</span></div><div style='width:0.6892151677705862%' class='bc9 ral hover'><span>Stack (0.69%)</span></div></div><div class='key'>HeftyTablet</div><div class='bar'><div style='width:98.82212613687193%' class='bc6 hover'><span>Outmaneuver (98.82%)</span></div><div style='width:1.1778738631280752%' class='bc8 ral hover'><span>RipAndTear (1.18%)</span></div></div><div class='key'>LargeCapsule</div><div class='bar'><div style='width:0.035835871707579285%' class='bc5 hover'><span>HelloWorld (0.04%)</span></div><div style='width:0.2627963925222481%' class='bc6 hover'><span>Outmaneuver (0.26%)</span></div><div style='width:99.70136773577018%' class='bc8 hover'><span>RipAndTear (99.70%)</span></div></div><div class='key'>LeafyPoultice</div><div class='bar'><div style='width:0.08395374623792175%' class='bc4 hover'><span>Entrench (0.08%)</span></div><div style='width:0.25898938697924917%' class='bc5 hover'><span>HelloWorld (0.26%)</span></div><div style='width:35.29304609535878%' class='bc8 hover'><span>RipAndTear (35.29%)</span></div><div style='width:64.36401077142405%' class='bc9 hover'><span>Stack (64.36%)</span></div></div><div class='key'>NeowsBones</div><div class='bar'><div style='width:76.61197346017882%' class='bc0 hover'><span>Caltrops (76.61%)</span></div><div style='width:8.24292029654967%' class='bc1 ral hover'><span>Clash (8.24%)</span></div><div style='width:0.14048697059699328%' class='bc3 ral hover'><span>DualWield (0.14%)</span></div><div style='width:0.1847709069808281%' class='bc4 ral hover'><span>Entrench (0.18%)</span></div><div style='width:14.819848365693693%' class='bc9 ral hover'><span>Stack (14.82%)</span></div></div><div class='key'>PrecariousShears</div><div class='bar'><div style='width:57.60700586356647%' class='bc1 hover'><span>Clash (57.61%)</span></div><div style='width:42.16149309721354%' class='bc2 hover'><span>Distraction (42.16%)</span></div><div style='width:0.23150103921999357%' class='bc3 ral hover'><span>DualWield (0.23%)</span></div></div><div class='key'>SilkenTress</div><div class='bar'><div style='width:0.5614478222955355%' class='bc1 hover'><span>Clash (0.56%)</span></div><div style='width:42.903290934786995%' class='bc2 hover'><span>Distraction (42.90%)</span></div><div style='width:56.535261242917464%' class='bc3 hover'><span>DualWield (56.54%)</span></div></div><div class='key'>SilverCrucible</div><div class='bar'><div style='width:0.8323788937103773%' class='bc0 hover'><span>Caltrops (0.83%)</span></div><div style='width:0.029036473036408512%' class='bc1 hover'><span>Clash (0.03%)</span></div><div style='width:4.396605958929522%' class='bc3 hover'><span>DualWield (4.40%)</span></div><div style='width:79.10180510074044%' class='bc4 hover'><span>Entrench (79.10%)</span></div><div style='width:15.461921891887531%' class='bc5 ral hover'><span>HelloWorld (15.46%)</span></div><div style='width:0.17825168169573002%' class='bc9 ral hover'><span>Stack (0.18%)</span></div></div>
+        
+    </div>
+<p>I scaled all the bars to full width for visibility,
+but note that this distorts the apparent overall probability --
+Hefty Tablet and Large Capsule are both extremely rare in Underdocks,
+so e.g. Outmaneuver is much less common than it looks.</p>
+<p>Incidentally,
+after finding this one,
+I searched for discussion about it on the internet,
+and indeed people have noticed they can't seem to complete their Compendiums.
+But I also discovered that
+<a href='hoge_discord.png' target='_blank'>user @hoge posted a spot-on description of the issue on Discord about a month ago</a>.
+Props to them!</p>
+<h2>Potion drops and question mark combats</h2>
+<p>Finally,
+here is the third point mentioned in the intro.
+You know the drill by now:</p>
+<div class='barchart'>
+        <div class='key'>CursedPearl[U]</div><div class='bar'><div style='width:16.93695266868976%' class='bc0'><span>16.85%</span></div></div><div class='key'>HeftyTablet[U]</div><div class='bar'><div style='width:0.0%' class='bc0'><span>0%</span></div></div><div class='key'>LargeCapsule[U]</div><div class='bar'><div style='width:0.0%' class='bc0'><span>0%</span></div></div><div class='key'>LeafyPoultice[U]</div><div class='bar'><div style='width:51.487403231380355%' class='bc0'><span>51.23%</span></div></div><div class='key'>NeowsBones[U]</div><div class='bar'><div style='width:96.51294763243519%' class='bc0'><span>96.02%</span></div></div><div class='key'>PrecariousShears[U]</div><div class='bar'><div style='width:97.70613975208082%' class='bc0'><span>97.21%</span></div></div><div class='key'>SilkenTress[U]</div><div class='bar'><div style='width:84.72409532667795%' class='bc0'><span>84.30%</span></div></div><div class='key'>SilverCrucible[U]</div><div class='bar'><div style='width:100.0%' class='bc0'><span>99.49%</span></div></div><div class='key'>CursedPearl[O]</div><div class='bar'><div style='width:0.0%' class='bc0'><span>0%</span></div></div><div class='key'>HeftyTablet[O]</div><div class='bar'><div style='width:0.0%' class='bc0'><span>0%</span></div></div><div class='key'>LargeCapsule[O]</div><div class='bar'><div style='width:0.0%' class='bc0'><span>0%</span></div></div><div class='key'>LeafyPoultice[O]</div><div class='bar'><div style='width:0.0%' class='bc0'><span>0%</span></div></div><div class='key'>NeowsBones[O]</div><div class='bar'><div style='width:13.15077174648483%' class='bc0'><span>13.08%</span></div></div><div class='key'>PrecariousShears[O]</div><div class='bar'><div style='width:73.27095404511932%' class='bc0'><span>72.90%</span></div></div><div class='key'>SilkenTress[O]</div><div class='bar'><div style='width:37.27241273999929%' class='bc0'><span>37.08%</span></div></div><div class='key'>SilverCrucible[O]</div><div class='bar'><div style='width:6.644627784853899%' class='bc0'><span>6.61%</span></div></div>
+        
+    </div>
+<p>Again,
+recall that Tablet and Capsule are extremely rare in Underdocks,
+and Shears and Tress are extremely rare in Overgrowth.
+Accounting for this,
+overall,
+<strong>the chance that your first fight drops a potion is 76% in Underdocks
+and just 4% in Overgrowth</strong>!</p>
+<p>However,
+note that picking any Neow that generates a card reward or random relic
+breaks this correlation,
+since it steals the first call to rewards RNG.
+So Lost Coffer might look more appealing than average on bad Overgrowth maps.</p>
+<p>As a bonus,
+the chance that the first ? room is a combat
+is also quite unevenly distributed:</p>
+<div class='barchart'>
+        <div class='key'>CursedPearl[U]</div><div class='bar'><div style='width:25.52846840454035%' class='bc0'><span>10.58%</span></div></div><div class='key'>HeftyTablet[U]</div><div class='bar'><div style='width:0.0%' class='bc0'><span>0%</span></div></div><div class='key'>LargeCapsule[U]</div><div class='bar'><div style='width:0.0%' class='bc0'><span>0%</span></div></div><div class='key'>LeafyPoultice[U]</div><div class='bar'><div style='width:13.811663257823296%' class='bc0'><span>5.72%</span></div></div><div class='key'>NeowsBones[U]</div><div class='bar'><div style='width:46.077341987306234%' class='bc0'><span>19.09%</span></div></div><div class='key'>PrecariousShears[U]</div><div class='bar'><div style='width:0.0%' class='bc0'><span>0%</span></div></div><div class='key'>SilkenTress[U]</div><div class='bar'><div style='width:0.0%' class='bc0'><span>0%</span></div></div><div class='key'>SilverCrucible[U]</div><div class='bar'><div style='width:100.0%' class='bc0'><span>41.44%</span></div></div><div class='key'>CursedPearl[O]</div><div class='bar'><div style='width:56.02459705982269%' class='bc0'><span>23.22%</span></div></div><div class='key'>HeftyTablet[O]</div><div class='bar'><div style='width:38.82157288072348%' class='bc0'><span>16.09%</span></div></div><div class='key'>LargeCapsule[O]</div><div class='bar'><div style='width:36.775155648876726%' class='bc0'><span>15.24%</span></div></div><div class='key'>LeafyPoultice[O]</div><div class='bar'><div style='width:0.0%' class='bc0'><span>0%</span></div></div><div class='key'>NeowsBones[O]</div><div class='bar'><div style='width:0.0%' class='bc0'><span>0%</span></div></div><div class='key'>PrecariousShears[O]</div><div class='bar'><div style='width:0.0%' class='bc0'><span>0%</span></div></div><div class='key'>SilkenTress[O]</div><div class='bar'><div style='width:0.0%' class='bc0'><span>0%</span></div></div><div class='key'>SilverCrucible[O]</div><div class='bar'><div style='width:0.0%' class='bc0'><span>0%</span></div></div>
+        
+    </div>
+<p>(It mostly evens out by act,
+at ~9.6% in Underdocks and ~10.4% in Overgrowth.)</p>
+<!-- qmark -->
+<!-- .barchart {{ -->
+<!-- *asis 1 -->
+<!--   21399d124707 CursedPearl -->
+<!--   19138d125584 HeftyTablet -->
+<!--   17711d124450 LargeCapsule -->
+<!--    3641d125546 LeafyPoultice -->
+<!--   12421d124573 NeowsBones -->
+<!--       0d125478 PrecariousShears -->
+<!--       0d124311 SilkenTress -->
+<!--   25637d125351 SilverCrucible -->
+<!-- }} -->
+<!-- pot -->
+<!-- .barchart {{ -->
+<!-- *asis 1 -->
+<!--   10072d124707 CursedPearl -->
+<!--       0d125584 HeftyTablet -->
+<!--       0d124450 LargeCapsule -->
+<!--   32588d125546 LeafyPoultice -->
+<!--   70253d124573 NeowsBones -->
+<!--  120344d125478 PrecariousShears -->
+<!--  100903d124311 SilkenTress -->
+<!--   65750d125351 SilverCrucible -->
+<!-- }} -->
+<p>So far,
+everything here has only applied to Act 1.
+But --
+you guessed it --
+we can go further...</p>
+<h2>Doll Room</h2>
+<p>The <a href="https://slaythespire.wiki.gg/wiki/Slay_the_Spire_2:Doll_Room">Doll Room</a>
+is an event that appears in Act 2.
+But as with most events,
+it uses its own RNG,
+so we can correlate it with the first call to every other RNG.</p>
+<p>By this point in the game,
+you have seen a very large number of first-RNG-calls,
+and it's probably possible to predict the Doll Room with very high accuracy.
+But even just the Neow options are pretty good:</p>
+<div class="barchartlgnd"><div><div class='bc0'></div>Daughter</div><div><div class='bc1'></div>Struggles</div><div><div class='bc2'></div>BingBong</div></div><div class='barchart'>
+        <div class='key'>CursedPearl</div><div class='bar'><div style='width:60.770476399912035%' class='bc0'><span>60.77%</span></div><div style='width:7.6627816317146795%' class='bc1'><span>7.66%</span></div><div style='width:31.566741968373282%' class='bc2'><span>31.57%</span></div></div><div class='key'>HeftyTablet</div><div class='bar'><div style='width:90.99784809117718%' class='bc0'><span>91.00%</span></div><div style='width:9.002151908822826%' class='bc1'><span>9.00%</span></div></div><div class='key'>LargeCapsule</div><div class='bar'><div style='width:55.067696319326046%' class='bc0'><span>55.07%</span></div><div style='width:44.35462842242503%' class='bc1'><span>44.35%</span></div><div style='width:0.5776752582489219%' class='bc2 ral'><span>0.58%</span></div></div><div class='key'>LeafyPoultice</div><div class='bar'><div style='width:23.139968492631663%' class='bc0'><span>23.14%</span></div><div style='width:70.80782499451612%' class='bc1'><span>70.81%</span></div><div style='width:6.052206512852215%' class='bc2'><span>6.05%</span></div></div><div class='key'>NeowsBones</div><div class='bar'><div style='width:4.5375427645399435%' class='bc0'><span>4.54%</span></div><div style='width:70.37992917591981%' class='bc1'><span>70.38%</span></div><div style='width:25.082528059540245%' class='bc2'><span>25.08%</span></div></div><div class='key'>PrecariousShears</div><div class='bar'><div style='width:46.09254550187213%' class='bc1'><span>46.09%</span></div><div style='width:53.90745449812787%' class='bc2'><span>53.91%</span></div></div><div class='key'>SilkenTress</div><div class='bar'><div style='width:8.503346827528157%' class='bc1'><span>8.50%</span></div><div style='width:91.49665317247184%' class='bc2'><span>91.50%</span></div></div><div class='key'>SilverCrucible</div><div class='bar'><div style='width:32.222555789052336%' class='bc0'><span>32.22%</span></div><div style='width:9.89492644851396%' class='bc1'><span>9.89%</span></div><div style='width:57.8825177624337%' class='bc2'><span>57.88%</span></div></div>
+        
+    </div>
+<p>This shows which doll you will get if you click the &quot;one doll&quot; option.
+The &quot;two dolls&quot; option can be determined from the &quot;one doll&quot; option as follows:</p>
+<table style='margin-left:1rem'>
+<tr><td>1 doll</td><td></td><td>2 dolls</td></tr>
+<tr><td>Daughter</td> <td>→</td><td>Daughter + Struggles</td></tr>
+<tr><td>Struggles</td><td>→</td><td>Struggles + BingBong</td></tr>
+<tr><td>BingBong</td> <td>→</td><td>BingBong + Daughter</td></tr>
+</table>
+<p>So if you rolled Hefty Tablet and want to guarantee Mr. Struggles,
+or if you rolled Precarious Shears or Silken Tress and want to guarantee Bing Bong,
+you only need to pay 5HP,
+and it will always be one of the options.</p>
+<p>You might notice that the doll distribution
+looks pretty similar to the Underdocks/Overgrowth distribution.
+And in fact,
+there's a simpler &quot;rule&quot;:
+in Underdocks runs,
+the &quot;one doll&quot; button is ~62% to be Bing Bong and ~4% to be Daughter,
+and vice versa for Overgrowth.</p>
+<h2>Divination</h2>
+<p>The <a href="https://slaythespire.wiki.gg/wiki/Slay_the_Spire_2:Crystal_Sphere">Crystal Sphere</a>
+also only appears in Act 2 or 3.</p>
+<p>Again,
+it uses its own RNG,
+but this time the first interesting RNG call is the <em>second</em> one,
+which determines where to place the relic box.
+(The first call determines the randomly generated gold price of the first event option.)</p>
+<p>What's the easiest second roll to correlate with?
+There are some that are very high-signal
+(e.g. the top left card in the first shop),
+but it's kind of obnoxious to track
+because it depends on which rarity was rolled first.</p>
+<p>It turns out that <strong>the amount of gold your first combat drops</strong>
+is the second roll of the &quot;rewards&quot; RNG
+(the first is whether you get a potion,
+as seen above).</p>
+<p>So here's a little widget
+where you can see the distribution
+conditioned on gold number,
+assuming Ascension 3+:</p>
+<p><label>1st fight gold: <input id='divgold' type='number' min=7 max=15 value=7></label></p>
+<div id='divination'></div>
+<p>But okay,
+this opens up a whole new world of possibilities.
+What else can we do by correlating 2nd rolls?</p>
+<h2>Ancient rewards</h2>
+<p>Being able to predict Ancients
+would be extremely powerful.
+But unfortunately
+(or fortunately, depending on your perspective?),
+combats, elites, bosses, and Ancients
+are all rolled by <code>RunState.Rng.UpFront</code>,
+which first rolls about 100 times to shuffle the relic lists.</p>
+<!-- .barchart {{ -->
+<!-- *asis 1 -->
+<!--    2899d125000 7 -->
+<!--    9934d125000 8 -->
+<!--   40928d125000 9 -->
+<!--    1903d125000 10 -->
+<!--       0d125000 11 -->
+<!--    2438d125000 12 -->
+<!--   45345d125000 13 -->
+<!--   17580d125000 14 -->
+<!--   21816d125000 15 -->
+<!-- }} -->
+<p>What you can do is predict what Ancient options you will get
+<em>if that Ancient shows up</em>.
+For example,
+here's <strong>Pael's option 2 based on first combat gold</strong>:</p>
+<div class="barchartlgnd"><div><div class='bc0'></div>PaelsWing</div><div><div class='bc1'></div>PaelsClaw</div><div><div class='bc2'></div>PaelsTooth</div><div><div class='bc3'></div>PaelsLegion</div></div><div class='barchart'>
+        <div class='key'>7</div><div class='bar'><div style='width:47.16743902000934%' class='bc0'><span>47.17%</span></div><div style='width:50.22901174695549%' class='bc1'><span>50.23%</span></div><div style='width:2.603549233035169%' class='bc3 ral'><span>2.60%</span></div></div><div class='key'>8</div><div class='bar'><div style='width:75.02786967779056%' class='bc0'><span>75.03%</span></div><div style='width:16.041247123130034%' class='bc1'><span>16.04%</span></div><div style='width:8.930883199079402%' class='bc3'><span>8.93%</span></div></div><div class='key'>9</div><div class='bar'><div style='width:3.627849905717405%' class='bc0'><span>3.63%</span></div><div style='width:12.603192074848652%' class='bc1'><span>12.60%</span></div><div style='width:46.8426608443029%' class='bc2'><span>46.84%</span></div><div style='width:36.92629717513105%' class='bc3'><span>36.93%</span></div></div><div class='key'>10</div><div class='bar'><div style='width:4.306172839506173%' class='bc0'><span>4.31%</span></div><div style='width:25.397081930415265%' class='bc1'><span>25.40%</span></div><div style='width:68.58810325476992%' class='bc2'><span>68.59%</span></div><div style='width:1.708641975308642%' class='bc3 ral'><span>1.71%</span></div></div><div class='key'>11</div><div class='bar'><div style='width:33.98451931481298%' class='bc0'><span>33.98%</span></div><div style='width:52.7604819016553%' class='bc1'><span>52.76%</span></div><div style='width:13.254998783531724%' class='bc2'><span>13.25%</span></div></div><div class='key'>12</div><div class='bar'><div style='width:56.829202343397924%' class='bc0'><span>56.83%</span></div><div style='width:40.97341144659757%' class='bc1'><span>40.97%</span></div><div style='width:2.1973862100045065%' class='bc3 ral'><span>2.20%</span></div></div><div class='key'>13</div><div class='bar'><div style='width:33.38835264989773%' class='bc0'><span>33.39%</span></div><div style='width:9.467508701424522%' class='bc1'><span>9.47%</span></div><div style='width:16.46722164412071%' class='bc2'><span>16.47%</span></div><div style='width:40.67691700455703%' class='bc3'><span>40.68%</span></div></div><div class='key'>14</div><div class='bar'><div style='width:84.14430665163472%' class='bc2'><span>84.14%</span></div><div style='width:15.855693348365277%' class='bc3'><span>15.86%</span></div></div><div class='key'>15</div><div class='bar'><div style='width:2.631389164337871%' class='bc0'><span>2.63%</span></div><div style='width:49.67006220138826%' class='bc1'><span>49.67%</span></div><div style='width:28.03209231046606%' class='bc2'><span>28.03%</span></div><div style='width:19.666456323807807%' class='bc3'><span>19.67%</span></div></div>
+        
+    </div>
+<p>While this information is surprisingly strong,
+it's not immediately clear how useful it is,
+because you don't know whether the Act 2 Ancient will be Pael in the first place.
+But I suppose it means if you roll 11 gold,
+you should immediately give up on your Clone dreams.
+(Or maybe I'm dreaming too small,
+and 13 gold means the Perfected Strike immediately gets in the deck...)</p>
+<p>You can do the same for Tezcatara's option 2,
+but those are mostly not particularly actionable in Act 1.
+On the other hand,
+<strong>Tezcatara's option 1</strong> contains Nutritious Soup,
+which very well might influence how much you prioritize Strike removes:</p>
+<div class="barchartlgnd"><div><div class='bc0'></div>VeryHotCocoa</div><div><div class='bc1'></div>YummyCookie</div><div><div class='bc2'></div>NutritiousSoup</div></div><div class='barchart'>
+        <div class='key'>CursedPearl[U]</div><div class='bar'><div style='width:19.36590262673582%' class='bc0'><span>19.37%</span></div><div style='width:67.8919190229212%' class='bc1'><span>67.89%</span></div><div style='width:12.742178350342982%' class='bc2'><span>12.74%</span></div></div><div class='key'>HeftyTablet[U]</div><div class='bar'><div style='width:36.635457565690125%' class='bc0'><span>36.64%</span></div><div style='width:63.364542434309875%' class='bc1'><span>63.36%</span></div></div><div class='key'>LargeCapsule[U]</div><div class='bar'><div style='width:69.32701652089408%' class='bc0'><span>69.33%</span></div><div style='width:30.672983479105927%' class='bc1'><span>30.67%</span></div></div><div class='key'>LeafyPoultice[U]</div><div class='bar'><div style='width:39.00023579344494%' class='bc0'><span>39.00%</span></div><div style='width:32.198380885011396%' class='bc1'><span>32.20%</span></div><div style='width:28.80138332154366%' class='bc2'><span>28.80%</span></div></div><div class='key'>NeowsBones[U]</div><div class='bar'><div style='width:29.190942491276076%' class='bc1'><span>29.19%</span></div><div style='width:70.80905750872392%' class='bc2'><span>70.81%</span></div></div><div class='key'>PrecariousShears[U]</div><div class='bar'><div style='width:9.54181438472097%' class='bc1'><span>9.54%</span></div><div style='width:90.45818561527904%' class='bc2'><span>90.46%</span></div></div><div class='key'>SilkenTress[U]</div><div class='bar'><div style='width:33.77296887518199%' class='bc1'><span>33.77%</span></div><div style='width:66.22703112481801%' class='bc2'><span>66.23%</span></div></div><div class='key'>SilverCrucible[U]</div><div class='bar'><div style='width:69.43555426243817%' class='bc1'><span>69.44%</span></div><div style='width:30.564445737561826%' class='bc2'><span>30.56%</span></div></div><div class='key'>CursedPearl[O]</div><div class='bar'><div style='width:36.77564408580624%' class='bc0'><span>36.78%</span></div><div style='width:63.22435591419376%' class='bc1'><span>63.22%</span></div></div><div class='key'>HeftyTablet[O]</div><div class='bar'><div style='width:90.85422235671895%' class='bc0'><span>90.85%</span></div><div style='width:9.145777643281047%' class='bc1'><span>9.15%</span></div></div><div class='key'>LargeCapsule[O]</div><div class='bar'><div style='width:89.55841608012528%' class='bc0'><span>89.56%</span></div><div style='width:10.441583919874718%' class='bc1'><span>10.44%</span></div></div><div class='key'>LeafyPoultice[O]</div><div class='bar'><div style='width:71.41657651257044%' class='bc0'><span>71.42%</span></div><div style='width:28.58342348742956%' class='bc1'><span>28.58%</span></div></div><div class='key'>NeowsBones[O]</div><div class='bar'><div style='width:1.3423608077685563%' class='bc0'><span>1.34%</span></div><div style='width:32.132656832767715%' class='bc1'><span>32.13%</span></div><div style='width:66.52498235946372%' class='bc2'><span>66.52%</span></div></div><div class='key'>PrecariousShears[O]</div><div class='bar'><div style='width:36.286606213765424%' class='bc1'><span>36.29%</span></div><div style='width:63.713393786234576%' class='bc2'><span>63.71%</span></div></div><div class='key'>SilkenTress[O]</div><div class='bar'><div style='width:68.04374240583232%' class='bc1'><span>68.04%</span></div><div style='width:31.956257594167678%' class='bc2'><span>31.96%</span></div></div><div class='key'>SilverCrucible[O]</div><div class='bar'><div style='width:12.9794439631409%' class='bc0'><span>12.98%</span></div><div style='width:67.88690241789399%' class='bc1'><span>67.89%</span></div><div style='width:19.13365361896511%' class='bc2'><span>19.13%</span></div></div>
+        
+    </div>
+<p>Particularly noteworthy is that if Precarious Shears is offered,
+then Tez option 1 is 88.75% to be Soup.
+This was especially funny
+because as I was actively dumping CRNG discoveries into Discord,
+two different people posted sad screenshots of them seeing Soup with 2+ Strikes removed.
+And what do you know,
+both of them had Shears in the relic bar.
+I only felt a little bad breaking the news.</p>
+<p>What about Orobas?
+It turns out that that one rolls a color for Sea Glass
+and a choice between Prismatic Gem and Sea Glass
+before picking option 1,
+so we actually need the <em>third</em> roll of some RNG.
+The easiest one to reach for
+is the <strong>first combat reward</strong>.</p>
+<div class="barchartlgnd"><div><div class='bc0'></div>ElectricShrymp</div><div><div class='bc1'></div>GlassEye</div><div><div class='bc2'></div>SandCastle</div><div><div class='bc3'></div>GemOrGlass</div></div><div class='barchart'>
+        <div class='key'>common potion</div><div class='bar'><div style='width:15.651453720735383%' class='bc0'><span>15.65%</span></div><div style='width:23.773799320088216%' class='bc1'><span>23.77%</span></div><div style='width:37.925787532382486%' class='bc2'><span>37.93%</span></div><div style='width:22.64895942679392%' class='bc3'><span>22.65%</span></div></div><div class='key'>uncommon potion</div><div class='bar'><div style='width:39.992032467694145%' class='bc0'><span>39.99%</span></div><div style='width:28.805119139506512%' class='bc1'><span>28.81%</span></div><div style='width:1.6258745611632597%' class='bc2'><span>1.63%</span></div><div style='width:29.57697383163608%' class='bc3'><span>29.58%</span></div></div><div class='key'>rare potion</div><div class='bar'><div style='width:46.56958131944008%' class='bc0'><span>46.57%</span></div><div style='width:23.143556587784822%' class='bc1'><span>23.14%</span></div><div style='width:30.286862092775092%' class='bc3'><span>30.29%</span></div></div><div class='key'>common card</div><div class='bar'><div style='width:16.522729548412936%' class='bc0'><span>16.52%</span></div><div style='width:23.64699108841494%' class='bc1'><span>23.65%</span></div><div style='width:37.47121257634925%' class='bc2'><span>37.47%</span></div><div style='width:22.35906678682287%' class='bc3'><span>22.36%</span></div></div><div class='key'>uncommon card</div><div class='bar'><div style='width:42.19390360875469%' class='bc0'><span>42.19%</span></div><div style='width:27.853557058684306%' class='bc1'><span>27.85%</span></div><div style='width:29.952539332561006%' class='bc3'><span>29.95%</span></div></div>
+        
+    </div>
+<p>If you got a potion,
+that was the third RNG roll;
+otherwise it was the first card.
+Also note that picking any Neow that gives you a card or relic
+breaks this correlation and introduces a new one,
+which I won't bother trying to elaborate on here.</p>
+<p>I suppose the actionable information here
+is the uneven distribution of Electric Shrymp,
+which might influence how much you want to pick a good Imbue card.</p>
+<p>As for Darv and the Act 3 Ancients,
+all of them shuffle longish lists,
+which calls RNG too many times to be cleanly predictable.</p>
+<h2>And more...</h2>
+<p>In Slay the Spire 1,
+to choose between some number of things,
+most of the RNGs rolled an integer from 0 to something very large,
+then took the remainder when divided by that number.
+This meant that you could only take advantage of correlations
+when the numbers of things being chosen from
+shared a lot of factors,
+which was not that common.</p>
+<p>In Slay the Spire 2,
+to choose between some number of things,
+most of the RNGs roll a decimal number from 0 to 1,
+then scale by that number.
+This means that basically every RNG output
+gives information about every other RNG output.</p>
+<p>I have already described many specific instances of correlation.
+But really, every first roll can be correlated against every other first roll,
+and second roll against second roll,
+and so on.</p>
+<p>To that end,
+here is a very long,
+yet still incomplete,
+list of first rolls.
+Remember,
+<em>all</em> of these give <em>some</em> information
+about <em>all</em> the others.</p>
+<ul class="small">
+<li>version of Act 1</li>
+<li>Neow curse pool relic</li>
+<li>the first common relic seen in a shop</li>
+<li>the last card you draw in your first combat</li>
+<li>the first ? room's contents</li>
+<li>the first card you generate during combat (e.g. Attack Potion)</li>
+<li>the first randomly selected card during combat (e.g. Mummified Hand)</li>
+<li>the first random energy cost chosen (e.g. Slither)</li>
+<li>the first random enemy chosen (e.g. lightning orbs)</li>
+<li>the first instance of random monster AI</li>
+<li>the first &quot;niche RNG&quot; result (e.g. Whetstone)</li>
+<li>the first orb made by Trash to Treasure or Chaos</li>
+<li>whether your first fight drops a potion</li>
+<li>which card is on sale in the first shop</li>
+<li>option 1 of Pael or Tezcatara</li>
+<li>the first transform from Leafy Poultice</li>
+<li>the version of music heard in acts with multiple tracks</li>
+<li>cosmetic skin of Byrdpip or Pael's Legion</li>
+<li>the behavior of all of these encounters:
+<a href="https://slaythespire.wiki.gg/wiki/Slay_the_Spire_2:Endless_Conveyor">Endless Conveyor</a> (initially offered food),
+<a href="https://slaythespire.wiki.gg/wiki/Slay_the_Spire_2:Ovicopter">Ovicopter</a> (cosmetic skin of first egg),
+<a href="https://slaythespire.wiki.gg/wiki/Slay_the_Spire_2:Punch_Off">Punch Off</a> (starting HP of Punch Constructs),
+<a href="https://slaythespire.wiki.gg/wiki/Slay_the_Spire_2:Slimes">Three/Four Slimes</a> (order of the two small slimes),
+any encounter with randomized starting intents
+(e.g. <a href="https://slaythespire.wiki.gg/wiki/Slay_the_Spire_2:Two-Tailed_Rat">Two-Tailed Rats</a>),
+and any encounter with randomized enemies
+(e.g. <a href="https://slaythespire.wiki.gg/wiki/Slay_the_Spire_2:Slithering_Strangler">Slithering Strangler</a>'s companion)</li>
+<li>the randomness from all of these events:
+<a href="https://slaythespire.wiki.gg/wiki/Slay_the_Spire_2:Aroma_of_Chaos">Aroma of Chaos</a> (transform),
+<a href="https://slaythespire.wiki.gg/wiki/Slay_the_Spire_2:Colorful_Philosophers">Colorful Philosophers</a> (colors offered),
+<a href="https://slaythespire.wiki.gg/wiki/Slay_the_Spire_2:Crystal_Sphere">Crystal Sphere</a> (gold cost),
+<a href="https://slaythespire.wiki.gg/wiki/Slay_the_Spire_2:Dense_Vegetation">Dense Vegetation</a> (gold amount),
+<a href="https://slaythespire.wiki.gg/wiki/Slay_the_Spire_2:Doll_Room">Doll Room</a> (any button's result),
+<a href="https://slaythespire.wiki.gg/wiki/Slay_the_Spire_2:Jungle_Maze_Adventure">Jungle Maze Adventure</a> (first gold amount),
+<a href="https://slaythespire.wiki.gg/wiki/Slay_the_Spire_2:Luminous_Choir">Luminous Choir</a> (gold cost),
+<a href="https://slaythespire.wiki.gg/wiki/Slay_the_Spire_2:Morphic_Grove">Morphic Grove</a> (first transform),
+<a href="https://slaythespire.wiki.gg/wiki/Slay_the_Spire_2:Ranwid_the_Elder">Ranwid the Elder</a> (requested potion),
+<a href="https://slaythespire.wiki.gg/wiki/Slay_the_Spire_2:Reflections_snoitcelfeR">Reflections snoitcelfeR</a> (first downgraded card),
+<a href="https://slaythespire.wiki.gg/wiki/Slay_the_Spire_2:Stone_of_All_Time">Stone of All Time</a> (requested potion),
+<a href="https://slaythespire.wiki.gg/wiki/Slay_the_Spire_2:Slippery_Bridge">Slippery Bridge</a> (initially offered card),
+<a href="https://slaythespire.wiki.gg/wiki/Slay_the_Spire_2:Sunken_Treasury">Sunken Treasury</a> (first gold reward),
+<a href="https://slaythespire.wiki.gg/wiki/Slay_the_Spire_2:Symbiote">Symbiote</a> (transform),
+<a href="https://slaythespire.wiki.gg/wiki/Slay_the_Spire_2:Tablet_of_Truth">Tablet of Truth</a> (first upgrade),
+<a href="https://slaythespire.wiki.gg/wiki/Slay_the_Spire_2:The_Future_of_Potions%3F">The Future of Potions?</a> (first card type),
+<a href="https://slaythespire.wiki.gg/wiki/Slay_the_Spire_2:The_Lost_Wisp">The Lost Wisp</a> (gold amount),
+<a href="https://slaythespire.wiki.gg/wiki/Slay_the_Spire_2:The_Sunken_Statue">The Sunken Statue</a> (gold amount),
+<a href="https://slaythespire.wiki.gg/wiki/Slay_the_Spire_2:The_Trial">The Trial</a> (which trial),
+<a href="https://slaythespire.wiki.gg/wiki/Slay_the_Spire_2:This_or_That%3F">This or That?</a> (gold amount),
+<a href="https://slaythespire.wiki.gg/wiki/Slay_the_Spire_2:Tinker_Time">Tinker Time</a> (missing card type),
+<a href="https://slaythespire.wiki.gg/wiki/Slay_the_Spire_2:Trash_Heap">Trash Heap</a> (card or relic),
+<a href="https://slaythespire.wiki.gg/wiki/Slay_the_Spire_2:Welcome_to_Wongo&#x27;s">Welcome to Wongo's</a> (downgraded card),
+<a href="https://slaythespire.wiki.gg/wiki/Slay_the_Spire_2:Whispering_Hollow">Whispering Hollow</a> (gold cost)</li>
+</ul>
+<p>Here is a shorter list of second rolls.</p>
+<ul class="small">
+<li>every bullet that starts with &quot;the first&quot;, replacing with &quot;the second&quot;</li>
+<li>your first fight's gold reward</li>
+<li>the top left card in the first shop</li>
+<li>option 2 of Pael or Tezcatara</li>
+<li>the randomness from all of these events:
+<a href="https://slaythespire.wiki.gg/wiki/Slay_the_Spire_2:Crystal_Sphere">Crystal Sphere</a> (placement of relic box),
+<a href="https://slaythespire.wiki.gg/wiki/Slay_the_Spire_2:Doll_Room">Doll Room</a> (2nd or 3rd button's result),
+<a href="https://slaythespire.wiki.gg/wiki/Slay_the_Spire_2:Endless_Conveyor">Endless Conveyor</a> (transform / upgrade / next food),
+<a href="https://slaythespire.wiki.gg/wiki/Slay_the_Spire_2:Jungle_Maze_Adventure">Jungle Maze Adventure</a> (second gold amount),
+<a href="https://slaythespire.wiki.gg/wiki/Slay_the_Spire_2:Morphic_Grove">Morphic Grove</a> (second transform),
+<a href="https://slaythespire.wiki.gg/wiki/Slay_the_Spire_2:Ranwid_the_Elder">Ranwid the Elder</a> (requested relic),
+<a href="https://slaythespire.wiki.gg/wiki/Slay_the_Spire_2:Reflections_snoitcelfeR">Reflections snoitcelfeR</a> (second downgraded card),
+<a href="https://slaythespire.wiki.gg/wiki/Slay_the_Spire_2:Slippery_Bridge">Slippery Bridge</a> (next card),
+<a href="https://slaythespire.wiki.gg/wiki/Slay_the_Spire_2:Sunken_Treasury">Sunken Treasury</a> (second gold reward),
+<a href="https://slaythespire.wiki.gg/wiki/Slay_the_Spire_2:Tablet_of_Truth">Tablet of Truth</a> (second upgrade),
+<a href="https://slaythespire.wiki.gg/wiki/Slay_the_Spire_2:The_Future_of_Potions%3F">The Future of Potions?</a> (second card type),
+<a href="https://slaythespire.wiki.gg/wiki/Slay_the_Spire_2:The_Trial">The Trial</a> (first transform),
+<a href="https://slaythespire.wiki.gg/wiki/Slay_the_Spire_2:Tinker_Time">Tinker Time</a> (order of offered card types),
+<a href="https://slaythespire.wiki.gg/wiki/Slay_the_Spire_2:Whispering_Hollow">Whispering Hollow</a> (transform)</li>
+</ul>
+<p>I could go on,
+but hopefully,
+I have made my point.</p>
+<h2>Plea to the developers</h2>
+<p>This section title is mostly just a reference
+to <a href="https://forgottenarbiter.github.io/Correlated-Randomness/">Forgotten Arbiter's post about Spire 1 CRNG</a>.
+Of course,
+I do think that CRNG in Spire 2 is a bug and ought to be fixed,
+and I think it would be pretty bad for the game if it wasn't.</p>
+<p>However,
+I am reasonably confident
+that Mega Crit will address this issue.
+For one thing,
+Spire 2 is still in Early Access,
+much earlier in its development cycle
+than when CRNG was discovered in Spire 1.</p>
+<p>But also,
+the influence of CRNG is much more directly impactful
+to players who don't know or care about it.
+It would be pretty unreasonable,
+for example,
+if it was impossible to complete the in-game Compendium
+(due to being unable to ever see the card Rebound).
+And other correlations,
+such as the curse distribution of Neow's Bones,
+have a significant balance impact
+which would not make sense to allow to exist
+in a very intentionally-designed strategy game.</p>
+<p>[todo: explain how to fix it]</p>
+<h2>Appendix: How?</h2>
+<p>[todo: describe how i found this out]</p>
+<h2>Appendix: Why?</h2>
+<p>[todo: explain the math behind c# prng linearity]</p>
+<hr />
+<div class='footnote'><sup id='footnote1'><a class='footnote' href='#footref1'>[1]</a></sup> <div id='footnote1ctnt'>The title and several section headings of this post
+are an intentional homage to that one.
+Also,
+hi Arbiter,
+I am sure you will be reading this at some point :)</div></div><div class='footnote'><sup id='footnote2'><a class='footnote' href='#footref2'>[2]</a></sup> <div id='footnote2ctnt'>Actually,
+when Neow's Bones was first added,
+everyone kept getting Guilty --
+I'm guessing that the correlation was different in that patch
+and has since changed due to more Neow options being added,
+though I haven't dug through old patch source code to check.
+<div style='height:0.5em'></div>
+Also,
+the author of the Reddit post with 9 screenshots
+(all Underdocks, by the way)
+has <em>no idea</em> that their &quot;joke&quot;
+about Doubt being &quot;close enough letter wise&quot; to Debt
+was actually totally correct,
+since the curses are sorted alphabetically internally.</div></div><div class='footnote'><sup id='footnote3'><a class='footnote' href='#footref3'>[3]</a></sup> <div id='footnote3ctnt'>Why is this different in multiplayer?
+It's because the event RNGs are offset
+not only by a constant corresponding to the event,
+but also your Steam ID,
+if playing multiplayer
+(so that people don't all get the same results).
+This defaults to 1 in single player
+so that everyone's single player seeds are the same.
+This also means that if you have an unlucky Steam ID,
+you might be permanently locked out of ever seeing the card Rebound,
+even in multiplayer.
+Too bad.</div></div>
+
+<h2 id='comments'>comments</h2>
+<p><i>There are no comments yet.</i></p>
+<form id='commentform' method='post' action='https://dyn.tck.mn/comment'>
+    <p><label>name: <input name='name'></label></p>
+    <p><label>contact (private, optional): <input name='cont'></label></p>
+    <p id='commentinfo'>
+        <a href='/bloginfo' target='_blank'>formatting</a> is supported.
+        comments require manual approval.
+    </p>
+    <p><textarea name='comm' rows='5'></textarea></p>
+    <p>
+        <input type='hidden' name='post' value='blog/correlated-randomness-sts2'>
+        <input type='submit' id='commentsubmit' value='leave a comment'>
+        <span id='commentfeedback'></span>
+    </p>
+</form>
+
+        </main>
+
+    </body>
+</html>
