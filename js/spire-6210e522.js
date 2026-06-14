@@ -1,4 +1,4 @@
-const ph = 150, pw = 250;
+const ph = 150, pw = 250, pb = 2;
 
 function clr(el) { while (el.firstChild) el.removeChild(el.firstChild); }
 
@@ -43,13 +43,13 @@ window.addEventListener('load', () => {
     let touching = false;
     for (const el of Array.from(document.getElementsByClassName('sts'))) {
         const go = e => {
-            popup.style.left = Math.max(e.pageX - pw, scrollX) + 'px';
-            popup.style.top = Math.max(e.pageY - ph, scrollY) + 'px';
+            popup.style.left = Math.max(e.pageX - pw - pb*2, scrollX) + 'px';
+            popup.style.top = Math.max(e.pageY - ph - pb*2, scrollY) + 'px';
         };
         el.addEventListener('pointerenter', e => {
             const desc = el.dataset.desc.split('/');
             clr(ptitle); clr(pbody);
-            add(ptitle, 'div', { txt: el.textContent.split('+')[0], cls: 'stsname' });
+            add(ptitle, 'div', { txt: el.dataset.title || el.textContent.split('+')[0], cls: 'stsname' });
             if (desc[1]) stxt(add(ptitle, 'div', { cls: 'stscost' }), desc[1] + ' [E]');
             stxt(pbody, desc[0]);
             popup.classList.remove(col(popup));
