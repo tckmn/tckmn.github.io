@@ -5,6 +5,28 @@
         <description>Andy Tockman's blog</description>
         <language>en</language>
 <item>
+    <title>Correlated randomness in Slay the Spire 2</title>
+    <link>https://tck.mn/blog/correlated-randomness-sts2</link>
+    <description>Here are three true statements about the game of Slay the Spire 2
+(in single player):
+
+
+If you pick Neow's Bones in the Underdocks,
+the random curse is ~54% likely to be Debt.*
+
+
+It is impossible to receive Rebound from the Trash Heap event.
+
+
+Your first fight is 76% likely to drop a potion in Underdocks,
+and 4% likely to drop a potion in Overgrowth.**
+
+</description>
+    <pubDate>Sat, 13 Jun 2026 11:11:00 -0400</pubDate>
+    <guid>https://tck.mn/blog/correlated-randomness-sts2</guid>
+</item>
+
+<item>
     <title>The Hellraiser "infinite" in Slay the Spire 2</title>
     <link>https://tck.mn/blog/hellraiser-infinite</link>
     <description>Slay the Spire 2 was released 4 days ago!
