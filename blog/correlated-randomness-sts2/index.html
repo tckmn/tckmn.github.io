@@ -4,7 +4,7 @@
         <meta charset='utf-8'>
         <meta name='viewport' content='width=device-width, initial-scale=1'>
         <title>Correlated randomness in Slay the Spire 2 - Andy Tockman</title>
-        <script src='/js/blog_correlated-randomness-sts2-eb2fd133.js'></script><script src='/js/charts-4d9b8dce.js'></script><script src='/js/comments-db3d7755.js'></script><script src='/js/footnotes-370279b7.js'></script><link rel='stylesheet' href='/css/global-5ee50410.css'><link rel='stylesheet' href='/css/charts-f3d7a806.css'>
+        <script src='/js/blog_correlated-randomness-sts2-e980394e.js'></script><script src='/js/charts-4d9b8dce.js'></script><script src='/js/comments-db3d7755.js'></script><script src='/js/footnotes-5d6c4be6.js'></script><script src='/js/spire-853408da.js'></script><link rel='stylesheet' href='/css/global-5ee50410.css'><link rel='stylesheet' href='/css/charts-f3d7a806.css'><link rel='stylesheet' href='/css/spire-e62b6507.css'>
         <link rel='apple-touch-icon' sizes='180x180' href='/apple-touch-icon.png'>
         <link rel='icon' type='image/png' sizes='32x32' href='/favicon-32x32.png'>
         <link rel='icon' type='image/png' sizes='16x16' href='/favicon-16x16.png'>
@@ -16,7 +16,7 @@
         <meta property='og:title' content='Correlated randomness in Slay the Spire 2' />
         <meta property='og:type' content='website' />
         <meta property='og:url' content='https://tck.mn/blog/correlated-randomness-sts2' />
-        <meta property='og:image' content='https://tck.mn/img/dp.png' />
+        <meta property='og:image' content='https://tck.mn/blog/correlated-randomness-sts2/crng_chart.png' />
         <meta property='og:description' content='Here are three true statements about the game of Slay the Spire 2 (in single player):   If you pick Neow&#39;s Bones in the Underdocks, the random curse is ~54% likely to be Debt.*   It is impossible to receive Rebound from the Trash Heap event.   Your first fight is 76% likely to drop a potion in Underdocks, and 4% likely to drop a potion in Overgrowth.**' />
         <meta property='og:site_name' content='Andy Tockman' />
     </head>
@@ -107,7 +107,7 @@
         <div id='subheader-post'></div>
 
         <main>
-        <div class='hsup'><h1>Correlated randomness in Slay the Spire 2</h1><span>2026-06-13</span></div><div class='hsub'><span class='len lenverylong'><span>very long</span> (4910 words)</span> <a class='tag' href='/blog/draft'><span class='tag'>draft</span></a><a class='tag' href='/blog/games'><span class='tag'>games</span></a><a class='tag' href='/blog/video-games'><span class='tag'>video games</span></a><a class='tag' href='/blog/slay-the-spire'><span class='tag'>slay the spire</span></a><a class='tag' href='/blog/math'><span class='tag'>math</span></a></div>
+        <div class='hsup'><h1>Correlated randomness in Slay the Spire 2</h1><span>2026-06-13</span></div><div class='hsub'><span class='len lenverylong'><span>very long</span> (6830 words)</span> <a class='tag' href='/blog/draft'><span class='tag'>draft</span></a><a class='tag' href='/blog/games'><span class='tag'>games</span></a><a class='tag' href='/blog/video-games'><span class='tag'>video games</span></a><a class='tag' href='/blog/slay-the-spire'><span class='tag'>slay the spire</span></a><a class='tag' href='/blog/math'><span class='tag'>math</span></a></div>
 <p>Here are three true statements about the game of Slay the Spire 2
 (in single player):</p>
 <ol>
@@ -123,6 +123,8 @@ the random curse is ~54% likely to be Debt.*</p>
 and 4% likely to drop a potion in Overgrowth.**</p>
 </li>
 </ol>
+
+
 
 <p style='font-size:11pt;color:#b8b8b8'>
 (* assuming neither of the relics from Neow's Bones is New Leaf or Kaleidoscope)<br>
@@ -141,7 +143,7 @@ gives information that helps predict the first output of all of the others.</p>
 <!-- Spire 2's CRNG is somehow both much more subtle, -->
 <!-- and has far more significant impact on gameplay, -->
 <!-- even to casual players who are unaware of it. -->
-<h2>The random number generators of Slay the Spire 2</h2>
+<h2 id="rng_primer">The random number generators of Slay the Spire 2</h2>
 <p>For now,
 I will give an extremely simplified explanation of this correlation.
 If you want more details,
@@ -211,7 +213,7 @@ to legitimately impactful on gameplay
 
 <h2>Neow's Bones</h2>
 <p>I'll start with the first example from the intro.
-If you pick Neow's Bones in Underdocks,
+If you pick <span class='sts stsrelic' data-desc='Upon pickup, gain 2 random Neow Relics. Add 1 random Curse to your Deck.'>Neow's Bones</span> in Underdocks,
 the &quot;random&quot; curse you receive
 actually has the following approximate distribution:</p>
 <div class='barchart'>
@@ -227,7 +229,7 @@ you instead get a curse from this distribution:</p>
     </div>
 <p>This one is quite funny to me --
 <a href='bones_debt.png' target='_blank'>people all over Reddit and Discord have been lamenting their terrible luck</a>
-that they keep rolling Debt from Neow's Bones.<sup id='footref2'><a class='footnote' href='#footnote2'>[2]</a></sup>
+that they keep rolling <span class='sts stsrc stscc2 stsgs' data-desc='[[Unplayable]]. At the end of your turn, if this is in your Hand, lose 10 [[Gold]].'>Debt</span> from Neow's Bones.<sup id='footref2'><a class='footnote' href='#footnote2'>[2]</a></sup>
 Even before discovering CRNG,
 I saw some of these posts insisting that it seemed more frequent than random.
 It is hard to express how <em>instantaneously</em> my brain automatically dismissed them
@@ -249,7 +251,7 @@ is the first call to Neow's RNG.</p>
 <p><strong>The random curse from Neow's Bones</strong>
 comes from a call to <code>RunState.Rng.Niche</code>,
 which is seeded with <code>seed + hash(&quot;niche&quot;)</code>.</p>
-<p>Since New Leaf or Kaleidoscope also call <code>Niche</code> for their randomness,
+<p>Since <span class='sts stsrelic' data-desc='Upon pickup, [[Transform]] 1 card.'>New Leaf</span> and <span class='sts stsrelic' data-desc='Upon pickup, obtain 2 card rewards from other characters.'>Kaleidoscope</span> also call <code>Niche</code> for their randomness,
 rolling either of these relics from Neow's Bones will destroy the correlation.
 But otherwise,
 this will be the first call to <code>Niche</code>.</p>
@@ -269,8 +271,8 @@ which imposes a strong constraint on the possible range for the first call to <c
 <p>It is clear that this correlation is very impactful on gameplay,
 even for players unaware of it.
 It makes Neow's Bones a much worse relic,
-giving less harmful curses like Clumsy, Guilty, and Injury extremely rarely
-and more crippling ones like Debt much more often.</p>
+giving less harmful curses like <span class='sts stsrc stscc2 stsgs' data-desc='[[Unplayable]]. [[Ethereal]].'>Clumsy</span>, <span class='sts stsrc stscc2 stsgs' data-desc='[[Unplayable]]. Removed from your Deck after 5 combats.'>Guilty</span>, and <span class='sts stsrc stscc2 stsgs' data-desc='[[Unplayable]].'>Injury</span> extremely rarely
+and more crippling ones like <span class='sts stsrc stscc2 stsgs' data-desc='[[Unplayable]]. At the end of your turn, if this is in your Hand, lose 10 [[Gold]].'>Debt</span> much more often.</p>
 <p>At this point,
 you might be thinking
 &quot;wait,
@@ -285,7 +287,7 @@ Let's do some more of them.</p>
  260952 1	1
  112152 1	2
 -->
-<p>The first relic from Large Capsule is <em>never</em> common.</p>
+<p>The first relic from <span class='sts stsrelic' data-desc='Upon pickup, obtain 2 random Relics. Add an additional Strike and Defend to your Deck.'>Large Capsule</span> is <em>never</em> common.</p>
 <p>What a buff!</p>
 <p>More specifically,
 in Overgrowth,
@@ -315,7 +317,7 @@ the correlation has a legitimate gameplay impact.
 The relic is better than it &quot;should be&quot; on average.</p>
 <p>What about Small Capsule?</p>
 <h2>Small Capsule</h2>
-<p>Since Small Capsule is not a curse pool relic,
+<p>Since <span class='sts stsrelic' data-desc='Upon pickup, obtain a random Relic.'>Small Capsule</span> is not a curse pool relic,
 it does not have an intrinsic bias the way Neow's Bones and Large Capsule do.</p>
 <p>However,
 this means we can use the presence of another curse pool relic
@@ -337,7 +339,7 @@ and <em>usually</em> give an uncommon or rare relic in Overgrowth</strong>.</p>
 there's a lot more Neows with randomness,
 so I'll sort of speed through a few more
 and then get to some different stuff.</p>
-<h2>Leafy Poultice and Hefty Tablet</h2>
+<h2 id="poultice_tablet">Leafy Poultice and Hefty Tablet</h2>
 <p>(These are &quot;transform 2&quot; and &quot;choose a rare&quot;.)</p>
 <p>Since these are both curse pool relics,
 they have an intrinsic bias.
@@ -404,13 +406,13 @@ at this point most of this isn't actually going to change the way you play.
 How about something else that does?</p>
 <h2>Lightning orbs and random targeting</h2>
 <p>The Underdocks easy pool has two multi-enemy fights:
-the Corpse Slugs and the Toadpoles.
+the <a href="https://slaythespire.wiki.gg/wiki/Slay_the_Spire_2:Corpse_Slug">Corpse Slugs</a> and the <a href="https://slaythespire.wiki.gg/wiki/Slay_the_Spire_2:Toadpole">Toadpoles</a>.
 If you are the Defect,
 you might want to know where your first lightning orb will hit,
-especially if you drew Dualcast turn 1.</p>
+especially if you drew <span class='sts stsrb stscb2 stsgs' data-desc='[[Evoke]] your rightmost Orb twice./1 (0)'>Dualcast</span> turn 1.</p>
 <p>In the first fight of Underdocks specifically,
 <strong>your first orb is 75% to hit the enemy on the left</strong>.
-(This applies to the evoke if you play Dualcast, or the passive if you don't.)
+(This applies to the evoke if you play <span class='sts stsrb stscb2 stsgs' data-desc='[[Evoke]] your rightmost Orb twice./1 (0)'>Dualcast</span>, or the passive if you don't.)
 If you remember what curse pool you saw,
 you can do better:</p>
 <div class="barchartlgnd"><div><div class='bc0'></div>left</div><div><div class='bc1'></div>right</div></div><div class='barchart'>
@@ -430,8 +432,8 @@ less than 3% of the time.
 How nice of them!)</p>
 <p>This applies to the first random combat target of the entire run --
 for example,
-you might predict your first Countdown proc on Necrobinder,
-or your first Parrying Shield proc on anyone.</p>
+you might predict your first <span class='sts stsru stscp2 stsgp' data-desc='At the start of your turn, apply 6 (9) [[Doom]] to a random enemy./1'>Countdown</span> proc on Necrobinder,
+or your first <span class='sts stsrelic' data-desc='If you end a turn with at least 10 [[Block]], deal 6 damage to a random enemy.'>Parrying Shield</span> proc on anyone.</p>
 <p>Speaking of early Act 1,
 let's finally get to the two other examples from the intro.</p>
 <h2>Trash Heap</h2>
@@ -444,7 +446,7 @@ conditioned on the act RNG rolling Underdocks:</p>
         
     </div>
 <p>As you can see,
-it is literally impossible to obtain the card Rebound
+it is literally impossible to obtain the card <span class='sts stsre stscc2 stsga' data-desc='Deal 9 (12) damage. Put the next card you play this turn on top of your Draw Pile./1'>Rebound</span>
 in a single player game.<sup id='footref3'><a class='footnote' href='#footnote3'>[3]</a></sup></p>
 <p>In case you care about predicting the relic,
 the pairs of consecutive cards
@@ -452,15 +454,11 @@ correspond to Darkstone Periapt, Dream Catcher, Hand Drill, Maw Bank, and The Bo
 (e.g. if the card is Entrench or Hello World, the relic is Hand Drill).</p>
 <p>In case you want to predict the Trash Heap more precisely,
 here is the output further conditioned on the curse pool relic you saw
-(bars are hoverable):</p>
+(bars are hoverable):<sup id='footref4'><a class='footnote' href='#footnote4'>[4]</a></sup></p>
 <div class="barchartlgnd"><div><div class='bc0'></div>Caltrops</div><div><div class='bc1'></div>Clash</div><div><div class='bc2'></div>Distraction</div><div><div class='bc3'></div>DualWield</div><div><div class='bc4'></div>Entrench</div><div><div class='bc5'></div>HelloWorld</div><div><div class='bc6'></div>Outmaneuver</div><div><div class='bc7'></div>Rebound</div><div><div class='bc8'></div>RipAndTear</div><div><div class='bc9'></div>Stack</div></div><div class='barchart'>
         <div class='key'>CursedPearl</div><div class='bar'><div style='width:66.62888995223345%' class='bc5 hover'><span>HelloWorld (66.63%)</span></div><div style='width:32.25543774817203%' class='bc6 hover'><span>Outmaneuver (32.26%)</span></div><div style='width:0.42645713182394374%' class='bc8 ral hover'><span>RipAndTear (0.43%)</span></div><div style='width:0.6892151677705862%' class='bc9 ral hover'><span>Stack (0.69%)</span></div></div><div class='key'>HeftyTablet</div><div class='bar'><div style='width:98.82212613687193%' class='bc6 hover'><span>Outmaneuver (98.82%)</span></div><div style='width:1.1778738631280752%' class='bc8 ral hover'><span>RipAndTear (1.18%)</span></div></div><div class='key'>LargeCapsule</div><div class='bar'><div style='width:0.035835871707579285%' class='bc5 hover'><span>HelloWorld (0.04%)</span></div><div style='width:0.2627963925222481%' class='bc6 hover'><span>Outmaneuver (0.26%)</span></div><div style='width:99.70136773577018%' class='bc8 hover'><span>RipAndTear (99.70%)</span></div></div><div class='key'>LeafyPoultice</div><div class='bar'><div style='width:0.08395374623792175%' class='bc4 hover'><span>Entrench (0.08%)</span></div><div style='width:0.25898938697924917%' class='bc5 hover'><span>HelloWorld (0.26%)</span></div><div style='width:35.29304609535878%' class='bc8 hover'><span>RipAndTear (35.29%)</span></div><div style='width:64.36401077142405%' class='bc9 hover'><span>Stack (64.36%)</span></div></div><div class='key'>NeowsBones</div><div class='bar'><div style='width:76.61197346017882%' class='bc0 hover'><span>Caltrops (76.61%)</span></div><div style='width:8.24292029654967%' class='bc1 ral hover'><span>Clash (8.24%)</span></div><div style='width:0.14048697059699328%' class='bc3 ral hover'><span>DualWield (0.14%)</span></div><div style='width:0.1847709069808281%' class='bc4 ral hover'><span>Entrench (0.18%)</span></div><div style='width:14.819848365693693%' class='bc9 ral hover'><span>Stack (14.82%)</span></div></div><div class='key'>PrecariousShears</div><div class='bar'><div style='width:57.60700586356647%' class='bc1 hover'><span>Clash (57.61%)</span></div><div style='width:42.16149309721354%' class='bc2 hover'><span>Distraction (42.16%)</span></div><div style='width:0.23150103921999357%' class='bc3 ral hover'><span>DualWield (0.23%)</span></div></div><div class='key'>SilkenTress</div><div class='bar'><div style='width:0.5614478222955355%' class='bc1 hover'><span>Clash (0.56%)</span></div><div style='width:42.903290934786995%' class='bc2 hover'><span>Distraction (42.90%)</span></div><div style='width:56.535261242917464%' class='bc3 hover'><span>DualWield (56.54%)</span></div></div><div class='key'>SilverCrucible</div><div class='bar'><div style='width:0.8323788937103773%' class='bc0 hover'><span>Caltrops (0.83%)</span></div><div style='width:0.029036473036408512%' class='bc1 hover'><span>Clash (0.03%)</span></div><div style='width:4.396605958929522%' class='bc3 hover'><span>DualWield (4.40%)</span></div><div style='width:79.10180510074044%' class='bc4 hover'><span>Entrench (79.10%)</span></div><div style='width:15.461921891887531%' class='bc5 ral hover'><span>HelloWorld (15.46%)</span></div><div style='width:0.17825168169573002%' class='bc9 ral hover'><span>Stack (0.18%)</span></div></div>
         
     </div>
-<p>I scaled all the bars to full width for visibility,
-but note that this distorts the apparent overall probability --
-Hefty Tablet and Large Capsule are both extremely rare in Underdocks,
-so e.g. Outmaneuver is much less common than it looks.</p>
 <p>Incidentally,
 after finding this one,
 I searched for discussion about it on the internet,
@@ -470,7 +468,8 @@ But I also discovered that
 Props to them!</p>
 <h2>Potion drops and question mark combats</h2>
 <p>Finally,
-here is the third point mentioned in the intro.
+here is the third point mentioned in the intro --
+how often does your first fight drop a potion?
 You know the drill by now:</p>
 <div class='barchart'>
         <div class='key'>CursedPearl[U]</div><div class='bar'><div style='width:16.93695266868976%' class='bc0'><span>16.85%</span></div></div><div class='key'>HeftyTablet[U]</div><div class='bar'><div style='width:0.0%' class='bc0'><span>0%</span></div></div><div class='key'>LargeCapsule[U]</div><div class='bar'><div style='width:0.0%' class='bc0'><span>0%</span></div></div><div class='key'>LeafyPoultice[U]</div><div class='bar'><div style='width:51.487403231380355%' class='bc0'><span>51.23%</span></div></div><div class='key'>NeowsBones[U]</div><div class='bar'><div style='width:96.51294763243519%' class='bc0'><span>96.02%</span></div></div><div class='key'>PrecariousShears[U]</div><div class='bar'><div style='width:97.70613975208082%' class='bc0'><span>97.21%</span></div></div><div class='key'>SilkenTress[U]</div><div class='bar'><div style='width:84.72409532667795%' class='bc0'><span>84.30%</span></div></div><div class='key'>SilverCrucible[U]</div><div class='bar'><div style='width:100.0%' class='bc0'><span>99.49%</span></div></div><div class='key'>CursedPearl[O]</div><div class='bar'><div style='width:0.0%' class='bc0'><span>0%</span></div></div><div class='key'>HeftyTablet[O]</div><div class='bar'><div style='width:0.0%' class='bc0'><span>0%</span></div></div><div class='key'>LargeCapsule[O]</div><div class='bar'><div style='width:0.0%' class='bc0'><span>0%</span></div></div><div class='key'>LeafyPoultice[O]</div><div class='bar'><div style='width:0.0%' class='bc0'><span>0%</span></div></div><div class='key'>NeowsBones[O]</div><div class='bar'><div style='width:13.15077174648483%' class='bc0'><span>13.08%</span></div></div><div class='key'>PrecariousShears[O]</div><div class='bar'><div style='width:73.27095404511932%' class='bc0'><span>72.90%</span></div></div><div class='key'>SilkenTress[O]</div><div class='bar'><div style='width:37.27241273999929%' class='bc0'><span>37.08%</span></div></div><div class='key'>SilverCrucible[O]</div><div class='bar'><div style='width:6.644627784853899%' class='bc0'><span>6.61%</span></div></div>
@@ -487,7 +486,7 @@ and just 4% in Overgrowth</strong>!</p>
 note that picking any Neow that generates a card reward or random relic
 breaks this correlation,
 since it steals the first call to rewards RNG.
-So Lost Coffer might look more appealing than average on bad Overgrowth maps.</p>
+So <span class='sts stsrelic' data-desc='Upon pickup, gain 1 card reward and procure 1 random Potion.'>Lost Coffer</span> might look more appealing than average on bad Overgrowth maps.</p>
 <p>As a bonus,
 the chance that the first ? room is a combat
 is also quite unevenly distributed:</p>
@@ -548,8 +547,8 @@ The &quot;two dolls&quot; option can be determined from the &quot;one doll&quot;
 <tr><td>Struggles</td><td>→</td><td>Struggles + BingBong</td></tr>
 <tr><td>BingBong</td> <td>→</td><td>BingBong + Daughter</td></tr>
 </table>
-<p>So if you rolled Hefty Tablet and want to guarantee Mr. Struggles,
-or if you rolled Precarious Shears or Silken Tress and want to guarantee Bing Bong,
+<p>So if you rolled Hefty Tablet and want to guarantee <span class='sts stsrelic' data-desc='At the start of your turn, deal damage equal to the turn number to ALL enemies.'>Mr. Struggles</span>,
+or if you rolled Precarious Shears or Silken Tress and want to guarantee <span class='sts stsrelic' data-desc='Whenever you add a card to your Deck, add one additional copy.'>Bing Bong</span>,
 you only need to pay 5HP,
 and it will always be one of the options.</p>
 <p>You might notice that the doll distribution
@@ -565,8 +564,7 @@ also only appears in Act 2 or 3.</p>
 <p>Again,
 it uses its own RNG,
 but this time the first interesting RNG call is the <em>second</em> one,
-which determines where to place the relic box.
-(The first call determines the randomly generated gold price of the first event option.)</p>
+which determines where to place the relic box.<sup id='footref5'><a class='footnote' href='#footnote5'>[5]</a></sup></p>
 <p>What's the easiest second roll to correlate with?
 There are some that are very high-signal
 (e.g. the top left card in the first shop),
@@ -623,13 +621,14 @@ and 13 gold means the Perfected Strike immediately gets in the deck...)</p>
 <p>You can do the same for Tezcatara's option 2,
 but those are mostly not particularly actionable in Act 1.
 On the other hand,
-<strong>Tezcatara's option 1</strong> contains Nutritious Soup,
+<strong>Tezcatara's option 1</strong> contains <span class='sts stsrelic' data-desc="Upon pickup, [[Enchant]] all Strikes in your Deck with [[Tezcatara's Ember]].">Nutritious Soup</span>,
 which very well might influence how much you prioritize Strike removes:</p>
 <div class="barchartlgnd"><div><div class='bc0'></div>VeryHotCocoa</div><div><div class='bc1'></div>YummyCookie</div><div><div class='bc2'></div>NutritiousSoup</div></div><div class='barchart'>
         <div class='key'>CursedPearl[U]</div><div class='bar'><div style='width:19.36590262673582%' class='bc0'><span>19.37%</span></div><div style='width:67.8919190229212%' class='bc1'><span>67.89%</span></div><div style='width:12.742178350342982%' class='bc2'><span>12.74%</span></div></div><div class='key'>HeftyTablet[U]</div><div class='bar'><div style='width:36.635457565690125%' class='bc0'><span>36.64%</span></div><div style='width:63.364542434309875%' class='bc1'><span>63.36%</span></div></div><div class='key'>LargeCapsule[U]</div><div class='bar'><div style='width:69.32701652089408%' class='bc0'><span>69.33%</span></div><div style='width:30.672983479105927%' class='bc1'><span>30.67%</span></div></div><div class='key'>LeafyPoultice[U]</div><div class='bar'><div style='width:39.00023579344494%' class='bc0'><span>39.00%</span></div><div style='width:32.198380885011396%' class='bc1'><span>32.20%</span></div><div style='width:28.80138332154366%' class='bc2'><span>28.80%</span></div></div><div class='key'>NeowsBones[U]</div><div class='bar'><div style='width:29.190942491276076%' class='bc1'><span>29.19%</span></div><div style='width:70.80905750872392%' class='bc2'><span>70.81%</span></div></div><div class='key'>PrecariousShears[U]</div><div class='bar'><div style='width:9.54181438472097%' class='bc1'><span>9.54%</span></div><div style='width:90.45818561527904%' class='bc2'><span>90.46%</span></div></div><div class='key'>SilkenTress[U]</div><div class='bar'><div style='width:33.77296887518199%' class='bc1'><span>33.77%</span></div><div style='width:66.22703112481801%' class='bc2'><span>66.23%</span></div></div><div class='key'>SilverCrucible[U]</div><div class='bar'><div style='width:69.43555426243817%' class='bc1'><span>69.44%</span></div><div style='width:30.564445737561826%' class='bc2'><span>30.56%</span></div></div><div class='key'>CursedPearl[O]</div><div class='bar'><div style='width:36.77564408580624%' class='bc0'><span>36.78%</span></div><div style='width:63.22435591419376%' class='bc1'><span>63.22%</span></div></div><div class='key'>HeftyTablet[O]</div><div class='bar'><div style='width:90.85422235671895%' class='bc0'><span>90.85%</span></div><div style='width:9.145777643281047%' class='bc1'><span>9.15%</span></div></div><div class='key'>LargeCapsule[O]</div><div class='bar'><div style='width:89.55841608012528%' class='bc0'><span>89.56%</span></div><div style='width:10.441583919874718%' class='bc1'><span>10.44%</span></div></div><div class='key'>LeafyPoultice[O]</div><div class='bar'><div style='width:71.41657651257044%' class='bc0'><span>71.42%</span></div><div style='width:28.58342348742956%' class='bc1'><span>28.58%</span></div></div><div class='key'>NeowsBones[O]</div><div class='bar'><div style='width:1.3423608077685563%' class='bc0'><span>1.34%</span></div><div style='width:32.132656832767715%' class='bc1'><span>32.13%</span></div><div style='width:66.52498235946372%' class='bc2'><span>66.52%</span></div></div><div class='key'>PrecariousShears[O]</div><div class='bar'><div style='width:36.286606213765424%' class='bc1'><span>36.29%</span></div><div style='width:63.713393786234576%' class='bc2'><span>63.71%</span></div></div><div class='key'>SilkenTress[O]</div><div class='bar'><div style='width:68.04374240583232%' class='bc1'><span>68.04%</span></div><div style='width:31.956257594167678%' class='bc2'><span>31.96%</span></div></div><div class='key'>SilverCrucible[O]</div><div class='bar'><div style='width:12.9794439631409%' class='bc0'><span>12.98%</span></div><div style='width:67.88690241789399%' class='bc1'><span>67.89%</span></div><div style='width:19.13365361896511%' class='bc2'><span>19.13%</span></div></div>
         
     </div>
-<p>Particularly noteworthy is that if Precarious Shears is offered,
+<p>Particularly noteworthy is that if <span class='sts stsrelic' data-desc='Upon pickup, remove 2 cards from your Deck and take 16 damage.'>Precarious Shears</span> is offered --
+which you might have used to remove two Strikes --
 then Tez option 1 is 88.75% to be Soup.
 This was especially funny
 because as I was actively dumping CRNG discoveries into Discord,
@@ -655,7 +654,7 @@ Also note that picking any Neow that gives you a card or relic
 breaks this correlation and introduces a new one,
 which I won't bother trying to elaborate on here.</p>
 <p>I suppose the actionable information here
-is the uneven distribution of Electric Shrymp,
+is the uneven distribution of <span class='sts stsrelic' data-desc='Upon pickup, [[Enchant]] a [[Skill]] with [[Imbued]].'>Electric Shrymp</span>,
 which might influence how much you want to pick a good Imbue card.</p>
 <p>As for Darv and the Act 3 Ancients,
 all of them shuffle longish lists,
@@ -707,7 +706,7 @@ about <em>all</em> the others.</p>
 <li>cosmetic skin of Byrdpip or Pael's Legion</li>
 <li>the behavior of all of these encounters:
 <a href="https://slaythespire.wiki.gg/wiki/Slay_the_Spire_2:Endless_Conveyor">Endless Conveyor</a> (initially offered food),
-<a href="https://slaythespire.wiki.gg/wiki/Slay_the_Spire_2:Ovicopter">Ovicopter</a> (cosmetic skin of first egg),
+<a href="https://slaythespire.wiki.gg/wiki/Slay_the_Spire_2:Ovicopter">Ovicopter</a> (cosmetic skin of eggs<sup id='footref6'><a class='footnote' href='#footnote6'>[6]</a></sup>),
 <a href="https://slaythespire.wiki.gg/wiki/Slay_the_Spire_2:Punch_Off">Punch Off</a> (starting HP of Punch Constructs),
 <a href="https://slaythespire.wiki.gg/wiki/Slay_the_Spire_2:Slimes">Three/Four Slimes</a> (order of the two small slimes),
 any encounter with randomized starting intents
@@ -772,13 +771,14 @@ Of course,
 I do think that CRNG in Spire 2 is a bug and ought to be fixed,
 and I think it would be pretty bad for the game if it wasn't.</p>
 <p>However,
-I am reasonably confident
+I am confident
 that Mega Crit will address this issue.
 For one thing,
 Spire 2 is still in Early Access,
 much earlier in its development cycle
 than when CRNG was discovered in Spire 1.</p>
 <p>But also,
+compared to Spire 1,
 the influence of CRNG is much more directly impactful
 to players who don't know or care about it.
 It would be pretty unreasonable,
@@ -790,12 +790,277 @@ such as the curse distribution of Neow's Bones,
 have a significant balance impact
 which would not make sense to allow to exist
 in a very intentionally-designed strategy game.</p>
-<p>[todo: explain how to fix it]</p>
+<p>Luckily,
+<strong>this problem is very simple to fix</strong>.
+For example,
+<a href='PCG32.cs' target='_blank'>replacing <code>System.Random</code> with this drop-in 50-line replacement I threw together</a>
+would be a 3-line change in the Spire 2 code
+and immediately eliminate all correlation.
+(I don't expect Mega Crit to literally use this code,
+although I would be perfectly fine with them copying it wholesale;
+the point is just to demonstrate how easy it is.)</p>
+<p>If you are curious about the nitty-gritty details
+of what causes the issue and other options for fixing it,
+feel free to read the appendices below.</p>
+<p>Otherwise,
+some closing remarks:
+I spent a lot of effort writing this post,
+basically entirely because I thought it was fun.
+The length of the post is wildly disproportionate
+to the seriousness and magnitude of the bug.
+But I hope you enjoyed reading it too! :)</p>
+<hr style='margin:3rem 0'>
 <h2>Appendix: How?</h2>
-<p>[todo: describe how i found this out]</p>
+<p>You might be wondering how I realized that Spire 2 has CRNG,
+given that the code appears explicitly written to prevent it.
+In fact,
+with some very reasonable assumptions on how the <code>System.Random</code> class is implemented in C#,
+the randomness in Spire would be totally fine.</p>
+<p>I wish I could say that I read the code
+and thought of this possible flaw from first principles,
+that'd be really cool.
+Alas,
+I am not that clever.
+It was actually a complete accident:
+during <a href="https://www.twitch.tv/jmac_sts">jmac</a>'s recent overnight <span class='sts stsrr stsco2 stsgp' data-desc='At the end of combat, gain 30 (35) [[Gold]]./1'>Royalties</span> + <span class='sts stsru stsco2 stsgp' data-desc='At the start of your turn, add 1 random Colorless card into your Hand./2 (1)'>Spectrum Shift</span> stall
+for 2 million gold<sup id='footref7'><a class='footnote' href='#footnote7'>[7]</a></sup>,
+I was inspired to write a seed-search program
+to find a seed where you could transform into <span class='sts stsrr stscp2 stsga' data-desc="Deal 13 damage. Permanently increase this card's damage by 3 (4). [[Exhaust]]./2">The Scythe</span> + <span class='sts stsrr stscp2 stsgp' data-desc='([[Innate]].) At the start of your turn, add 1 random card into your Hand. It gains [[Ethereal]]./1'>Call of the Void</span> at Neow,
+and stall the first fight of the game to <span class='sts stsrr stscp2 stsgs' data-desc='Add [[Replay]] to a card in your Hand. It costs an extra [[@NE]]. [[Exhaust]]. (Does not [[Exhaust]].)/1'>Transfigure</span> your Scythe arbitrarily many times
+to scale its damage arbitrarily high.<sup id='footref8'><a class='footnote' href='#footnote8'>[8]</a></sup></p>
+<p>I got the seed search working,
+and I started adding conditions one by one.
+It successfully found many seeds where Neow offered a Leafy Poultice,
+and the transforms were The Scythe and Call of the Void in some order.
+However,
+I also wanted the act to be Overgrowth,
+both because it has more stallable easy pools
+and because of the Overgrowth-exclusive transform 2 event,
+which would allow obtaining 2 more Scythes on floor 3.</p>
+<p>But as soon as I added the Overgrowth condition,
+suddenly there were no seeds to be found.
+I was baffled and thought my code somehow had a bug,
+but it was still generating tons of Underdocks seeds perfectly fine.</p>
+<p>Finally,
+I just had it check the other conditions
+and print out the raw value of the RNG output used to determine the act
+(which is Underdocks when it's less than 0.5,
+and Overgrowth otherwise).
+To my befuddlement,
+not only was the value always less than 0.5,
+it was always very close to 0.1.</p>
+<p>This made absolutely no sense to me unless there was in fact correlation somehow.
+So to actually determine whether a correlation somehow existed,
+I made a scatterplot with the transform roll on the X-axis
+and the act roll on the Y-axis.
+And the results were, uh,
+rather shocking.</p>
+<img src='transform_vs_act.png'>
+<p>Thus began the unexpected dive into correlating every single other roll in the game.
+For posterity,
+<a href="https://youtu.be/kIBOvKzeNO0?t=8850">I saved the video of this whole adventure</a>
+(link is to somewhere around the point where I noticed something was up).</p>
+<p>The reason my Call of the Void + The Scythe seed was impossible,
+by the way,
+is because neither card can be the first transform
+in an Overgrowth act with Leafy Poultice offered
+(<a href="#poultice_tablet">as can be seen in the Leafy Poultice table</a>).</p>
 <h2>Appendix: Why?</h2>
-<p>[todo: explain the math behind c# prng linearity]</p>
-<hr />
+<p>As promised,
+I will now actually show you why the C# implementation causes all of this.</p>
+<p>The one-sentence summary is &quot;the output is linear in abs(seed)&quot;,
+if you understand what those words mean.
+If not,
+or you want more specific details,
+here's a more complete explanation.</p>
+<p>The actual code of <code>System.Random</code>,
+copied directly from the <a href="https://github.com/microsoft/referencesource/blob/main/mscorlib/system/random.cs">.NET reference source</a>,
+is:</p>
+<pre><code>// ==++==
+//
+//   Copyright (c) Microsoft Corporation.  All rights reserved.
+//
+// ==--==
+
+[...]
+
+private int inext;
+private int inextp;
+private int[] SeedArray = new int[56];
+
+[...]
+
+public Random(int Seed) {
+  int ii;
+  int mj, mk;
+
+  //Initialize our Seed array.
+  //This algorithm comes from Numerical Recipes in C (2nd Ed.)
+  int subtraction = (Seed == Int32.MinValue) ? Int32.MaxValue : Math.Abs(Seed);
+  mj = MSEED - subtraction;
+  SeedArray[55]=mj;
+  mk=1;
+  for (int i=1; i&lt;55; i++) {  //Apparently the range [1..55] is special (Knuth) and so we're wasting the 0'th position.
+    ii = (21*i)%55;
+    SeedArray[ii]=mk;
+    mk = mj - mk;
+    if (mk&lt;0) mk+=MBIG;
+    mj=SeedArray[ii];
+  }
+  for (int k=1; k&lt;5; k++) {
+    for (int i=1; i&lt;56; i++) {
+  SeedArray[i] -= SeedArray[1+(i+30)%55];
+  if (SeedArray[i]&lt;0) SeedArray[i]+=MBIG;
+    }
+  }
+  inext=0;
+  inextp = 21;
+  Seed = 1;
+}
+
+[...]
+
+private int InternalSample() {
+    int retVal;
+    int locINext = inext;
+    int locINextp = inextp;
+
+    if (++locINext &gt;=56) locINext=1;
+    if (++locINextp&gt;= 56) locINextp = 1;
+
+    retVal = SeedArray[locINext]-SeedArray[locINextp];
+
+    if (retVal == MBIG) retVal--;
+    if (retVal&lt;0) retVal+=MBIG;
+
+    SeedArray[locINext]=retVal;
+
+    inext = locINext;
+    inextp = locINextp;
+
+    return retVal;
+}
+</code></pre>
+<p>There are two parts -- the constructor (<code>public Random</code>)
+and the function ultimately called to generate random numbers (<code>int InternalSample</code>).</p>
+<p>First,
+most of the work of the constructor is initializing the internal <code>SeedArray</code> state,
+which will ultimately be used to produce the outputs.
+The last entry is set to some constant minus the absolute value of the seed,
+and then we jump around setting the other entries in a random-looking order
+(that's what the times 21 mod 55 stuff is about).
+To determine the value for the next entry,
+we subtract the previous two entries.</p>
+<p>After that,
+we do 4 more rounds of subtracting random-looking entries from each other.
+All of this is being done mod 2^31-1,
+which is what the <code>MBIG</code> lines are doing
+(<code>MBIG</code> is set to <code>Int32.MaxValue</code>).</p>
+<p>Finally,
+when we actually ask for a random number,
+we see that the value we get is <code>SeedArray[1] - SeedArray[22]</code>.
+Every time we ask for a new number,
+those numbers are incremented
+(so the next one is <code>SeedArray[2] - SeedArray[23]</code>),
+wrapping around as necessary.
+The output is also inserted into <code>SeedArray</code>,
+replacing some previous value to give a new value
+the next time the indices come back around.</p>
+<p>The root of the problem is that the only input to this whole process
+is the absolute value of the seed --
+let's call it <em>S</em> --
+and every entry of <code>SeedArray</code> is <strong>linear</strong> in <em>S</em>.
+What this means is that you can express them as <span style='white-space:nowrap'>x*<em>S</em> + y</span>,
+for some integers x and y.<sup id='footref9'><a class='footnote' href='#footnote9'>[9]</a></sup></p>
+<p>Why is this true?
+Well,
+the first thing we put into <code>SeedArray</code> is a constant minus <em>S</em>,
+which is linear.
+Then everything else in the constructor sets entries of <code>SeedArray</code>
+to the difference between two of its existing entries.
+But <strong>the difference between two linear things is itself linear</strong> --
+<span style='white-space:nowrap'>(x<sub>1</sub>*<em>S</em> + y<sub>1</sub>) - (x<sub>2</sub>*<em>S</em> + y<sub>2</sub>)</span> = <span style='white-space:nowrap'>(x<sub>1</sub>-x<sub>2</sub>)*<em>S</em> + (y<sub>1</sub>-y<sub>2</sub>)</span>.
+So this property remains true
+no matter how much random-looking subtraction we mess around doing.</p>
+<p>The <code>InternalSample</code> function only contains subtractions too.
+So if we make an RNG with some <em>S</em>,
+then its first output will be exactly x*<em>S</em> + y for some known constants x and y.
+But imagine we make a new RNG with <em>S</em>+1.
+Now the first output will be <strong>exactly x greater</strong> than the first output of the other one!
+In general,
+RNGs whose <em>S</em> differ by some amount <em>d</em>
+will have their first outputs differ by exactly x*<em>d</em>.</p>
+<p><a href="#rng_primer">Since the game's RNGs differ by a known fixed value</a>,
+this immediately gives the desired correlations.
+There is one tiny wrinkle,
+which is that <em>S</em> is the <em>absolute value</em> of the input seed.
+If the fixed offset between RNGs crosses 0,
+one of them will have an extra negation.
+This is why the image of the graph above has lines with both positive and negative slope.</p>
+<p>Incidentally,
+<a href="https://web.archive.org/web/20200716205233/https://blogs.unity3d.com/2015/01/07/a-primer-on-repeatable-random-numbers/">there is some further discussion on the internet</a>
+of this exact property of the default C# random generator
+and how it produces exactly this kind of correlation.</p>
+<h2>Appendix: What?</h2>
+<p>What exactly would fix the problem?
+I'll start from the simplest option and go from there.</p>
+<p>The naive first-order fix
+is to generate the seeds for different RNGs
+by a nonlinear operation,
+like multiplication.
+If you multiply the seed by a fixed constant for each RNG,
+instead of adding,
+then the extremely easy predictive power of linearity goes away.
+(Alternatively,
+you could hash the values produced after whichever operation you choose.)</p>
+<p>However,
+this is still not a very good solution.
+While it does address the blatant problems
+like Rebound and Neow's Bones,
+it still leaves in subtle bits of exploitability.
+Knowing that the outputs of two RNG streams are related by a constant offset
+can still be taken advantage of given many samples of both,
+even if the exact offset is not known up front.</p>
+<p>The easiest &quot;real&quot; fix
+is to simply <strong>implement a nonlinear psuedorandom number generator</strong>.
+The topic of PRNGs with desirable apparent-randomness properties
+<a href="https://en.wikipedia.org/wiki/List_of_random_number_generators#Pseudorandom_number_generators_(PRNGs)">is very well-studied</a>,
+and many suitable options are available with extremely simple algorithms.
+The one I chose for my <a href="PCG32.cs">sample implementation from the main post</a>
+was <a href="https://www.pcg-random.org/">PCG32</a>,
+but this was pretty arbitrary and basically any modern algorithm will do.</p>
+<p>Implementing a PRNG within the codebase
+instead of calling the C# standard library
+has an additional advantage:
+<strong>seeds are guaranteed to be the same on all platforms</strong>.
+In Spire 1,
+seeds on the desktop version of the game
+were different from seeds on the mobile version of the game,
+because the standard library implementation of PRNG
+differed between platforms.
+It is also worth mentioning that the standard library implementation might change over time,
+which would break all past seeds.</p>
+<p>As a bonus,
+I will also mention a slightly more complex option.
+The way Slay the Spire allows you to save and resume runs
+is by storing the total number of times each RNG has been called,
+and then calling each RNG that many times (throwing away the result)
+whenever a save file is loaded.
+This works totally fine,
+but feels a little silly.
+The alternative<sup id='footref10'><a class='footnote' href='#footnote10'>[10]</a></sup>
+is a class of PRNGs known as
+<a href="https://en.wikipedia.org/wiki/Counter-based_random_number_generator">counter-based random number generators</a>,
+which store no internal state.
+Instead,
+to request the <em>n</em>th random number,
+you pass the parameter <em>n</em>
+(you could also think of this as the internal state
+being an integer that is incremented by 1 each call).
+So using any PRNG of this style instead
+and slightly modifying Slay the Spire's internal <code>Rng</code> class
+would eliminate the need for the &quot;advancing&quot; process.</p>
+<hr style='margin:3rem 0'>
 <div class='footnote'><sup id='footnote1'><a class='footnote' href='#footref1'>[1]</a></sup> <div id='footnote1ctnt'>The title and several section headings of this post
 are an intentional homage to that one.
 Also,
@@ -824,7 +1089,29 @@ so that everyone's single player seeds are the same.
 This also means that if you have an unlucky Steam ID,
 you might be permanently locked out of ever seeing the card Rebound,
 even in multiplayer.
-Too bad.</div></div>
+Too bad.</div></div><div class='footnote'><sup id='footnote4'><a class='footnote' href='#footref4'>[4]</a></sup> <div id='footnote4ctnt'>I scaled all the bars to full width for visibility,
+but note that this distorts the apparent overall probability --
+Hefty Tablet and Large Capsule are both extremely rare in Underdocks,
+so e.g. Outmaneuver is much less common than it looks.</div></div><div class='footnote'><sup id='footnote5'><a class='footnote' href='#footref5'>[5]</a></sup> <div id='footnote5ctnt'>The first call determines the randomly generated gold price of the first event option.</div></div><div class='footnote'><sup id='footnote6'><a class='footnote' href='#footref6'>[6]</a></sup> <div id='footnote6ctnt'>There are two different egg skins, for some reason!
+All of the eggs in an individual fight are set to the same skin,
+but across multiple runs you will see different ones.<br>
+<img src='eggs1.png' style='height:11rem'><img src='eggs2.png' style='height:11rem'></div></div><div class='footnote'><sup id='footnote7'><a class='footnote' href='#footref7'>[7]</a></sup> <div id='footnote7ctnt'>And I do mean &quot;during&quot; --
+the entire discovery process happened while he was still &quot;playing&quot; the run.
+(I started while he was still asleep,
+in the middle of the 8-hour Royalties animation.)</div></div><div class='footnote'><sup id='footnote8'><a class='footnote' href='#footref8'>[8]</a></sup> <div id='footnote8ctnt'>It scales the full number of times even if the enemy dies first,
+which is also probably a bug.
+Hopefully CRNG is fixed before that one so I still get to do it.
+(Or hopefully not,
+because it would probably be terrible to actually execute.)</div></div><div class='footnote'><sup id='footnote9'><a class='footnote' href='#footref9'>[9]</a></sup> <div id='footnote9ctnt'>Again,
+all taken mod 2^31-1,
+but I'll just assume as a given
+that everything is mod 2^31-1 from now on.</div></div><div class='footnote'><sup id='footnote10'><a class='footnote' href='#footref10'>[10]</a></sup> <div id='footnote10ctnt'>There is actually another option,
+which is to implement a PRNG which supports an efficient &quot;advance&quot; function.
+In fact,
+PCG32 can do this,
+but I didn't bother implementing it in my example code,
+because this would significantly increase its complexity
+for very little benefit.</div></div>
 
 <h2 id='comments'>comments</h2>
 <p><i>There are no comments yet.</i></p>

@@ -1,6 +1,6 @@
-const pmaxh = 350, pw = 360, pp = 10, pb = 2;
-
 window.addEventListener('load', () => {
+
+    const pmaxh = 350, pw = 360, pp = 10, pb = 2;
 
     const popup = document.createElement('div');
     popup.style.width = `${pw-pp*2}px`;

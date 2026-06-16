@@ -11,9 +11,13 @@ function add(parent, el, o) {
 }
 
 function stxt2(parent, str) {
-    for (const txt of str.split(/(\[[^\]]+\])/)) {
+    for (const txt of str.split(/(\[[^\]]+\]\]?)/)) {
         if (txt[0] === '[') {
-            add(parent, 'span', { cls: 'stse' });
+            if (txt[1] === '[') {
+                // spire 2
+                if (txt[2] === '@') add(parent, 'span', { cls: 'stse' }); // TODO stars
+                else parent.appendChild(document.createTextNode(txt.slice(2, txt.length-2)));
+            } else add(parent, 'span', { cls: 'stse' });
         } else parent.appendChild(document.createTextNode(txt));
     }
 }
@@ -30,6 +34,12 @@ function dcol(d) {
     if (d.indexOf('[G]') !== -1) return 'stscg';
     if (d.indexOf('[B]') !== -1) return 'stscb';
     if (d.indexOf('[W]') !== -1) return 'stscp';
+    // spire 2
+    if (d.indexOf('[[@IE]]') !== -1) return 'stscr2';
+    if (d.indexOf('[[@SE]]') !== -1) return 'stscg2';
+    if (d.indexOf('[[@RE]]') !== -1) return 'stsco2';
+    if (d.indexOf('[[@NE]]') !== -1) return 'stscp2';
+    if (d.indexOf('[[@DE]]') !== -1) return 'stscb2';
 }
 function col(el) {
     return Array.from(el.classList).find(x => x.slice(0,4) === 'stsc' || x === 'stsrelic' || x === 'stspotion');

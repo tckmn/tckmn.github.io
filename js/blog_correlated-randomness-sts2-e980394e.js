@@ -35,7 +35,7 @@ window.addEventListener('load', () => {
         for (let j = 0; j < w; ++j) {
             const el = document.createElement('div');
             el.style.gridArea = `${1+i} / ${6-(w-1)/2+j}`;
-            el.style.outline = '1px solid white';
+            el.style.outline = '1px solid #888';
             el.style.width = '35px';
             el.style.height = '35px';
             div.append(el);
