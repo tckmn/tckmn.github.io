@@ -107,7 +107,7 @@
         <div id='subheader-post'></div>
 
         <main>
-        <div class='hsup'><h1>Correlated randomness in Slay the Spire 2</h1><span>2026-06-13</span></div><div class='hsub'><span class='len lenverylong'><span>very long</span> (6840 words)</span> <a class='tag' href='/blog/games'><span class='tag'>games</span></a><a class='tag' href='/blog/video-games'><span class='tag'>video games</span></a><a class='tag' href='/blog/slay-the-spire'><span class='tag'>slay the spire</span></a><a class='tag' href='/blog/math'><span class='tag'>math</span></a></div>
+        <div class='hsup'><h1>Correlated randomness in Slay the Spire 2</h1><span>2026-06-13</span></div><div class='hsub'><span class='len lenverylong'><span>very long</span> (6880 words)</span> <a class='tag' href='/blog/games'><span class='tag'>games</span></a><a class='tag' href='/blog/video-games'><span class='tag'>video games</span></a><a class='tag' href='/blog/slay-the-spire'><span class='tag'>slay the spire</span></a><a class='tag' href='/blog/math'><span class='tag'>math</span></a></div>
 <p>Here are three true statements about the game of Slay the Spire 2
 (in single player):</p>
 <ol>
@@ -746,6 +746,7 @@ and any encounter with randomized enemies
 <li>your first fight's gold reward</li>
 <li>the top left card in the first shop</li>
 <li>option 2 of Pael or Tezcatara</li>
+<li>the character you are playing, if you chose &quot;random character&quot;<sup id='footref7'><a class='footnote' href='#footnote7'>[7]</a></sup></li>
 <li>the randomness from all of these events:
 <a href="https://slaythespire.wiki.gg/wiki/Slay_the_Spire_2:Crystal_Sphere">Crystal Sphere</a> (placement of relic box),
 <a href="https://slaythespire.wiki.gg/wiki/Slay_the_Spire_2:Doll_Room">Doll Room</a> (2nd or 3rd button's result),
@@ -824,11 +825,11 @@ Alas,
 I am not that clever.
 It was actually a complete accident:
 during <a href="https://www.twitch.tv/jmac_sts">jmac</a>'s recent overnight <span class='sts stsrr stsco2 stsgp' data-desc='At the end of combat, gain 30 (35) [[Gold]]./1'>Royalties</span> + <span class='sts stsru stsco2 stsgp' data-desc='At the start of your turn, add 1 random Colorless card into your Hand./2 (1)'>Spectrum Shift</span> stall
-for 2 million gold<sup id='footref7'><a class='footnote' href='#footnote7'>[7]</a></sup>,
+for 2 million gold<sup id='footref8'><a class='footnote' href='#footnote8'>[8]</a></sup>,
 I was inspired to write a seed-search program
 to find a seed where you could transform into <span class='sts stsrr stscp2 stsga' data-desc="Deal 13 damage. Permanently increase this card's damage by 3 (4). [[Exhaust]]./2">The Scythe</span> + <span class='sts stsrr stscp2 stsgp' data-desc='([[Innate]].) At the start of your turn, add 1 random card into your Hand. It gains [[Ethereal]]./1'>Call of the Void</span> at Neow,
 and stall the first fight of the game to <span class='sts stsrr stscp2 stsgs' data-desc='Add [[Replay]] to a card in your Hand. It costs an extra [[@NE]]. [[Exhaust]]. (Does not [[Exhaust]].)/1'>Transfigure</span> your Scythe arbitrarily many times
-to scale its damage arbitrarily high.<sup id='footref8'><a class='footnote' href='#footnote8'>[8]</a></sup></p>
+to scale its damage arbitrarily high.<sup id='footref9'><a class='footnote' href='#footnote9'>[9]</a></sup></p>
 <p>I got the seed search working,
 and I started adding conditions one by one.
 It successfully found many seeds where Neow offered a Leafy Poultice,
@@ -972,7 +973,7 @@ is the absolute value of the seed --
 let's call it <em>S</em> --
 and every entry of <code>SeedArray</code> is <strong>linear</strong> in <em>S</em>.
 What this means is that you can express them as <span style='white-space:nowrap'>x*<em>S</em> + y</span>,
-for some integers x and y.<sup id='footref9'><a class='footnote' href='#footnote9'>[9]</a></sup></p>
+for some integers x and y.<sup id='footref10'><a class='footnote' href='#footnote10'>[10]</a></sup></p>
 <p>Why is this true?
 Well,
 the first thing we put into <code>SeedArray</code> is a constant minus <em>S</em>,
@@ -1049,7 +1050,7 @@ and then calling each RNG that many times (throwing away the result)
 whenever a save file is loaded.
 This works totally fine,
 but feels a little silly.
-The alternative<sup id='footref10'><a class='footnote' href='#footnote10'>[10]</a></sup>
+The alternative<sup id='footref11'><a class='footnote' href='#footnote11'>[11]</a></sup>
 is a class of PRNGs known as
 <a href="https://en.wikipedia.org/wiki/Counter-based_random_number_generator">counter-based random number generators</a>,
 which store no internal state.
@@ -1096,17 +1097,19 @@ Hefty Tablet and Large Capsule are both extremely rare in Underdocks,
 so e.g. Outmaneuver is much less common than it looks.</div></div><div class='footnote'><sup id='footnote5'><a class='footnote' href='#footref5'>[5]</a></sup> <div id='footnote5ctnt'>The first call determines the randomly generated gold price of the first event option.</div></div><div class='footnote'><sup id='footnote6'><a class='footnote' href='#footref6'>[6]</a></sup> <div id='footnote6ctnt'>There are two different egg skins, for some reason!
 All of the eggs in an individual fight are set to the same skin,
 but across multiple runs you will see different ones.<br>
-<img src='eggs1.png' style='height:11rem'><img src='eggs2.png' style='height:11rem'></div></div><div class='footnote'><sup id='footnote7'><a class='footnote' href='#footref7'>[7]</a></sup> <div id='footnote7ctnt'>And I do mean &quot;during&quot; --
+<img src='eggs1.png' style='height:11rem'><img src='eggs2.png' style='height:11rem'></div></div><div class='footnote'><sup id='footnote7'><a class='footnote' href='#footref7'>[7]</a></sup> <div id='footnote7ctnt'>In case you were wondering,
+the Silent is the richest character (average of 13.4 gold first fight),
+and the Necrobinder is the poorest character (average of 8.3 gold first fight).</div></div><div class='footnote'><sup id='footnote8'><a class='footnote' href='#footref8'>[8]</a></sup> <div id='footnote8ctnt'>And I do mean &quot;during&quot; --
 the entire discovery process happened while he was still &quot;playing&quot; the run.
 (I started while he was still asleep,
-in the middle of the 8-hour Royalties animation.)</div></div><div class='footnote'><sup id='footnote8'><a class='footnote' href='#footref8'>[8]</a></sup> <div id='footnote8ctnt'>It scales the full number of times even if the enemy dies first,
+in the middle of the 8-hour Royalties animation.)</div></div><div class='footnote'><sup id='footnote9'><a class='footnote' href='#footref9'>[9]</a></sup> <div id='footnote9ctnt'>It scales the full number of times even if the enemy dies first,
 which is also probably a bug.
 Hopefully CRNG is fixed before that one so I still get to do it.
 (Or hopefully not,
-because it would probably be terrible to actually execute.)</div></div><div class='footnote'><sup id='footnote9'><a class='footnote' href='#footref9'>[9]</a></sup> <div id='footnote9ctnt'>Again,
+because it would probably be terrible to actually execute.)</div></div><div class='footnote'><sup id='footnote10'><a class='footnote' href='#footref10'>[10]</a></sup> <div id='footnote10ctnt'>Again,
 all taken mod 2^31-1,
 but I'll just assume as a given
-that everything is mod 2^31-1 from now on.</div></div><div class='footnote'><sup id='footnote10'><a class='footnote' href='#footref10'>[10]</a></sup> <div id='footnote10ctnt'>There is actually another option,
+that everything is mod 2^31-1 from now on.</div></div><div class='footnote'><sup id='footnote11'><a class='footnote' href='#footref11'>[11]</a></sup> <div id='footnote11ctnt'>There is actually another option,
 which is to implement a PRNG which supports an efficient &quot;advance&quot; function.
 In fact,
 PCG32 can do this,
