@@ -107,7 +107,7 @@
         <div id='subheader-post'></div>
 
         <main>
-        <div class='hsup'><h1>Correlated randomness in Slay the Spire 2</h1><span>2026-06-13</span></div><div class='hsub'><span class='len lenverylong'><span>very long</span> (6880 words)</span> <a class='tag' href='/blog/games'><span class='tag'>games</span></a><a class='tag' href='/blog/video-games'><span class='tag'>video games</span></a><a class='tag' href='/blog/slay-the-spire'><span class='tag'>slay the spire</span></a><a class='tag' href='/blog/math'><span class='tag'>math</span></a></div>
+        <div class='hsup'><h1>Correlated randomness in Slay the Spire 2</h1><span>2026-06-15</span></div><div class='hsub'><span class='len lenverylong'><span>very long</span> (6880 words)</span> <a class='tag' href='/blog/games'><span class='tag'>games</span></a><a class='tag' href='/blog/video-games'><span class='tag'>video games</span></a><a class='tag' href='/blog/slay-the-spire'><span class='tag'>slay the spire</span></a><a class='tag' href='/blog/math'><span class='tag'>math</span></a></div>
 <p>Here are three true statements about the game of Slay the Spire 2
 (in single player):</p>
 <ol>
@@ -1118,7 +1118,179 @@ because this would significantly increase its complexity
 for very little benefit.</div></div>
 
 <h2 id='comments'>comments</h2>
-<p><i>There are no comments yet.</i></p>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>anon</strong>
+        <em class='commd'>2026-06-16 00:29</em>
+    </p>
+    <div class='commb'><p>cool!</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>Freya</strong>
+        <em class='commd'>2026-06-16 04:11</em>
+    </p>
+    <div class='commb'><p>So a simple solution would be to hash the seed and the text string together?</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn me'>tckmn</strong>
+        <em class='commd'>2026-06-16 23:50</em>
+    </p>
+    <div class='commb'><p>that would solve it to some extent! but there would still be an exploitable correlation -- i mention all of this in the last appendix if you want more details</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>Destroything</strong>
+        <em class='commd'>2026-06-16 06:38</em>
+    </p>
+    <div class='commb'><p>wow, super interesting stuff. do hope it gets fixed somewhat soon</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>Verbante</strong>
+        <em class='commd'>2026-06-16 09:20</em>
+    </p>
+    <div class='commb'><p>what a cool write up</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>Zing</strong>
+        <em class='commd'>2026-06-16 11:09</em>
+    </p>
+    <div class='commb'><p>I wish there was an RSS feed for your blog :)</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn me'>tckmn</strong>
+        <em class='commd'>2026-06-16 23:50</em>
+    </p>
+    <div class='commb'><p><a href='https://tck.mn/blog.xml'>you are in luck!</a></p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>humanoid_human</strong>
+        <em class='commd'>2026-06-16 11:38</em>
+    </p>
+    <div class='commb'><p>would it solve the problem if they generated seed offsets for the other randomizers with calls to the first one? this would require knowing every rng you need in advance, and storing that, but it doesn't seem completely impractical.</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn me'>tckmn</strong>
+        <em class='commd'>2026-06-16 23:50</em>
+    </p>
+    <div class='commb'><p>that would only partially solve it, for similar reasons as the ones i mention in response to Freya's comment above</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>poshpotato</strong>
+        <em class='commd'>2026-06-16 12:12</em>
+    </p>
+    <div class='commb'><p>Absolutely fascinating, thank you</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>malinus_keshar</strong>
+        <em class='commd'>2026-06-16 12:54</em>
+    </p>
+    <div class='commb'><p>It was a great job.
+
+Now i hope that they'll change it to make random independent. Because i don't really want meta of checking all these things for consistent gameplay (streaks).
+
+P.s. Sorry for my English.</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>?</strong>
+        <em class='commd'>2026-06-16 13:23</em>
+    </p>
+    <div class='commb'><p>Thanks for the deep-dive, this was very interesting!</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>rex337</strong>
+        <em class='commd'>2026-06-16 13:39</em>
+    </p>
+    <div class='commb'><p>holy cow!</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>Starling</strong>
+        <em class='commd'>2026-06-16 13:42</em>
+    </p>
+    <div class='commb'><p>Hi! I really enjoyed this article. May I translate it into Chinese and repost the translation on Chinese website? I will clearly credit you as the original author and include a link to the original article. Thank you!</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn me'>tckmn</strong>
+        <em class='commd'>2026-06-16 23:50</em>
+    </p>
+    <div class='commb'><p>yes, absolutely!</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>Josh</strong>
+        <em class='commd'>2026-06-16 14:46</em>
+    </p>
+    <div class='commb'><p>The correct solution for seeded games is probably to use a Random Function (i.e., a good hash function) rather than Random Number Generators to begin with. For example, if you want to determine card rewards, compute:<br><span style='margin-left:1rem'>X = hash(seed, "card reward", floor, reward_index)</span><br>and use X to pick the card (X is a uniformly distributed large integer, you can get a smaller integer relatively easily). Couple notes:</p><ul class='small'><li>comma (,) above is concatenation. You want to keep feeding the hash function more data. Never use +.</li><li>You might need more arguments to fully decorrelate events. For example, you need <code>reward_index</code> due to <span class='sts stsrelic' data-desc='Normal enemies drop an additional card reward.'>Prayer Wheel</span>, <span class='sts stsrelic' data-desc='Elites drop an additional Rare card reward.'>White Star</span>, etc. Enemy intents would use Turn number, or a counter (need to be careful around Vault, Stun, etc.).</li><li>You need to use a good hash function. xxHash, MurmurHash3, sha3, etc. Don't roll your own.</li><li>This approach is strictly better than the recommendation of counter-based RNGs. It is cheaper, easier to implement, and easier to reason about. You don't need to maintain 40 counters, you don't need to save/load any data you weren't saving before. And you can reason about what is and isn't correlated.</li><li>The fact that STS2 has like 30 RNGs is a code-smell. To me, it indicates the developers are trying to achieve what I described here, but using the wrong tools.</ul></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn me'>tckmn</strong>
+        <em class='commd'>2026-06-16 23:50</em>
+    </p>
+    <div class='commb'><p>that would also be a perfectly fine solution, i think it's overkill by quite a bit though (we don't need any of the cryptographic properties that hash functions are designed to have). and "cheaper" is definitely not true (unless i'm misunderstanding what you mean), a prng call is like 5 bitwise operations whereas a hash call is comparatively much more computationally intensive. i don't agree that the pile of RNGs is a code smell, it seems like a fine solution to me as long as the underlying PRNG is not flawed</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>Zhenta</strong>
+        <em class='commd'>2026-06-16 15:59</em>
+    </p>
+    <div class='commb'><p>I read <a href='https://blog.runevision.com/2015/01/primer-on-repeatable-random-numbers.html'>an article</a> a long time ago that had some visualizations of the correlated randomness - as your examples demonstrate, it's <em>really</em> bad. Looking back at it now, PCG also has some issues with correlation as well, though it at least performs much better.</p> </div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn me'>tckmn</strong>
+        <em class='commd'>2026-06-16 23:50</em>
+    </p>
+    <div class='commb'><p>oh, ha - that is the same article as the wayback link at the end of the "Why?" section! i didn't notice it was posted elsewhere, nice</p><p>i will note that the "PcgHash" mentioned in that article is not the same as the PCG32 pseudorandom number generator mentioned in this post</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>Anon</strong>
+        <em class='commd'>2026-06-16 16:12</em>
+    </p>
+    <div class='commb'><p>Good post</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>sigmaboy67</strong>
+        <em class='commd'>2026-06-16 20:46</em>
+    </p>
+    <div class='commb'><p>first</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>Amitri</strong>
+        <em class='commd'>2026-06-16 21:11</em>
+    </p>
+    <div class='commb'><p>This is so damn cool, and a super interesting read.</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>Hieu</strong>
+        <em class='commd'>2026-06-16 23:17</em>
+    </p>
+    <div class='commb'><p>Great write up! Didn't even realize the different egg skins.</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>s</strong>
+        <em class='commd'>2026-06-16 23:24</em>
+    </p>
+    <div class='commb'><p>W post</p></div>
+</div>
+
 <form id='commentform' method='post' action='https://dyn.tck.mn/comment'>
     <p><label>name: <input name='name'></label></p>
     <p><label>contact (private, optional): <input name='cont'></label></p>
