@@ -1193,11 +1193,7 @@ for very little benefit.</div></div>
         <strong class='commn'>malinus_keshar</strong>
         <em class='commd'>2026-06-16 12:54</em>
     </p>
-    <div class='commb'><p>It was a great job.
-
-Now i hope that they'll change it to make random independent. Because i don't really want meta of checking all these things for consistent gameplay (streaks).
-
-P.s. Sorry for my English.</p></div>
+    <div class='commb'><p>It was a great job.</p><p>Now i hope that they'll change it to make random independent. Because i don't really want meta of checking all these things for consistent gameplay (streaks).</p><p>P.s. Sorry for my English.</p></div>
 </div>
 <div class='comm'>
     <p class='commh'>
@@ -1289,6 +1285,251 @@ P.s. Sorry for my English.</p></div>
         <em class='commd'>2026-06-16 23:24</em>
     </p>
     <div class='commb'><p>W post</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>Scevenate</strong>
+        <em class='commd'>2026-06-17 01:32</em>
+    </p>
+    <div class='commb'><p>Activation function for random iteration? Probabilities are always a headache. You write some super custom function and turns out it's bad in a way you've never thought of.</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>anongoner</strong>
+        <em class='commd'>2026-06-17 03:06</em>
+    </p>
+    <div class='commb'><p>is it okay to use this information for my video?</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn me'>tckmn</strong>
+        <em class='commd'>2026-06-17 23:20</em>
+    </p>
+    <div class='commb'><p>certainly, go ahead!</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>compendium-guy</strong>
+        <em class='commd'>2026-06-17 05:43</em>
+    </p>
+    <div class='commb'><p>Reddit shittalked me for trying to complete the compendium and being unable after dozens of roles yielding the same behaviours. Thank you for making a reference I can point to, to shut them up.</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>Sowl</strong>
+        <em class='commd'>2026-06-17 06:49</em>
+    </p>
+    <div class='commb'><p>I wonder if [7] is in any way connected to funny silent clone runs metric</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn me'>tckmn</strong>
+        <em class='commd'>2026-06-17 23:20</em>
+    </p>
+    <div class='commb'><p>lol, i didn't think of that, but that is actually extremely funny: if you random into Silent, you are ~36% to see clone at Pael, and if you random into Ironclad or Defect, you will <em>never</em> see Clone at Pael</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>anon</strong>
+        <em class='commd'>2026-06-17 07:03</em>
+    </p>
+    <div class='commb'><p>Advancing the rngs by the time they were called when loading a save instead of saving the internals of the rngs is certainly one of the design decisions of all time.</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>Matthew</strong>
+        <em class='commd'>2026-06-17 07:39</em>
+    </p>
+    <div class='commb'><p>Just want to throw my 2 cents in to say I really like Josh's suggestion. It would align seeded runs much more, rather than them quickly deviating from each other. Performance obviously doesn't matter for this area of the game, any sensible solution will be fine. There's certainly some gottchas in rolling your own PRNG that I see (including in your implementation, though you do mention it and it probably is fine). With that in mind, a more simple implementation than rolling their own PRNG might be to use C#'s built in CSRNG. Maybe. I'm not a C# coder and haven't looked at it for more than 30 seconds.</p><p>I do however think moving to hash functions is likely a massive change to the code base that probably isn't worth it. I just liked the suggestion.</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>Anon</strong>
+        <em class='commd'>2026-06-17 08:25</em>
+    </p>
+    <div class='commb'><p>Could you fix this by adding the offset to the starting state of the different rng, instead of changing the seed? Like if the card reward rng is automatically incremented 1000x,  would it be completely decoupled from the other rng systems.</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn me'>tckmn</strong>
+        <em class='commd'>2026-06-17 23:20</em>
+    </p>
+    <div class='commb'><p>i suppose that would also remove the correlation, but it feels pretty silly to force yourself to call the rng a billion times for no reason lol (especially when there are easier fixes)</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>Siv</strong>
+        <em class='commd'>2026-06-17 10:08</em>
+    </p>
+    <div class='commb'><p>I play only random, and have noticed it’s very streaky. Out of the last 16 runs since I started tracking, 8 were the same character as the previous run. I had chalked it up to confirmation bias, but could this be a similar thing? I’d expect them to use unseeded or at least sequential calls on the same channel for the random character selection.</p> </div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn me'>tckmn</strong>
+        <em class='commd'>2026-06-17 23:20</em>
+    </p>
+    <div class='commb'><p>nope, that one actually is confirmation bias</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>Dan Yaghsizian</strong>
+        <em class='commd'>2026-06-17 10:09</em>
+    </p>
+    <div class='commb'><p>Brilliant write-up! Love how you just stumbled upon this because you were seed searching for absurd theory craft combos :D</p><p>Also interesting how better PRNG implementation fundamentally changes game architecture and allows for seeds to be consistent across platforms (and future-proofs seed continuity against library updates). Maybe we could eventually see a world where we can start a run on the phone and finish on the PC.</p><p>Anyway, can’t wait to see the patch notes where they reference this post! Great job!</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>nyco</strong>
+        <em class='commd'>2026-06-17 10:18</em>
+    </p>
+    <div class='commb'><p>good post 2</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>dk</strong>
+        <em class='commd'>2026-06-17 10:41</em>
+    </p>
+    <div class='commb'><p>Absolutely bonkers stuff, hope they fix this soon</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>rowan</strong>
+        <em class='commd'>2026-06-17 13:07</em>
+    </p>
+    <div class='commb'><p>This was a fascinating read and I imagine it will be incredibly helpful for the devs. Nice one!</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>S</strong>
+        <em class='commd'>2026-06-17 13:30</em>
+    </p>
+    <div class='commb'><p>Godot already uses PCG32 for its RandomNumberGenerator class, couldn't they just swap from the C# standard to that?</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>Crit</strong>
+        <em class='commd'>2026-06-17 14:06</em>
+    </p>
+    <div class='commb'><p>Spectacular write-up on this, I really loved the structure of plain language introduction, data breakdown, and technical conclusion.</p> </div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>z</strong>
+        <em class='commd'>2026-06-17 14:37</em>
+    </p>
+    <div class='commb'><p>This is cool! How do we make the devs aware?</p> </div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn me'>tckmn</strong>
+        <em class='commd'>2026-06-17 23:20</em>
+    </p>
+    <div class='commb'><p>they are already aware and will fix the issue!</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>Josh</strong>
+        <em class='commd'>2026-06-17 14:59</em>
+    </p>
+    <div class='commb'><p>I was being sloppy with the "cheaper" claim. You are right that PRNGs are usually going to be cheaper than hash functions in terms of compute, especially if you go overboard and use a cryptographically secure one like SHA3.<sup>[1]</sup> A random function has the benefit of being stateless though, so you don't need to save/load any extra data, which could maybe possibly matter for some games (ones that use a lot of PRNGs and want to save constantly). That's what I was thinking of when I wrote "cheaper." Doesn't apply to STS though. Besides, this cost debate is purely academic since STS doesn't generate nearly enough randomness for anything to matter.</p><p>I would claim we do need some of the cryptographic properties of hash functions though. Not in the sense of "this needs to be unbreakable even using a supercomputer," but in that these properties are what ensure correlated/predictable randomness doesn't exist. For example, the <a href='https://en.wikipedia.org/wiki/Avalanche_effect'>avalanche effect</a> (small input changes lead to large output changes) ensure the minimal modifications we make to the input (<code>floor = 21</code> → <code>floor = 22</code>) don't result in linear looking output. And similarly, that <code>hash(seed, CARD_REWARD)</code> and <code>hash(seed, COLORLESS_POTION_RESULT)</code> aren't obviously correlated.   It would be a fun exercise to figure out which <a href='https://en.wikipedia.org/wiki/Security_of_cryptographic_hash_functions'>properties of hash functions</a> one needs for this domain. Or just use a good one and call it a day.</p><p><sup>[1] You don't need to. The article linked by @Zhenta references a lot of good functions that are also cheap. Rust's hash tables use <a href='https://en.wikipedia.org/wiki/SipHash'>SipHash 1-3</a> <em>by default</em>.</sup></p> </div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn me'>tckmn</strong>
+        <em class='commd'>2026-06-17 23:20</em>
+    </p>
+    <div class='commb'><p>ah sure, certainly with you re everything in the first paragraph</p><p>regarding the second, i also agree that both of those properties are important for a stateless-function-based approach like your proposal. but the PRNG-based approach, with a high quality PRNG, also has both properties, the first one corresponding to the statistical randomness of the PRNG output, and the second one corresponding to the lack of correlation between two different PRNGs. i don't really see a compelling concrete reason that the functional approach is tangibly "better" than the PRNG approach</p><p>i will say though that now that you've made me think about it more, i probably agree that your proposal is a bit "nicer" / more elegant, in the same way that, like, a clean mathematical proof is nicer than bashing out some casework. so i would probably be convinced if i was writing my own similar game (but for spire all i really care about is that it gets fixed one way or another :p)</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>hotwords</strong>
+        <em class='commd'>2026-06-17 15:34</em>
+    </p>
+    <div class='commb'><p>Hi, thanks for the amazing write-up. I’m trying to reproduce the results from this blog and wanted to ask: were the percentages in the post generated by Monte Carlo sampling or exact calculations?</p><p>I wrote an exact probability calculator for the STS2/.NET Random model. The results are very close to the post, but there are a few tiny differences.</p><p>Code is here: <a href='https://github.com/hotwords123/sts2_rng_predictor'>https://github.com/hotwords123/sts2_rng_predictor</a></p><p>One interesting example: the post/table rounds Decay in Overgrowth to 0.00%, but it is not actually impossible in the exact model. Conditioned on Overgrowth + Neow’s Bones appearing as the Neow curse option, Decay has count 1 out of 257,539,712, i.e. about 3.883e-07%.</p><p>A concrete standard seed that hits this case is: 0P2ENNHM</p><p>It hashes to the boundary base seed:<br><code>StringHelper.GetDeterministicHashCode("0P2ENNHM") == -2147483648</code></p><p>For that seed:<br>act roll = Overgrowth<br>Neow curse-option roll = Neow’s Bones<br>Niche curse roll = Decay</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn me'>tckmn</strong>
+        <em class='commd'>2026-06-17 23:20</em>
+    </p>
+    <div class='commb'><p>woah, very cool! yeah, the numbers in the post are all just from random sampling, i thought about doing the exact math but didn't end up getting around to that. (the 0 in my post is because i literally saw no such occurrences of it, but that makes sense given your numbers lol.) nice!</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>YCross00</strong>
+        <em class='commd'>2026-06-17 16:49</em>
+    </p>
+    <div class='commb'><p>such a good read loved every sentence of it. hope for a quick fix</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>LtSMASH324</strong>
+        <em class='commd'>2026-06-17 16:57</em>
+    </p>
+    <div class='commb'><p>Found a counter-example to your post about the Hefty Tablet in Overgrowth on Silent. Unless I'm missing something, this is counter to your data, no? <a href='https://imgur.com/gallery/correlated-randomness-wrong-Us8RbDD'>https://imgur.com/gallery/correlated-randomness-wrong-Us8RbDD</a></p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn me'>tckmn</strong>
+        <em class='commd'>2026-06-17 23:20</em>
+    </p>
+    <div class='commb'><p>the correlation with Hefty Tablet only allows you to predict the first card offered -- the other two cards can be any cards from the 80 card pool</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>LetMeSee</strong>
+        <em class='commd'>2026-06-17 17:30</em>
+    </p>
+    <div class='commb'><p>It's really cool that you found those correlations so early on. I really hope Mega Crit will implement fix for them as soon as possible. (I knew i wasn't hallucinating with my bad luck! Thanks for proving me right).</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>ms25</strong>
+        <em class='commd'>2026-06-17 19:05</em>
+    </p>
+    <div class='commb'><p>It's early access but I'm surprised this wasn't caught earlier. I thought it was more widely known that the standard class isn't sufficient for a lot of tasks. For seeding SplitMix64 into xoshiro256** is pretty standard and is what .NET 6 uses for the unseeded Random I think now. <a href='https://numerics.net/documentation/latest/mathematics/random-numbers/choosing-a-random-number-generator'>https://numerics.net/documentation/latest/mathematics/random-numbers/choosing-a-random-number-generator</a></p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>LiquidLittle</strong>
+        <em class='commd'>2026-06-17 20:18</em>
+    </p>
+    <div class='commb'><p>Awesome post. Curious about any of this changes in multiplayer (other than the one you mentioned about rebound), like with massive scroll, what pool of multiplayer cards you can get</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn me'>tckmn</strong>
+        <em class='commd'>2026-06-17 23:20</em>
+    </p>
+    <div class='commb'><p>all of the same shapes of predictions will still apply, just with different concrete numbers. (it will be different for each person though, since the seeding is done partially with your steam ID, so you would have to do all of the computations specific to your own personal account)</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>MrFrosty</strong>
+        <em class='commd'>2026-06-17 20:26</em>
+    </p>
+    <div class='commb'><p>My Neow's bones results don't mesh at all with what you've written unless I'm misunderstanding. I've had multiple of the 0% results from only 12~ runs in my records.</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn me'>tckmn</strong>
+        <em class='commd'>2026-06-17 23:20</em>
+    </p>
+    <div class='commb'><p>i mentioned this in a footnote, but i'm pretty sure previous patches had totally different correlations with Neow's Bones (since the neow curse pool was different). anecdotally i clicked bones like 3 times or something on the patch it first came out and they were all Guilty</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>snickerdoodle</strong>
+        <em class='commd'>2026-06-17 21:14</em>
+    </p>
+    <div class='commb'><p>I believe the devs using many different RNGs is intentional. Basically, they want to make sure that 2 players playing the same seed see similar outcomes for events, etc. even if they make different choices throughout the run.</p><p>For example, suppose I take a path with a ?-room on floor 3 and get trash heap. My friend takes a different path and doesn't enter a ?-room until floor 4. The devs want to make sure we both get the same card from the event, even though we're seeing the event on different floors.</p><p>The simplest way to do this is to use multiple different RNGs. I think the devs just made the (IMO very reasonable) assumption that RNGs with different seeds would be uncorrelated.</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>Dknsdsgn</strong>
+        <em class='commd'>2026-06-17 21:33</em>
+    </p>
+    <div class='commb'><p>Not a coder or anything, just an STS fan. Nevertheless, I've enjoyed reading your post and found it quite informative and comprehensible even for me. Thx and have a good one!</p></div>
 </div>
 
 <form id='commentform' method='post' action='https://dyn.tck.mn/comment'>
