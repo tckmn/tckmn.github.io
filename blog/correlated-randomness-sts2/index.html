@@ -4,7 +4,7 @@
         <meta charset='utf-8'>
         <meta name='viewport' content='width=device-width, initial-scale=1'>
         <title>Correlated randomness in Slay the Spire 2 - Andy Tockman</title>
-        <script src='/js/blog_correlated-randomness-sts2-956cf863.js'></script><script src='/js/charts-4d9b8dce.js'></script><script src='/js/comments-db3d7755.js'></script><script src='/js/footnotes-5d6c4be6.js'></script><script src='/js/spire-853408da.js'></script><link rel='stylesheet' href='/css/global-5ee50410.css'><link rel='stylesheet' href='/css/blog_correlated-randomness-sts2-d83b73b4.css'><link rel='stylesheet' href='/css/charts-f3d7a806.css'><link rel='stylesheet' href='/css/spire-e62b6507.css'>
+        <script src='/js/blog_correlated-randomness-sts2-956cf863.js'></script><script src='/js/charts-4d9b8dce.js'></script><script src='/js/comments-db3d7755.js'></script><script src='/js/footnotes-5d6c4be6.js'></script><script src='/js/spire-853408da.js'></script><link rel='stylesheet' href='/css/global-fcf9b95e.css'><link rel='stylesheet' href='/css/blog_correlated-randomness-sts2-d83b73b4.css'><link rel='stylesheet' href='/css/charts-f3d7a806.css'><link rel='stylesheet' href='/css/spire-e62b6507.css'>
         <link rel='apple-touch-icon' sizes='180x180' href='/apple-touch-icon.png'>
         <link rel='icon' type='image/png' sizes='32x32' href='/favicon-32x32.png'>
         <link rel='icon' type='image/png' sizes='16x16' href='/favicon-16x16.png'>
@@ -1117,7 +1117,8 @@ but I didn't bother implementing it in my example code,
 because this would significantly increase its complexity
 for very little benefit.</div></div>
 
-<h2 id='comments'>comments</h2>
+<h2 id='comments'>comments (86)</h2>
+<div class='comms'>
 <div class='comm'>
     <p class='commh'>
         <strong class='commn'>anon</strong>
@@ -1531,7 +1532,205 @@ for very little benefit.</div></div>
     </p>
     <div class='commb'><p>Not a coder or anything, just an STS fan. Nevertheless, I've enjoyed reading your post and found it quite informative and comprehensible even for me. Thx and have a good one!</p></div>
 </div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>Aphid</strong>
+        <em class='commd'>2026-06-18 00:53</em>
+    </p>
+    <div class='commb'><p>Alternative solution still using system: </p><p>Rather than modifying the 'seed' of the system.random initialization, modify the position. </p><p>Each random call becomes a 'wrapper'  Spire.random(). </p><p>Spire.random() wraps system.random(). The first time, it calls it with the seed of the game. It then pre-generates the first 100K random doubles and saves them.</p><p>Most of the RNGs in spire are only called a few amount of times (like ancient rewards, transform options, etc.). All of those are done using a fixed chosen one of our 100K random numbers (so say the doll room would be #284). </p><p>This does have some programming downsides in that you'd need to take care not to overlap them. </p><p>So I do still think that the best solution is to pick a better PRNG. MT19937-64 is often used in games because it's the C++ standard, and it's much more robust to most of our shenanigans. </p><p>It's got a large internal state which means its 'period' is bigger than any typical PRNG at effectively infinite numbers, it's nonlinear so much harder to predict, etc. </p><p>You could also offset each random PRNG after the first with some fixed N calls you throw away. Note that this does have quadratic complexity, so after some point (mods will notice this) it becomes more efficient to save the state before creating a new RNG (if we take N=5, you need 5, 15, 30, 50, ... calls to de-correlate the state).</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>Aphid</strong>
+        <em class='commd'>2026-06-18 04:41</em>
+    </p>
+    <div class='commb'><p>Addendum / Theoretical. </p><p>I had a bit of an observation: 'information' is a preserved quantity. A seed has a fixed amount of information. Directly deriving from the seed, in a known way, a quantity of information larger than that inside of the seed (64 bits) is going to force some kind of correlations to exist. They may become quite complicated, but they will exist if the game needs more than 64 bits.</p><p>A card transform needs at least 7 bits (there are roughly 2^7 cards rounded up), the doll room event needs 3 bits (there are 6 possible ways of ordering 3 dolls), randomizing a starting curse needs ~4 bits, etc. </p><p>Perhaps a much bigger seed could help. You could chop it up into many small seeds for the 30-odd PRNGs used by the game. Instead of a 64-bit seed you have a 2048-bit seed file. That forces independence for sure. The reason to do that is to anticipate the future where some clever users will start seeing patterns even with a better RNG. </p><p>Why am I somewhat uncertain about just replacing the RNG alone? Because of a field of study named 'Differential Cryptanalysis'. This correlated randomness post is actually applying some basic differential cryptanalysis on Spire's PRNG. More advanced analysis might find patterns in more advanced PRNGs, and it becomes a question of when to stop 'improving'.</p><p>To keep the seed shorter but also make the risk of DC lower, You could combine this with the previous suggested approaches too, by employing techniques used in cryptography. Algorithms like AES that shuffle stuff around do so multiple times to make the key (the small amount of information that's encrypting a larger amount of information) more difficult to guess. </p><p>Now StS hands you the key (the seed) but here the assumption is that generating your own results is cheating. Assuming you don't use the seed in any way, can you use what the game outputs (the random selections) to infer the seed in some way? With the Mersenne twister, you need ~300 outputs. </p><p>Another way of dealing with the messyness is to use a strong function, either a good PRNG, a CSPRNG, or even just AES(seed,0,0) as the way to determine each other RNG's seed. So RNG2 's seed is the first output of RNG1, RNG3's seed is the second output, etc. You use RNG1's output to seed each other RNG, and you make RNG1 be quite 'strong' in cryptographic terms to minimize correlations etc.</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>hexy</strong>
+        <em class='commd'>2026-06-18 03:35</em>
+    </p>
+    <div class='commb'><p>Awesome investigation. I'm investigating how RNG works in a different game (Stone Story RPG) that also uses the C# System.Random RNG, that appendix really blows my mind. I'm going to have to mess around with it myself.</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>Wug</strong>
+        <em class='commd'>2026-06-18 12:58</em>
+    </p>
+    <div class='commb'><p>Thanks for the great writeup!</p><p>Something curious is that I've gotten Rebound from Trash Heap before in a singleplayer Ironclad run. My compendium says it was on beta v0.106.1, so it's possible that the correlations were different because of changes to the pool, but I wouldn't expect the Trash Heap pool to change between patches in the same way that something like Neow's Bones did.</p><p>I play with some non-gameplay altering mods (SlayTheStats, UnifiedSavePath, BetterSpire2 Lite, and BaseLib) but I wouldn't expect those to affect RNG either, especially because I can play multiplayer with no issues while they're loaded.</p><p>IMO it can probably be chalked up to version differences but I thought I would mention it in case it was interesting. Have a good one!</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn me'>tckmn</strong>
+        <em class='commd'>2026-06-21 10:00</em>
+    </p>
+    <div class='commb'><p>huh, yeah, i don't think i have an explanation purely based on changing content pools, since i agree the trash heap has always been the same. as far as i could tell nobody had ever gotten a Rebound in singleplayer at v0.107.0 or earlier, my best guess is that it must somehow have been mod related</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>Ole</strong>
+        <em class='commd'>2026-06-18 15:47</em>
+    </p>
+    <div class='commb'><p>Its kinda wierd but im currently sitting rn with a guilty in my deck from news bones, and i am never experienced getting debt. idk if there is other factors playin in but ive also seen other people getting the guilty curse from neow bones. I can send you a screen shot if you contact me.
+</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn me'>tckmn</strong>
+        <em class='commd'>2026-06-21 10:00</em>
+    </p>
+    <div class='commb'><p>you were probably on the main branch (all of these results only applied to the v0.107.0 beta)</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>OkamiShiranui</strong>
+        <em class='commd'>2026-06-18 18:14</em>
+    </p>
+    <div class='commb'><p>Does this apply to the RNG for the rock-paper-scissors for fighting over relic choices in multiplayer? Anecdotally, when playing with the same steam friend there were chains of 10+ rolls in a row where he'd win.</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn me'>tckmn</strong>
+        <em class='commd'>2026-06-21 10:00</em>
+    </p>
+    <div class='commb'><p>the multiplayer map selection roll was in fact correlated with the other RNGs, but what you are describing is not a correlation, that's just you getting unlucky lol</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>Python Enjoyer</strong>
+        <em class='commd'>2026-06-18 20:44</em>
+    </p>
+    <div class='commb'><p>Very cool blog post. It has it all. Slay the Spire, fun data science and constructive criticism. Thank you for your service.
+I wonder why the solution is not just a single random number generator?
+Why the need for many? Is this to keep the map layout independent from player actions (playing a card that involves some randomness)?
+In that case two rngs would be a lot easier to handle i would imagine.
+Also random numbers in c# seem to be a nightmare.
 
+
+</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>Python Enjoyer</strong>
+        <em class='commd'>2026-06-18 21:22</em>
+    </p>
+    <div class='commb'><p>Another solution would be to use the seed of one rng to produce the next. This would still mean that one seed gives information about another, but this would not matter for average player, correct?</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn me'>tckmn</strong>
+        <em class='commd'>2026-06-21 10:00</em>
+    </p>
+    <div class='commb'><p>since the game lets you play specific run seeds, it's desirable for the same seed to always give the same card rewards / relics / etc, so that playing the same seed as someone else actually feels like playing the same run. if there were only one rng then the seeds would immediately become completely different if you shuffle your deck a different number of times, say</p><p>yes, that would partially but not totally fix the problem (as mentioned in the "What?" appendix)</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>SS</strong>
+        <em class='commd'>2026-06-18 23:05</em>
+    </p>
+    <div class='commb'><p>Agree with Josh's proposed solution. Using a PRF makes more sense, and probably simplifies a lot of things in the code. E.g., there is no need to save the PRNG counter each time. It looks like they fixed it already by just changing the RNG algo though.</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>Martin</strong>
+        <em class='commd'>2026-06-18 23:07</em>
+    </p>
+    <div class='commb'><p>And as of v0.107.1, they’ve switched from the C# System.Random to xoshiro256**, all thanks to this great post!</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>Anonymous</strong>
+        <em class='commd'>2026-06-18 23:45</em>
+    </p>
+    <div class='commb'><p>This is so cool, thank you for sharing and writing such a detailed article!</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>Dr. Pin</strong>
+        <em class='commd'>2026-06-19 00:24</em>
+    </p>
+    <div class='commb'><p>Kind of curious, does it have anything to do with Godot as the engine, or not really?</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn me'>tckmn</strong>
+        <em class='commd'>2026-06-21 10:00</em>
+    </p>
+    <div class='commb'><p>nope, the RNG in question comes from the C# runtime and is unrelated to Godot</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>bottomdeckeverypower</strong>
+        <em class='commd'>2026-06-19 03:22</em>
+    </p>
+    <div class='commb'><p>You've done the game a real service with this, thank you.</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>Giocentric</strong>
+        <em class='commd'>2026-06-19 08:48</em>
+    </p>
+    <div class='commb'><p>Hi! First off, your article is super well written and approachable so thank you! Secondly, I wanted to say congrats on the shoutout inside the Steam update. And lastly, will you be publishing your seed search code that you used for this? I’ve wanted to find fun seeds to play through such as big bang into clone, but haven’t seen anything online that could do this.</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn me'>tckmn</strong>
+        <em class='commd'>2026-06-21 10:00</em>
+    </p>
+    <div class='commb'><p>sure, <a href='https://github.com/tckmn/sts2-seed-search'>here's the slightly messy but still usable seed search code</a> (for both the old version and the current version with new RNG). unfortunately it doesn't have a remotely friendly user interface or anything, but i am happy to be seed google if you dm me your search queries :p</p><p>i also have some gpu code for ultra fast seed searching, but it's even less usable by people who aren't me and i haven't posted it anywhere</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>Kayiu</strong>
+        <em class='commd'>2026-06-19 09:11</em>
+    </p>
+    <div class='commb'><p>Congratulations on being officially shouted out by MegaCrit! This is a fascinating analysis, and I think that it could've even stopped a few layers shallower than you went and have still been crazy - shoutout to the level of detail you've put in here while still making it comprehensible for a layman like me!</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>smilingnavern</strong>
+        <em class='commd'>2026-06-19 10:20</em>
+    </p>
+    <div class='commb'><p>Thanks! This is a very cool article. I enjoyed a lot while reading it.</p><p>Btw it's very funny how you are mention that you are found this by accident. I think this article is very smart and so you are as well.</p><p>Randomness is interesting topic, never heard of correlated randomness previously. So it was good to get a grasp of it.</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>Bigsmiles</strong>
+        <em class='commd'>2026-06-19 12:02</em>
+    </p>
+    <div class='commb'><p>Please save me from myself. if you leave a fight before dying and you continue it restarts with the same rng so I'm <strong>FORCED</strong> to keep fighting loosing fight until i optimize them enough to not die to them, I'm hostage to my brain, please spare me</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn me'>tckmn</strong>
+        <em class='commd'>2026-06-21 10:00</em>
+    </p>
+    <div class='commb'><p>ok, how about this: i hereby declare that you are allowed to lose to any fight in the game. there, hopefully now you're no longer forced to keep trying and can just start a new run</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>OutOfNickels</strong>
+        <em class='commd'>2026-06-19 15:28</em>
+    </p>
+    <div class='commb'><p>Amazing writeup!</p><p>Given these statements of yours:</p><blockquote>Unfortunately, the pseudorandom number generation algorithm used in C# is almost entirely "linear" in the starting seed.</blockquote><blockquote>In fact, with some very reasonable assumptions on how the System.Random class is implemented in C#, the randomness in Spire would be totally fine.</blockquote><p>I am now curious, was the java implementation equally flawed? The RNG Fix mod for the original game is implemented in the same way that the original code for STS2 is, but no one ever noticed a crng problem there, which could be either a lack of problem, or simply no one ever noticed it.</p><p>So was this an issue created specifically by the C# implementation of random?</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn me'>tckmn</strong>
+        <em class='commd'>2026-06-21 10:00</em>
+    </p>
+    <div class='commb'><p>i did actually think about this, lol. java's stock RNG (until recent versions) was somehow even worse, but the RNGFix mod for spire 1 uses a different one (xorshift+) which is related to the one now in spire 2 (xoshiro256**) and does not have this issue</p></div>
+</div>
+<div class='comm'>
+    <p class='commh'>
+        <strong class='commn'>DarkenedAuras</strong>
+        <em class='commd'>2026-06-19 15:37</em>
+    </p>
+    <div class='commb'><p>I kneel to your power and intelligence to find this. I'm glad you found this and ecstatic that you did such a comprehensive writeup for me and my smaller brain to read and appreciate</p></div>
+</div>
+
+</div>
 <form id='commentform' method='post' action='https://dyn.tck.mn/comment'>
     <p><label>name: <input name='name'></label></p>
     <p><label>contact (private, optional): <input name='cont'></label></p>
