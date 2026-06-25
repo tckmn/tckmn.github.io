@@ -281,7 +281,7 @@ window.addEventListener('load', () => {
         const sday = localStorage.getItem('temple-day');
         const sscs = (localStorage.getItem('temple-scores') || '- - - -').split(' ');
         shcont.style.display = !a.daily || sscs.every(x=>x==='-') ? 'none' : 'flex';
-        sha.value = `temple ${sday}\n-HG: ${sscs[3]}\n-HT: ${sscs[2]}\n-BG: ${sscs[1]}\n-BT: ${sscs[0]}\nhttps://tck.mn/temple`;
+        sha.value = `temple ${sday}\n-HG: ${sscs[3]}\n-HT: ${sscs[2]}\n-BG: ${sscs[1]}\n-BT: ${sscs[0]}\n-sum: ${sscs.map(x=>x==='-'?0:+x).reduce((a,b)=>a+b)}\nhttps://tck.mn/temple`;
     };
     updshare();
 
