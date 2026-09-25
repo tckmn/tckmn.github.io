@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<meta name="google" content="notranslate">
+
+<link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
+<link rel="manifest" href="./site.webmanifest">
+<link rel="mask-icon" href="./safari-pinned-tab.svg" color="#5bbad5">
+<link rel="stylesheet" href="./css/ui.css?a27123b0" type="text/css">
+<script type="text/javascript">
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.getRegistrations().then(function(registrations) {
+      for(let registration of registrations) {
+        registration.unregister()
+      }
+    })
+  });
+}
+</script>
+<script type="text/javascript" src="./js/pzpr.js?a27123b0"></script>
+<script type="text/javascript" src="./js/pzpr-ui.js?a27123b0"></script>
+<title>puzz.link player</title>
+</head>
+
+<body>
+
+<div id="main">
+
+<h2 id="title2">読み込み中です...</h2>
+
+<div id="menuboard" class="outofboard">
+  <menu id="menupanel" style="display:none;">
+   <li id="menu_file"><span>__menu_file__</span><menu label="__menu_file__">
+     <li data-popup="newboard" id="menu_newboard"><span>__newboard__</span></li>
+     <li data-popup="urlinput"><span>__urlinput__</span></li>
+     <li data-popup="urloutput" id="menu_urloutput"><span>__urloutput__</span></li>
+     <hr>
+     <li data-popup="fileopen"><span>__fileopen__</span></li>
+     <li data-popup="filesave"><span>__filesave__</span></li>
+     <li class="link" data-linktype="duplicate" id="menu_duplicate"><a target="_blank">__duplicate__</a></li>
+     <hr>
+     <li data-popup="imagesave" id="menu_imagesave"><span>__imagesave__</span></li>
+     <hr>
+     <li data-popup="network" id="menu_network"><span>__network.title__</span></li>
+   </menu></li>
+   <li id="menu_edit"><span>__menu_edit__</span><menu label="__menu_edit__">
+     <li data-popup="adjust" id="menu_adjust"><span>__adjust__</span></li>
+     <li data-popup="turnflip" id="menu_turnflip"><span>__turnflip__</span></li>
+   </menu></li>
+   <li id="menu_display"><span>__menu_display__</span><menu label="__menu_display__">
+     <li data-config="cellsizeval"><span>__cellsize__</span> -&gt;<menu label="__cellsize__">
+       <li data-value="19"><span>__cellsize.xs__</span></li>
+       <li data-value="36"><span>__cellsize.s__</span></li>
+       <li data-value="48"><span>__cellsize.n__</span></li>
+       <li data-value="72"><span>__cellsize.l__</span></li>
+       <li data-value="108"><span>__cellsize.xl__</span></li>
+       <hr>
+       <li data-popup="dispsize"><span>__cellsize.custom__</span></li>
+     </menu></li>
+     <li data-config="font"><span>__font__</span> -&gt;<menu label="__font__">
+       <li data-value="1"><span>__font.sans__</span></li>
+       <li data-value="2"><span>__font.serif__</span></li>
+     </menu></li>
+     <hr>
+     <li class="check" data-config="undefcell"><span>__undefcell__</span></li>
+     <li class="check" data-config="cursor"><span>__cursor__</span></li>
+     <li class="check" data-config="trialmarker"><span>__trialmarker__</span></li>
+     <li class="check" data-config="timer"><span>__timer.menu__</span></li>
+     <li class="check" data-config="adjsize"><span>__adjsize__</span></li>
+     <li class="check" data-config="fullwidth"><span>__fullwidth__</span></li>
+     <hr>
+     <li data-menu-exec="toolarea"><span id="menu_toolarea">__toolarea.hide__</span></li>
+   </menu></li>
+   <li id="menu_setting"><span>__menu_setting__</span><menu label="__menu_setting__">
+     <li class="check" data-config="lrinvert"><span>__lrinvert__</span></li>
+     <li data-config="use_tri"><span>__use_tri__</span> -&gt;<menu label="__use_tri__">
+       <li data-value="1"><span>__use_tri.1__</span></li>
+       <li data-value="2"><span>__use_tri.2__</span></li>
+       <li data-value="3"><span>__use_tri.3__</span></li>
+     </menu></li>
+     <li class="check" data-config="bgcolor"><span>__bgcolor.menu__</span></li>
+     <li class="check" data-config="multierr"><span>__multierr__</span></li>
+     <li class="check" data-config="forceallcell"><span>__forceallcell.menu__</span></li>
+     <li class="check" data-config="dirauxmark"><span>__dirauxmark.menu__</span></li>
+     <li class="check" data-config="enline"><span>__enline.menu__</span></li>
+     <li class="check" data-config="lattice"><span>__lattice.menu__</span></li>
+     <li class="check" data-config="singlenum"><span>__singlenum.menu__</span></li>
+     <li class="check" data-config="discolor"><span>__discolor__</span></li>
+     <li class="check" data-config="autosave"><span>__autosave__</span></li>
+     <li data-config="autocheck_mode"><span>__autocheck__</span>&nbsp;-&gt;<menu label="__autocheck__">
+       <li class="child" data-value="off"><span>__autocheck.off__</span></li>
+       <li class="child" data-value="guarded"><span>__autocheck.guarded__</span></li>
+       <li class="child" data-value="simple"><span>__autocheck.simple__</span></li>
+     </menu></li>
+     <hr>
+     <li data-config="language"><span>言語/Language</span> -&gt;<menu label="言語/Language">
+       <li class="child" data-value="ja"><span>日本語</span></li>
+       <li class="child" data-value="en"><span>English</span></li>
+     </menu></li>
+   </menu></li>
+   <li id="menu_help"><span>__menu_help__</span><menu label="__menu_help__">
+     <li class="link" data-pidlink="rules.html?"><a target="_blank">__rules__</a></li>
+     <hr>
+     <li data-popup="about"><span>__about__</span></li>
+     <li class="link"><a target="_blank" href="https://hosted.weblate.org/projects/pzprjs/">__translate__</a></li>
+     <li class="link"><a target="_blank" href="https://github.com/robx/pzprjs/issues">__issues__</a></li>
+   </menu></li>
+   <div id="saveicon" style="display:none;">&#x1F4BE</div>
+  </menu>
+  <div id="usepanel" style="display:none;">
+    <div class="config" data-config="mode">
+     <div><span>__mode__</span> | </div>
+     <div>
+      <div class="child" data-value="edit">__mode.edit__</div>
+      <div class="child" data-value="play">__mode.play__</div>
+     </div>
+    </div>
+    <div class="config" data-config="use">
+     <div><span>__use__</span> | </div>
+     <div>
+      <div class="child" data-value="1">__use.1__</div>
+      <div class="child" data-value="2">__use.2__</div>
+     </div>
+    </div>
+    <div class="config" data-config="inputmode" id="panel_inputmode">
+     <div><span>__inputmode__</span> | </div>
+     <div>
+      <div class="child" data-value="auto">__inputmode.auto__</div>
+      <div class="child" data-value="shade">__inputmode.shade__</div>
+      <div class="child" data-value="unshade">__inputmode.unshade__</div>
+      <div class="child" data-value="number">__inputmode.number__</div>
+      <div class="child" data-value="number-">__inputmode.number-__</div>
+      <div class="child" data-value="letter">__inputmode.letter__</div>
+      <div class="child" data-value="letter-">__inputmode.letter-__</div>
+      <div class="child" data-value="quesmark">__inputmode.quesmark__</div>
+      <div class="child" data-value="quesmark-">__inputmode.quesmark-__</div>
+      <div class="child" data-value="color">__inputmode.color__</div>
+      <div class="child" data-value="color-">__inputmode.color-__</div>
+      <div class="child" data-value="border">__inputmode.border__</div>
+      <div class="child" data-value="sub-border">__inputmode.sub-border__</div>
+      <div class="child" data-value="subline">__inputmode.subline__</div>
+      <div class="child" data-value="direc">__inputmode.direc__</div>
+      <div class="child" data-value="arrow">__inputmode.arrow__</div>
+      <div class="child" data-value="circle-unshade">__inputmode.circle-unshade__</div>
+      <div class="child" data-value="circle-shade">__inputmode.circle-shade__</div>
+      <div class="child" data-value="circle-gray">__inputmode.circle-gray__</div>
+      <div class="child" data-value="goat">__inputmode.goat__</div>
+      <div class="child" data-value="sheep">__inputmode.sheep__</div>
+      <div class="child" data-value="wolf">__inputmode.wolf__</div>
+      <div class="child" data-value="boulder">__inputmode.boulder__</div>
+      <div class="child" data-value="moon">__inputmode.moon__</div>
+      <div class="child" data-value="sun">__inputmode.sun__</div>
+      <div class="child" data-value="empty">__inputmode.empty__</div>
+      <div class="child" data-value="ice">__inputmode.ice__</div>
+      <div class="child" data-value="water">__inputmode.water__</div>
+      <div class="child" data-value="fire">__inputmode.fire__</div>
+      <div class="child" data-value="forest">__inputmode.forest__</div>
+      <div class="child" data-value="nabe">__inputmode.nabe__</div>
+      <div class="child" data-value="box">__inputmode.box__</div>
+      <div class="child" data-value="pin">__inputmode.pin__</div>
+      <div class="child" data-value="diamond">__inputmode.diamond__</div>
+      <div class="child" data-value="crossdot">__inputmode.crossdot__</div>
+      <div class="child" data-value="ineq">__inputmode.ineq__</div>
+      <div class="child" data-value="move-clue">__inputmode.move-clue__</div>
+      <div class="child" data-value="copy-answer">__inputmode.copy-answer__</div>
+      <div class="child" data-value="mark-circle">__inputmode.mark-circle__</div>
+      <div class="child" data-value="mark-triangle">__inputmode.mark-triangle__</div>
+      <div class="child" data-value="mark-rect">__inputmode.mark-rect__</div>
+      <div class="child" data-value="mark-tree">__inputmode.mark-tree__</div>
+      <div class="child" data-value="mark-tent">__inputmode.mark-tent__</div>
+      <div class="child" data-value="mark-cross">__inputmode.mark-cross__</div>
+      <div class="child" data-value="mark-checkerboard">__inputmode.mark-checkerboard__</div>
+      <div class="child" data-value="undef">__inputmode.undef__</div>
+      <div class="child" data-value="line">__inputmode.line__</div>
+      <div class="child" data-value="peke">__inputmode.peke__</div>
+      <div class="child" data-value="pekeborder">__inputmode.pekeborder__</div>
+      <div class="child" data-value="diraux">__inputmode.diraux__</div>
+      <div class="child" data-value="bar">__inputmode.bar__</div>
+      <div class="child" data-value="crossbar">__inputmode.bar__</div>
+      <div class="child" data-value="akari">__inputmode.akari__</div>
+      <div class="child" data-value="star">__inputmode.star__</div>
+      <div class="child" data-value="dot">__inputmode.dot__</div>
+      <div class="child" data-value="balloon">__inputmode.balloon__</div>
+      <div class="child" data-value="ironball">__inputmode.ironball__</div>
+      <div class="child" data-value="futon">__inputmode.futon__</div>
+      <div class="child" data-value="completion">__inputmode.completion__</div>
+      <div class="child" data-value="copycircle">__inputmode.copycircle__</div>
+      <div class="child" data-value="copynum">__inputmode.copynum__</div>
+      <div class="child" data-value="copyletter">__inputmode.copyletter__</div>
+      <div class="child" data-value="copysymbol">__inputmode.copysymbol__</div>
+      <div class="child" data-value="dragnum+">__inputmode.dragnum+__</div>
+      <div class="child" data-value="dragnum-">__inputmode.dragnum-__</div>
+      <div class="child" data-value="objblank">__inputmode.objblank__</div>
+      <div class="child" data-value="numexist">__inputmode.numexist__</div>
+      <div class="child" data-value="numblank">__inputmode.numblank__</div>
+      <div class="child" data-value="subcircle">__inputmode.subcircle__</div>
+      <div class="child" data-value="subcross">__inputmode.subcross__</div>
+      <div class="child" data-value="bgcolor">__inputmode.bgcolor__</div>
+      <div class="child" data-value="bgcolor1">__inputmode.bgcolor1__</div>
+      <div class="child" data-value="bgcolor2">__inputmode.bgcolor2__</div>
+      <div class="child" data-value="bgpaint">__inputmode.bgpaint__</div>
+      <div class="child" data-value="clear">__inputmode.clear__</div>
+      <div class="child" data-value="info-line">__inputmode.info-line__</div>
+      <div class="child" data-value="info-blk">__inputmode.info-blk__</div>
+      <div class="child" data-value="info-ublk">__inputmode.info-ublk__</div>
+      <div class="child" data-value="info-room">__inputmode.info-room__</div>
+      <div class="child" data-value="info-road">__inputmode.info-road__</div>
+     </div>
+    </div>
+    <div class="config" data-config="disptype_yajilin">
+     <div><span>__disptype__</span> | </div>
+     <div>
+      <div class="child" data-value="1">__disptype_yajilin.1__</div>
+      <div class="child" data-value="2">__disptype_yajilin.2__</div>
+     </div>
+    </div>
+    <div class="config" data-config="disptype_bosanowa">
+     <div><span>__disptype__</span> | </div>
+     <div>
+      <div class="child" data-value="1">__disptype_bosanowa.1__</div>
+      <div class="child" data-value="2">__disptype_bosanowa.2__</div>
+      <div class="child" data-value="3">__disptype_bosanowa.3__</div>
+     </div>
+    </div>
+    <div class="config" data-config="disptype_interbd">
+     <div><span>__disptype__</span> | </div>
+     <div>
+      <div class="child" data-value="1">__disptype_interbd.1__</div>
+      <div class="child" data-value="2">__disptype_interbd.2__</div>
+      <div class="child" data-value="3">__disptype_interbd.3__</div>
+     </div>
+    </div>
+  </div>
+  <div id="checkpanel" style="display:none;">
+    <div class="config" data-config="dispmove">
+      <label>
+        <input type="checkbox">
+        <span>__dispmove__</span>
+      </label>
+    </div>
+    <div class="config" data-config="bgcolor">
+      <label>
+        <input type="checkbox">
+        <span>__bgcolor.tool__</span>
+      </label>
+    </div>
+    <div class="config" data-config="autocmp">
+      <label>
+        <input type="checkbox">
+        <span data-autocmp-type="number">__autocmp.number__</span>
+        <span data-autocmp-type="room">__autocmp.room__</span>
+        <span data-autocmp-type="akari">__autocmp.akari__</span>
+        <span data-autocmp-type="kouchoku">__autocmp.kouchoku__</span>
+        <span data-autocmp-type="border">__autocmp.border__</span>
+        <span data-autocmp-type="recoil">__autocmp.recoil__</span>
+      </label>
+    </div>
+    <div class="config" data-config="autoerr">
+      <label>
+        <input type="checkbox">
+        <span data-disp-pid="hitori">__autoerr.tool.hitori__</span>
+        <span data-disp-pid="gokigen">__autoerr.tool.gokigen__</span>
+        <span data-disp-pid="ubahn,narrow">__autoerr.tool.ubahn__</span>
+        <span data-disp-pid="wagiri">__autoerr.tool.wagiri__</span>
+      </label>
+    </div>
+    <div class="config" data-config="dirauxmark">
+      <label>
+        <input type="checkbox">
+        <span>__dirauxmark.tool__</span>
+      </label>
+    </div>
+    <div class="config" data-config="enline">
+      <label>
+        <input type="checkbox">
+        <span>__enline.tool__</span>
+      </label>
+    </div>
+    <div class="config" data-config="lattice">
+      <label>
+        <input type="checkbox">
+        <span>__lattice.tool__</span>
+      </label>
+    </div>
+    <div class="config" data-config="uramashu">
+      <label>
+        <input type="checkbox">
+        <span>__uramashu__</span>
+      </label>
+    </div>
+    <div class="config" data-config="singlenum">
+      <label>
+        <input type="checkbox">
+        <span>__singlenum.tool__</span>
+      </label>
+    </div>
+    <div class="config" data-config="singleregion">
+      <label>
+        <input type="checkbox">
+        <span>__singleregion__</span>
+      </label>
+    </div>
+    <div class="config" data-config="forceallcell">
+      <label>
+        <input type="checkbox">
+        <span>__forceallcell.tool__</span>
+      </label>
+    </div>
+    <div class="config" data-config="snakebd">
+      <label>
+        <input type="checkbox">
+        <span>__snakebd__</span>
+      </label>
+    </div>
+    <div class="config" data-config="ensquare">
+      <label>
+        <input type="checkbox">
+        <span>__ensquare__</span>
+      </label>
+    </div>
+    <div class="config" data-config="context_marks">
+      <label>
+        <input type="checkbox">
+        <span>__context_marks__</span>
+      </label>
+    </div>
+    <div class="config" data-config="dispqnumbg">
+      <label>
+        <input type="checkbox">
+        <span>__dispqnumbg__</span>
+      </label>
+    </div>
+    <div class="config" data-config="mouseonly">
+      <label>
+        <input type="checkbox">
+        <span>__mouseonly__</span>
+      </label>
+    </div>
+    <div class="config" data-config="patchwork_leftaux">
+      <label>
+        <input type="checkbox">
+        <span>__patchwork_leftaux__</span>
+      </label>
+    </div>
+    <div class="config" data-config="keypopup">
+      <label>
+        <input type="checkbox">
+        <span>__keypopup.tool__</span>
+      </label>
+    </div>
+    <div class="config" data-config="irowake">
+      <label>
+        <input type="checkbox">
+        <span>__irowake.tool__</span>
+      </label>
+      <button class="btn" data-button-exec="irowake">__irowake.change__</button>
+    </div>
+    <div class="config" data-config="irowakeblk">
+      <label>
+        <input type="checkbox">
+        <span>__irowakeblk.tool__</span>
+      </label>
+      <button class="btn" data-button-exec="irowake">__irowakeblk.change__</button>
+    </div>
+  </div>
+  <hr class="separator" id="separator1">
+  <div id="variantpanel" style="display:none;">
+    <div class="config" data-config="dontpassallcell">
+      <label>
+        <input type="checkbox">
+        <span>__dontpassallcell__</span>
+      </label>
+    </div>
+    <div class="config" data-config="aquarium_regions">
+      <label>
+        <input type="checkbox">
+        <span>__aquarium_regions__</span>
+      </label>
+    </div>
+    <div class="config" data-config="country_empty">
+      <label>
+        <input type="checkbox">
+        <span>__country_empty__</span>
+      </label>
+    </div>
+    <div class="config" data-config="voxas_tatami">
+      <label>
+        <input type="checkbox">
+        <span>__voxas_tatami__</span>
+      </label>
+    </div>
+    <div class="config" data-config="tren_new">
+      <label>
+        <input type="checkbox">
+        <span>__tren_new__</span>
+      </label>
+    </div>
+    <div class="config" data-config="nuriuzu_connect">
+      <label>
+        <input type="checkbox">
+        <span>__nuriuzu_connect__</span>
+      </label>
+    </div>
+    <div class="config" data-config="balloon_adjacent">
+      <label>
+        <input type="checkbox">
+        <span>__balloon_adjacent__</span>
+      </label>
+    </div>
+    <div class="config" data-config="bdwalk_height">
+      <label>
+        <input type="checkbox">
+        <span>__bdwalk_height__</span>
+      </label>
+    </div>
+    <div class="config" data-config="pentopia_transparent">
+      <label>
+        <input type="checkbox">
+        <span>__pentopia_transparent__</span>
+      </label>
+    </div>
+    <div class="config" data-config="yajilin_out">
+      <label>
+        <input type="checkbox">
+        <span>__yajilin_out__</span>
+      </label>
+    </div>
+    <div class="config" data-config="koburin_minesweeper">
+      <label>
+        <input type="checkbox">
+        <span>__koburin_minesweeper__</span>
+      </label>
+    </div>
+    <div class="config" data-config="akichi_maximum">
+      <label>
+        <input type="checkbox">
+        <span>__akichi_maximum__</span>
+      </label>
+    </div>
+    <div class="config" data-config="magnets_anti">
+      <label>
+        <input type="checkbox">
+        <span>__magnets_anti__</span>
+      </label>
+    </div>
+    <div class="config" data-config="heyapin_overlap">
+      <label>
+        <input type="checkbox">
+        <span>__heyapin_overlap__</span>
+      </label>
+    </div>
+    <div class="config" data-config="aqre_borders">
+      <label>
+        <input type="checkbox">
+        <span>__aqre_borders__</span>
+      </label>
+    </div>
+    <div class="config" data-config="fillomino_tri">
+      <label>
+        <input type="checkbox">
+        <span>__fillomino_tri__</span>
+      </label>
+    </div>
+    <div class="config" data-config="trizone_ghost">
+      <label>
+        <input type="checkbox">
+        <span>__trizone_ghost__</span>
+      </label>
+    </div>
+    <div class="config" data-config="lapaz_liar">
+      <label>
+        <input type="checkbox">
+        <span>__lapaz_liar__</span>
+      </label>
+    </div>
+    <div class="config" data-config="scrabble_given">
+      <label>
+        <input type="checkbox">
+        <span>__scrabble_given__</span>
+      </label>
+    </div>
+    <div class="config" data-config="slither_full">
+      <label>
+        <input type="checkbox">
+        <span>__slither_full__</span>
+      </label>
+    </div>
+    <div class="config" data-config="loop_full">
+      <label>
+        <input type="checkbox">
+        <span>__loop_full__</span>
+      </label>
+    </div>
+    <div class="config" data-config="variant">
+      <label>
+        <input type="checkbox">
+        <span>__variant__</span>
+      </label>
+    </div>
+  </div>
+  <hr class="separator" id="separator2">
+  <div id="timerpanel" style="display:none;">
+    <div id="timertext">経過時間：00:00</div>
+    <button type="button" class="btn" id="pausebtn" data-button-exec="togglePause">__pause__</button>
+    <button type="button" class="btn btn-warn" id="resumebtn" data-button-exec="togglePause">__resume__</button>
+  </div>
+</div>
+
+<div id="quesboard">
+  <div id="divques"></div> <!-- Canvas用 -->
+  <div id="pauseoverlay">
+    <div class="header">__pause.header__</div>
+    <div id="pausedesc">__pause.desc__</div>
+  </div>
+</div>
+
+<div id="btnarea" class="outofboard" style="display:none;"> <!-- Buttons below board下部のボタン -->
+  <button type="button" class="btn btn-ok" id="btncheck" data-button-exec="answercheck">__check__</button>
+  <button type="button" class="btn" id="btnundo"    data-press-exec="undo,undostop">__undo__</button
+ ><button type="button" class="btn" id="btnredo"    data-press-exec="redo,redostop">__redo__</button>
+  <button type="button" class="btn" id="btnclear"   data-button-exec="ansclear">__ansclear__</button
+ ><button type="button" class="btn" id="btnclear2"  data-button-exec="subclear">__subclear__</button>
+  <button type="button" class="btn" id="btnirowake" data-button-exec="irowake" style="display:none;">__irowake.change__</button>
+  <button type="button" class="btn" id="btnirowakeblk" data-button-exec="irowake" style="display:none;">__irowakeblk.change__</button>
+  <button type="button" class="btn" id="btncolor"   data-button-exec="encolorall">__encolorall__</button>
+  <button type="button" class="btn" id="btnflush"   data-button-exec="flushexcell">__flushexcell__</button>
+  <button type="button" class="btn" id="btnpresets" data-button-exec="applypreset">__applypreset__</button>
+  <button type="button" class="btn" data-disp-pid="stostone" data-press-exec="dropblocks,resetblocks">__dropblocks__</button>
+  <button type="button" class="btn" data-disp-pid="slither" data-button-exec="outlineshaded">__outlineshaded__</button>
+  <button type="button" class="btn" data-disp-pid="swslither" data-button-exec="outlineshaded">__outlineshaded__</button>
+  <button type="button" class="btn" data-disp-pid="myopia" data-button-exec="outlineshaded">__outlineshaded__</button>
+  <button type="button" class="btn" id="btntrial"   data-button-exec="enterTrial">__enterTrial__</button>
+  <div id="btntrialarea" style="display:none;">
+    <button type="button" class="btn btn-ok" id="btntriala"  data-button-exec="acceptTrial">__acceptTrial__</button
+   ><button type="button" class="btn btn-danger" id="btntrialr"  data-button-exec="rejectTrial">__rejectTrial__</button
+   ><button type="button" class="btn" id="btntriale"  data-button-exec="enterFurtherTrial">__enterFurtherTrial__</button>
+  </div>
+</div>
+
+</div> <!-- div#main close. -->
+
+<div id="notifies" class="outofboard">
+
+  <!-- チェック用ダイアログ -->
+  <div class="notify" id="assertbox">
+    <div class="titlebar">Notice</div>
+    <div class="content">
+      <span id="notification"></span>
+      <div class="buttons">
+        <button class="btn btn-ok" data-button-exec="closealert">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- クリア用ダイアログ -->
+  <div class="notify" id="confirmbox">
+    <div class="titlebar">Confirmation</div>
+    <div class="content">
+      <span id="confirmcaption"></span>
+      <div class="buttons">
+        <button class="btn btn-danger" data-button-exec="confirmtrue">OK</button>
+        <button class="btn" data-button-exec="confirmfalse">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 背景色を暗くする＆入力操作を効かなくするためのエレメント -->
+  <div id="notifybg"></div>
+
+</div>
+
+<!-- ポップアップメニュー(＋キーポップアップ/for_test)用 -->
+<div id="popup_parent" class="outofboard">
+
+  <div class="popup">
+    <div class="titlebar">__newboard.title__</div>
+    <form name="newboard">
+      <span>__newboard.header__</span>
+      <br>
+      <div id="nb_size" data-disp-pid="!sudoku">
+        <span id="nb_cols" data-disp-pid="!tawa">__newboard.cols__</span>
+        <input type="number" name="col" value="1" size=4 maxlength=3 min=1 max=999>
+        <span id="nb_cols_tawa" data-disp-pid="tawa">__newboard.tawa.width__</span>
+        <br>
+        <span id="nb_rows" data-disp-pid="!tawa">__newboard.rows__</span>
+        <input type="number" name="row" value="1" size=4 maxlength=3 min=1 max=999>
+        <span id="nb_rows_tawa" data-disp-pid="tawa">__newboard.tawa.height__</span>
+      </div>
+      <div id="nb_size_sudoku" data-disp-pid="sudoku">
+        <input type="radio" name="size" id="nb_size_sudoku_0" value="0"> 4x4<br>
+        <input type="radio" name="size" id="nb_size_sudoku_4" value="4"> 6x6<br>
+        <input type="radio" name="size" id="nb_size_sudoku_1" value="1" checked> 9x9<br>
+        <input type="radio" name="size" id="nb_size_sudoku_2" value="2"> 16x16<br>
+        <input type="radio" name="size" id="nb_size_sudoku_3" value="3"> 25x25
+      </div>
+      <div id="nb_piecebank">
+        <span>__newboard.preset__</span>
+        <select id="nb_piecebank_preset" name="preset"></select>
+      </div>
+      <br>
+      <table id="nb_shape_tawa" data-disp-pid="tawa" border=0 cell-padding=0 cell-spaceing=2><tr>
+        <td><div id="nb_shape_0"><img src="" data-button-exec="clickshape"></div></td>
+        <td><div id="nb_shape_1"><img src="" data-button-exec="clickshape"></div></td>
+        <td><div id="nb_shape_2"><img src="" data-button-exec="clickshape"></div></td>
+        <td><div id="nb_shape_3"><img src="" data-button-exec="clickshape"></div></td>
+      </tr></table>
+      <button type="button" class="btn btn-ok" data-button-exec="execute">__newboard.submit__</button>
+      <button type="button" class="btn" data-button-exec="close">__cancel__</button>
+    </form>
+  </div>
+
+  <div class="popup">
+    <div class="titlebar">__urlinput.title__</div>
+    <form name="urlinput">
+      <textarea name="ta" cols=48 rows=8 wrap="hard"></textarea>
+      <br>
+      <button type="button" class="btn btn-ok" data-button-exec="urlinput">__urlinput.submit__</button>
+      <button type="button" class="btn" data-button-exec="close">__cancel__</button>
+    </form>
+  </div>
+
+  <div class="popup">
+    <div class="titlebar">__urloutput.title__</div>
+    <form name="urloutput">
+      <a id="urlanchor" class="urlanchor" target="_blank"></a>
+      <br>
+      <button type="button" class="btn" data-button-exec="urloutput" name="kanpen" >__urloutput.kanpen__</button><br>
+      <button type="button" class="btn" data-button-exec="urloutput" name="heyaapp">__urloutput.heyaapp__</button><br>
+      <button type="button" class="btn" data-button-exec="urloutput" name="pzprv3e">__urloutput.pzprv3e__</button><br>
+      <br>
+      <button type="button" class="btn" data-button-exec="close">__close__</button>
+    </form>
+  </div>
+
+  <div class="popup">
+    <div class="titlebar">__fileopen.title__</div>
+    <form name="fileform" target="fileiopanel">
+      <input type="hidden" name="operation" value="open">
+      <input type="hidden" name="pencilbox" value="0">
+      <span>__fileopen.choose__</span>
+      <br>
+      <input type="file" name="filebox" data-change-exec="fileopen" class="btn btn-info" id="filebox" value="">
+      <br>
+      <button type="button" class="btn" data-button-exec="close">__cancel__</button>
+    </form>
+  </div>
+
+  <div class="popup">
+    <div class="titlebar">__filesave.title__</div>
+    <form name="filesave" target="fileiopanel">
+      <input type="hidden" name="operation" value="save">
+      <input type="hidden" name="ques" value="">
+      <input type="hidden" name="urlstr" value="">
+      <textarea name="ta" cols=48 rows=8 wrap="hard"></textarea>
+      <br>
+      <textarea name="ta2" cols=48 rows=2 wrap="hard"></textarea>
+      <br>
+      <span>__filesave.format__</span>
+      <select name="filetype" data-change-exec="changefilename">
+        <option value="filesave">__filesave.format.pzprv3__</option>
+        <option value="filesave2">__filesave.format.penciltxt__</option>
+        <option value="filesave4">__filesave.format.pencilxml__</option>
+      </select>
+      <br>
+      <span>__filesave.filename__</span>
+      <input type="text" name="filename" value="">
+      <br>
+      <br>
+      <button type="button" class="btn btn-ok" data-button-exec="filesave">__filesave.submit__</button>
+      <button type="button" class="btn" data-button-exec="close">__close__</button>
+    </form>
+  </div>
+
+  <div class="popup">
+    <div class="titlebar">__imagesave.title__</div>
+    <form name="imagesave" target="fileiopanel">
+      <input type="hidden" name="operation" value="imagesave">
+      <input type="hidden" name="urlstr" value="">
+      <span>__imagesave.filetype__</span>
+      <select name="filetype" data-change-exec="changefilename">
+        <option value="png">__imagesave.png__</option>
+        <option value="svg">__imagesave.svg__</option>
+        <option value="gif">__imagesave.gif__</option>
+        <option value="jpeg">__imagesave.jpeg__</option>
+        <option value="webp">__imagesave.webp__</option>
+      </select>
+      <br>
+      <span>__imagesave.filename__</span>
+      <input type="text" name="filename" value="">
+      <br>
+      <span>__imagesave.cellsize__</span>
+      <input type="number" name="cellsize" value="36" size=4 maxlength=3 min=8 max=999 data-change-exec="estimatesize">
+      <span id="showsize">x</span>
+      <br>
+      <label>
+        <span>__imagesave.transparent__</span>
+        <input type="checkbox" name="transparent">
+      </label>
+      <br>
+      <label id="bank_label">
+        <span>__imagesave.bank__</span>
+        <input type="checkbox" name="bank">
+      </label>
+      <br>
+      <br>
+      <button type="button" class="btn btn-ok"   data-button-exec="saveimage">__imagesave.saveimage__</button>
+      <button type="button" class="btn btn-info" data-button-exec="openimage">__imagesave.openimage__</button>
+      <button type="button" class="btn" data-button-exec="close">__close__</button>
+    </form>
+  </div>
+
+  <div class="popup">
+    <div class="titlebar">__adjust.title__</div>
+    <form name="adjust">
+      <span>__adjust.header__</span>
+      <br>
+      <span>__adjust.expand__</span>
+      <button type="button" class="btn" data-button-exec="adjust" name="expandup">__adjust.up__</button>
+      <button type="button" class="btn" data-button-exec="adjust" name="expanddn">__adjust.dn__</button>
+      <span> </span>
+      <button type="button" class="btn" data-button-exec="adjust" name="expandlt">__adjust.lt__</button>
+      <button type="button" class="btn" data-button-exec="adjust" name="expandrt">__adjust.rt__</button>
+      <br>
+      <span>__adjust.reduce__</span>
+      <button type="button" class="btn" data-button-exec="adjust" name="reduceup">__adjust.up__</button>
+      <button type="button" class="btn" data-button-exec="adjust" name="reducedn">__adjust.dn__</button>
+      <span> </span>
+      <button type="button" class="btn" data-button-exec="adjust" name="reducelt">__adjust.lt__</button>
+      <button type="button" class="btn" data-button-exec="adjust" name="reducert">__adjust.rt__</button>
+      <br>
+      <button type="button" class="btn" data-button-exec="close">__close__</button>
+    </form>
+  </div>
+
+  <div class="popup">
+    <div class="titlebar">__turnflip.title__</div>
+    <form name="turnflip">
+      <span>__turnflip.header__</span>
+      <br>
+      <button type="button" class="btn" data-button-exec="adjust" name="turnl">__turnflip.turnl__</button>
+      <button type="button" class="btn" data-button-exec="adjust" name="turnr">__turnflip.turnr__</button>
+      <br>
+      <button type="button" class="btn" data-button-exec="adjust" name="flipy">__turnflip.flipy__</button>
+      <button type="button" class="btn" data-button-exec="adjust" name="flipx">__turnflip.flipx__</button>
+      <br>
+      <br>
+      <button type="button" class="btn" data-button-exec="close">__close__</button>
+    </form>
+  </div>
+
+  <div class="popup">
+    <div class="titlebar">__dispsize.title__</div>
+    <form name="dispsize">
+      <span>__dispsize.header__</span>
+      <br>
+      <span>__dispsize.cellsize__</span>
+      <input type="number" name="cellsize" value="" size=4 maxlength=3 min=8 max=999>
+      <br>
+      <button type="button" class="btn btn-ok" data-button-exec="changesize">__dispsize.submit__</button>
+      <button type="button" class="btn" data-button-exec="close">__close__</button>
+    </form>
+  </div>
+
+  <div class="popup" id="about">
+    <div class="titlebar">__about.title__</div>
+    <form name="about">
+      <p><a href="https://github.com/robx/pzprjs">github.com/robx/pzprjs</a> version a27123b0</p>
+      <p>based on <span>__about.pzv__</span> by <span>__about.author__</span></p>
+      <button type="button" class="btn btn-ok" data-button-exec="close">OK</button>
+    </form>
+  </div>
+
+  <div class="popup" id="popauxeditor">
+    <div class="titlebar"><!-- Set by AuxEditor.js --></div>
+    <form name="auxeditor">
+      <div id="auxeditorpanel">
+        <div class="config" data-config="auxeditor_inputmode">
+          <div><span>__inputmode__</span> | </div>
+          <div>
+            <div class="child" data-value="auto">__inputmode.auto__</div>
+            <div class="child" data-value="slide">__inputmode.slide__</div>
+          </div>
+        </div>
+        <div class="adjust">
+          <button type="button" class="btn" data-button-exec="adjust_aux" name="turnl">__turnflip.turnl.short__</button>
+          <button type="button" class="btn" data-button-exec="adjust_aux" name="turnr">__turnflip.turnr.short__</button>
+          <button type="button" class="btn" data-button-exec="adjust_aux" name="flipy">__turnflip.flipy.short__</button>
+          <button type="button" class="btn" data-button-exec="adjust_aux" name="flipx">__turnflip.flipx.short__</button>
+        </div>
+      </div>
+      <div id="divauxeditor"></div>  <!-- Canvas for editor -->
+      <div class="auxeditorclose">
+        <button type="button" class="btn" data-button-exec="close">__close__</button>
+        <span class="spacer"></span>
+        <button type="button" class="btn btn-danger" data-button-exec="delete">__delete__</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="popup" id="popwordbank">
+    <div class="titlebar">__wordbank__</div>
+    <form name="wordbank">
+      <textarea id="wordbank_field" name="bank" cols=20 rows=24 wrap="hard"></textarea>
+      <br>
+      <button type="button" class="btn btn-ok" data-button-exec="apply">__applypreset.submit__</button>
+      <button type="button" class="btn" data-button-exec="close">__cancel__</button>
+    </form>
+  </div>
+
+  <div class="popup" id="popapplypreset">
+    <div class="titlebar">__applypreset.title__</div>
+    <form name="applypreset">
+      <div id="ap_preset"></div>
+      <button type="button" class="btn btn-ok" data-button-exec="apply">__applypreset.submit__</button>
+      <button type="button" class="btn" data-button-exec="close">__close__</button>
+    </form>
+  </div>
+
+  <div class="popup" id="keypopup" style="z-index:100;">
+    <div class="titlebar" id="barkeypopup">panel</div>
+    <div class="panelbase" id="panelbase1"></div>
+    <div class="panelbase" id="panelbase3"></div>
+  </div>
+
+  <div class="popup">
+    <div class="titlebar">__network.title__</div>
+    <form name="network">
+    <button type="button" class="btn" data-button-exec="coop">__network.start__</button>
+    <br>
+    <span>__network.share__</span> <br>
+    <a id="urlanchor_network" class="urlanchor" target="_blank"></a>
+    <br>
+    <button type="button" class="btn" data-button-exec="close">__close__</button>
+    </form>
+  </div>
+</div>
+
+<!-- 隠し要素 -->
+<div id="hidden_element">
+  <!-- ファイル入出力用インラインフレーム -->
+  <iframe name="fileiopanel" id="fileiopanel" src="about:blank"></iframe>
+  <!-- ファイル保存用アンカー -->
+  <a id="saveanchor"></a>
+</div>
+<!-- ここまで -->
+
+</body>
+</html>

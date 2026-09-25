@@ -1,0 +1,264 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>pzpr rules</title>
+<style>
+html {
+  font-family: sans-serif;
+}
+
+.language-all .langswitch {
+  display: none;
+}
+
+.langswitch {
+  position: absolute;
+  right: 1em;
+  user-select: none;
+}
+.langoption {
+  cursor: pointer;
+}
+.language-en .langoption[lang=en] {
+  font-weight: bold;
+}
+.language-ja .langoption[lang=ja] {
+  font-weight: bold;
+}
+h1 {
+  font-size: medium;
+}
+div + h1 {
+  margin-top: 20px;
+}
+.testcase {
+  background: #f0f0f0;
+  margin: 10px;
+}
+.player {
+  background: #f0f0f0;
+  margin: 10px;
+}
+.canvas {
+  display: inline-block;
+  vertical-align: middle;
+}
+.error-label {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0 1em;
+}
+.error-msg {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+@media screen and (min-width: 700px) {
+  .player {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(200px, max-content);
+  }
+}
+
+.rule-msg {
+  margin-left: 1em;
+  margin-right: 1em;
+  padding-bottom: 0.5em;
+}
+
+.rule-msg p {
+  display: none;
+}
+
+.rule-msg p.history {
+  font-size: small;
+}
+
+.language-en .rule-msg p[lang=en] {
+  display: block;
+}
+
+.language-ja .rule-msg p[lang=ja] {
+  display: block;
+}
+
+.error-msg span {
+  display: none;
+}
+
+.language-en .error-msg span[lang=en] {
+  display: block;
+}
+
+.language-ja .error-msg span[lang=ja] {
+  display: block;
+}
+</style>
+
+<script type="text/javascript" src="./js/pzpr.js?a27123b0"></script>
+<script>
+
+function render(testcase, data, type_, ready){
+  var canvas = document.createElement('div');
+  canvas.className = 'canvas';
+  canvas.style = "width:200px; height:200px;"
+  testcase.appendChild(canvas);
+  var puzzle = new pzpr.Puzzle(canvas, {type:type_});
+  puzzle.setConfig('autocmp', false);
+  puzzle.setConfig('forceallcell',true);
+  puzzle.once("ready", function(){ready(puzzle);});
+  puzzle.open(data);
+}
+
+function nopid(){
+  var link = document.createElement('a');
+  link.href = "list.html";
+  link.text = "List of puzzle types / パズルの種類のリスト";
+  document.getElementsByTagName('body')[0].appendChild(link);
+}
+
+pzpr.on("load", function(){
+  var pid = window.location.search.substring(1);
+  pid = pzpr.variety.toPID(pid);
+  if(!pid) {
+    nopid();
+    return;
+  }
+
+  var failcheck, url, info;
+  window.ui = {};
+  window.ui.debug = {};
+  window.ui.debug.addDebugData = function(pid, data){
+    url = pid + "/" + data.url;
+    failcheck = data.failcheck;
+  };
+  window.ui.debug.addRules = function(pid, newrules) {
+    info = newrules;
+    if(!info[1].rules) {
+      document.body.classList.add('language-en', 'language-ja', 'language-all');
+    } else {
+      document.body.classList.remove('language-all');
+      document.body.classList.add('language-' + pzpr.lang);
+    }
+  }
+
+  document.querySelectorAll(".langoption").forEach(function(langb) {
+    langb.addEventListener("click", function() {
+      document.body.classList.remove('language-en', 'language-ja', 'language-all');
+      document.body.classList.add('language-' + langb.getAttribute("lang"));
+    });
+  });
+
+  var datadir='./js/pzpr-samples';
+
+  var _script = document.createElement('script');
+  _script.type = 'text/javascript';
+  _script.src = datadir+'/'+pid+'.js';
+  _script.onload = function(){
+    var body = document.getElementsByTagName('body')[0];
+
+    var heading = document.createElement('h1');
+    heading.textContent = "Rules / ルール";
+    body.appendChild(heading);
+
+    var player = document.createElement('p');
+    player.textContent = "sorry, this interface is super hacky and i haven't implemented the nice rules interface. see ";
+    var link = document.createElement('a');
+    link.href = 'https://puzz.link/rules.html?curvedata';
+    link.textContent = 'Curve Data rules';
+    player.append(link);
+    player.append(document.createTextNode(' + '));
+    link = document.createElement('a');
+    link.href = 'https://puzz.link/rules.html?railpool';
+    link.textContent = 'Rail Pool rules';
+    player.append(link);
+    body.appendChild(player);
+    player = document.createElement('p');
+    player.textContent = '(Rail Pool rule #1 is removed, lines can branch or cross. count full segment lengths, see the image i sent in discord. sorry sorry i will write an actual explanation eventually)'
+    body.append(player);
+
+    return;
+
+    render(player, url, 'player', function(puzzle){
+      var rulediv = document.createElement('div');
+      rulediv.className = 'rule-msg';
+      var langs = info[1].rules ? ['en', 'ja'] : ['en'];
+      for(var i in langs) {
+        var ruletext = info[i].rules.split("\n");
+        ruletext.forEach(function(r) {
+          var span = document.createElement('p');
+          span.setAttribute('lang', langs[i]);
+          span.textContent = r;
+          rulediv.appendChild(span);
+        });
+
+        var historytext = info[i].history.split("\n");
+        historytext.forEach(function(r) {
+          var span = document.createElement('p');
+          span.setAttribute('lang', langs[i]);
+          span.classList.add("history");
+          span.textContent = r;
+          rulediv.appendChild(span);
+        });
+      }
+      player.id = "rules";
+      player.appendChild(rulediv);
+
+		  pzpr.connectKeyEvents(puzzle);
+    });
+
+    heading = document.createElement('h1');
+    heading.textContent = "Example errors / 誤答例";
+    body.appendChild(heading);
+
+    var foundcodes = {};
+    failcheck.forEach(function(data){
+      if(data.length>2&&data[2].skiprules){ return;}
+      var testcase = document.createElement('div');
+      testcase.className = 'testcase';
+      body.appendChild(testcase);
+
+      render(testcase, data[1], 'viewer', function(puzzle){
+        var failcode = puzzle.check(true);
+        var label = document.createElement('div');
+        label.className = 'error-label';
+        label.textContent = (failcode.complete?'OK':'NG') + ':';
+        var error = document.createElement('div');
+        error.className = 'error-msg';
+        var langs = ['en', 'ja'];
+        langs.forEach(function(lang){
+          var span = document.createElement('span');
+          span.setAttribute('lang', lang);
+          span.textContent =  failcode.gettext(lang);
+          error.appendChild(span);
+        });
+
+        var c = failcode.lastcode || "complete"
+        foundcodes[c] = (foundcodes[c] || 0) + 1;
+        testcase.id = foundcodes[c] === 1 ? c : c+"-"+foundcodes[c];
+
+        testcase.appendChild(label);
+        testcase.appendChild(error);
+      });
+    });
+
+    if (location.hash) {
+      var target = location.hash;
+      setTimeout(function() {
+        body.scrollTop = document.querySelector(target).offsetTop;
+      }, 50);
+    }
+  };
+  document.getElementsByTagName('head')[0].appendChild(_script);
+});
+</script>
+</head>
+<body class="language-all">
+  <div class="langswitch">
+    <span class="langoption" lang="en">English</span> /
+    <span class="langoption" lang="ja">日本語</span>
+  </div>
+</body>
+</html>
